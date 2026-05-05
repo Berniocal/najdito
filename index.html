@@ -7,7 +7,6 @@
   <title>Dobble Reflex</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icons/icon-192.png" />
-  <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
   <style>
     :root{
       --bg:#0f172a;--panel:#172033;--panel2:#1f2a44;--text:#f8fafc;--muted:#a7b0c2;
@@ -240,6 +239,18 @@ function showGamePlayer(room,me){
   $('scorePanel').innerHTML=`<div class="rank">Body: ${me.score||0}</div><div class="small">${locked?'V tomto kole už nemůžeš klikat.':'Najdi společné emoji s hlavním telefonem.'}</div>`;
   showWinnerOverlay(room);
 }
+function emojiToCodePoint(emoji){
+  return Array.from(emoji)
+    .map(ch => ch.codePointAt(0).toString(16))
+    .join('-');
+}
+
+function emojiImg(symbolIndex){
+  const emoji = EMOJIS[symbolIndex];
+  const code = emojiToCodePoint(emoji);
+  return `https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/${code}.svg`;
+}
+
 function getPositions(count){
   const positions = [];
 
@@ -261,18 +272,30 @@ function getPositions(count){
 }
 
 function renderCard(el, cardId, clickable, round){
-  el.innerHTML=''; if(cardId===undefined||cardId===null) return;
+  el.innerHTML='';
+  if(cardId===undefined||cardId===null) return;
+
   const pos=getPositions(CARDS[cardId].length);
+
   shuffle([...CARDS[cardId]]).forEach((sym,i)=>{
-    const b=document.createElement('button'); b.className='symbol'; b.textContent=EMOJIS[sym];
-    b.style.left=pos[i][0]+'%'; b.style.top=pos[i][1]+'%'; b.style.fontSize=pos[i][2]+'px';
+    const b=document.createElement('button');
+    b.className='symbol';
+    b.style.left=pos[i][0]+'%';
+    b.style.top=pos[i][1]+'%';
+    b.style.fontSize=pos[i][2]+'px';
     b.disabled=!clickable;
+    b.setAttribute('aria-label', EMOJIS[sym]);
+
+    const img=document.createElement('img');
+    img.src=emojiImg(sym);
+    img.alt=EMOJIS[sym];
+    img.draggable=false;
+
+    b.appendChild(img);
+
     if(clickable) b.onclick=()=>playerClick(sym, b, round);
     el.appendChild(b);
   });
-  if(window.twemoji){
-    twemoji.parse(el, {folder: 'svg', ext: '.svg'});
-  }
 }
 async function playerClick(symbol, btnEl, round){
   if(role!=='player' || !round || localLockedRound===round.roundNumber) return;
