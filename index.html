@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#22c55e" />
+  <title>Dobble Reflex</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <style>
+    :root{
+      --bg:#0f172a;--panel:#172033;--panel2:#1f2a44;--text:#f8fafc;--muted:#a7b0c2;
+      --line:rgba(255,255,255,.12);--green:#22c55e;--red:#ef4444;--yellow:#facc15;--blue:#38bdf8;
+      --shadow:0 16px 50px rgba(0,0,0,.35);--r:24px;
+    }
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    html,body{min-height:100%;margin:0;background:radial-gradient(circle at top,#1e3a5f 0,#0f172a 42%,#07111f 100%);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;overscroll-behavior:none}
+    body{padding:18px;padding-bottom:calc(18px + env(safe-area-inset-bottom))}
+    .app{max-width:860px;margin:0 auto}.card{background:color-mix(in srgb,var(--panel) 92%,transparent);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:18px;backdrop-filter:blur(12px)}
+    h1{font-size:clamp(32px,8vw,58px);line-height:1;margin:8px 0 6px;text-align:center}.sub{text-align:center;color:var(--muted);margin:0 0 18px}.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1}.hidden{display:none!important}
+    label{font-size:13px;color:var(--muted);font-weight:700;display:block;margin:10px 0 6px}input,button,select{width:100%;border:1px solid var(--line);border-radius:16px;padding:14px 15px;font:inherit;color:var(--text);background:rgba(255,255,255,.08)}
+    input{text-align:center;font-size:22px;font-weight:850;letter-spacing:.08em}input.name{font-size:18px;letter-spacing:0;text-align:left}button{font-weight:850;cursor:pointer;background:linear-gradient(135deg,#16a34a,#22c55e);border:0;color:#052e16;box-shadow:0 10px 28px rgba(34,197,94,.2)}button.secondary{background:rgba(255,255,255,.09);color:var(--text);box-shadow:none;border:1px solid var(--line)}button.danger{background:linear-gradient(135deg,#dc2626,#fb7185);color:#fff}button:disabled{opacity:.45;cursor:not-allowed}.small{font-size:13px;color:var(--muted)}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.pill{padding:8px 12px;background:rgba(255,255,255,.08);border:1px solid var(--line);border-radius:999px;font-weight:800;color:var(--muted)}
+    .dobble{position:relative;margin:18px auto;width:min(88vw,430px);height:min(88vw,430px);border-radius:50%;background:#f8fafc;color:#111827;box-shadow:inset 0 0 0 8px rgba(15,23,42,.08),0 18px 44px rgba(0,0,0,.34);overflow:hidden;touch-action:manipulation}.dobble.disabled{filter:grayscale(.55);opacity:.75}.symbol{position:absolute;transform:translate(-50%,-50%);border:0;background:transparent;box-shadow:none;color:inherit;padding:0;width:auto;line-height:1;display:grid;place-items:center;text-shadow:0 2px 0 rgba(255,255,255,.45);transition:transform .12s ease,filter .12s ease}.symbol:active{transform:translate(-50%,-50%) scale(.9)}.symbol.bad{filter:drop-shadow(0 0 10px var(--red))}.symbol.good{filter:drop-shadow(0 0 10px var(--green))}
+    .centerMsg{position:fixed;inset:0;display:grid;place-items:center;background:rgba(2,6,23,.35);z-index:50;pointer-events:none}.centerMsg>div{background:rgba(15,23,42,.95);border:1px solid var(--line);padding:20px 28px;border-radius:24px;font-size:clamp(28px,8vw,54px);font-weight:950;text-align:center;box-shadow:var(--shadow)}
+    .players{display:grid;gap:10px;margin-top:12px}.player{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.06)}.player b{font-size:18px}.actions{display:flex;gap:8px}.actions button{padding:9px 10px;border-radius:12px}.score{font-weight:950;color:var(--yellow)}.footer{position:fixed;left:0;right:0;bottom:0;padding:8px 12px calc(8px + env(safe-area-inset-bottom));background:rgba(15,23,42,.82);backdrop-filter:blur(10px);border-top:1px solid var(--line);z-index:20}.footer .inner{max-width:860px;margin:auto;display:flex;gap:10px;align-items:center;justify-content:space-between}.statusText{font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rank{font-size:22px;font-weight:950}.confetti{font-size:42px}.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:#111827;color:white;border:1px solid var(--line);border-radius:999px;padding:10px 16px;font-weight:850;z-index:100;box-shadow:var(--shadow);max-width:90vw;text-align:center}#keepAwakeVideo{position:fixed;left:-20px;top:-20px;width:1px;height:1px;opacity:0;pointer-events:none}
+  </style>
+</head>
+<body>
+<div class="app">
+  <h1>Dobble Reflex</h1>
+  <p class="sub">Jeden hlavní telefon uprostřed. Ostatní hráči hledají společné emoji.</p>
+
+  <section id="joinScreen" class="card">
+    <label>Číslo místnosti</label>
+    <input id="roomInput" inputmode="numeric" maxlength="5" placeholder="58321" />
+    <label>Jméno hráče</label>
+    <input id="nameInput" class="name" maxlength="18" placeholder="Např. Honza" />
+    <div class="row" style="margin-top:14px">
+      <button id="enterBtn">Vstoupit do místnosti</button>
+      <button id="randomRoomBtn" class="secondary">Náhodné číslo</button>
+    </div>
+    <p class="small">Když místnost ještě neexistuje, tento telefon se stane hlavním. Další telefony budou hráči a musí je schválit hlavní.</p>
+  </section>
+
+  <section id="hostLobby" class="card hidden">
+    <div class="topbar"><span class="pill">Hlavní telefon</span><span class="pill">Místnost <b id="hostRoomCode"></b></span></div>
+    <label>Počet kol: <span id="roundsValue">20</span></label>
+    <input id="roundsInput" type="range" min="1" max="100" value="20" />
+    <h2>Hráči</h2>
+    <div id="hostPlayers" class="players"></div>
+    <div class="row" style="margin-top:14px"><button id="startBtn">Start hry</button><button id="closeRoomBtn" class="danger">Zavřít místnost</button></div>
+  </section>
+
+  <section id="playerLobby" class="card hidden">
+    <div class="topbar"><span class="pill">Hráč</span><span class="pill">Místnost <b id="playerRoomCode"></b></span></div>
+    <h2 id="waitingTitle">Čekáš na schválení…</h2>
+    <p class="small">Neopouštěj záložku. Když odejdeš ze stránky nebo přepneš aplikaci, automaticky se odpojíš.</p>
+  </section>
+
+  <section id="gameScreen" class="hidden">
+    <div class="topbar"><span class="pill" id="rolePill"></span><span class="pill" id="roundPill"></span></div>
+    <div id="hostCard" class="dobble hidden"></div>
+    <div id="playerCard" class="dobble hidden"></div>
+    <div id="scorePanel" class="card"></div>
+  </section>
+
+  <section id="finishScreen" class="card hidden"></section>
+</div>
+
+<div id="centerMsg" class="centerMsg hidden"><div id="centerMsgText"></div></div>
+<div id="toast" class="toast hidden"></div>
+<video id="keepAwakeVideo" muted loop playsinline></video>
+
+<div class="footer"><div class="inner"><span class="statusText" id="statusText">Nepřipojeno</span><button id="wakeBtn" class="secondary" style="width:auto;padding:9px 12px">🔆 obrazovka</button></div></div>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js';
+import { getDatabase, ref, get, set, update, remove, onValue, off, onDisconnect, runTransaction } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js';
+import { firebaseConfig } from './firebase-config.js';
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const $ = id => document.getElementById(id);
+const uid = localStorage.getItem('dobble_uid') || crypto.randomUUID();
+localStorage.setItem('dobble_uid', uid);
+
+let role = null, roomCode = null, playerId = uid, unsubRoom = null, processedWinnerKey = '', localLockedRound = -1;
+let roomRef = null, playerRef = null, wakeLock = null, autoAdvancing = false;
+
+const EMOJIS = ['😀','😎','🥳','🤖','👻','🐶','🐱','🦊','🐼','🐸','🦁','🐵','🐧','🦄','🐝','🦋','🐙','🦖','🐢','🐬','🌵','🌈','⭐','🔥','⚡','❄️','💧','🍎','🍋','🍕','🍔','🍟','🍩','🍪','⚽','🏀','🎾','🎲','🎯','🎸','🚗','🚀','✈️','🚲','⛵','🏠','⛺','🎁','💎','🔑','🧲','🔔','📚','✏️','❤️','☂️','👑'];
+const CARDS = makeDobbleCards(7);
+
+function makeDobbleCards(n){
+  const cards=[];
+  cards.push([...Array(n+1).keys()]);
+  for(let i=0;i<n;i++) cards.push([0,...Array.from({length:n},(_,j)=>n+1+i*n+j)]);
+  for(let a=0;a<n;a++) for(let b=0;b<n;b++){
+    const c=[a+1];
+    for(let j=0;j<n;j++) c.push(n+1+j*n+((a*j+b)%n));
+    cards.push(c);
+  }
+  return cards;
+}
+function commonSymbol(a,b){ return CARDS[a].find(x=>CARDS[b].includes(x)); }
+function show(id){ $(id).classList.remove('hidden'); } function hide(id){ $(id).classList.add('hidden'); }
+function toast(t){ $('toast').textContent=t; show('toast'); setTimeout(()=>hide('toast'),1800); }
+function status(t){ $('statusText').textContent=t; }
+function cleanRoom(v){ return (v||'').replace(/\D/g,'').slice(0,5); }
+function cleanName(v){ return (v||'').trim().slice(0,18) || 'Hráč'; }
+function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+function sample(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+$('randomRoomBtn').onclick=()=>{ $('roomInput').value=String(Math.floor(10000+Math.random()*90000)); };
+$('roundsInput').oninput=()=> $('roundsValue').textContent=$('roundsInput').value;
+$('enterBtn').onclick=enterRoom;
+$('startBtn').onclick=startGame;
+$('closeRoomBtn').onclick=()=> roomRef && remove(roomRef);
+$('wakeBtn').onclick=enableWake;
+$('roomInput').addEventListener('input',e=>e.target.value=cleanRoom(e.target.value));
+
+async function enterRoom(){
+  await enableWake();
+  roomCode=cleanRoom($('roomInput').value);
+  if(roomCode.length!==5) return toast('Zadej 5 číslic místnosti.');
+  roomRef=ref(db, `rooms/${roomCode}`);
+  const snap=await get(roomRef);
+  if(!snap.exists()){
+    role='host';
+    await set(roomRef,{hostId:uid,status:'lobby',createdAt:Date.now(),settings:{rounds:Number($('roundsInput').value)||20},players:{}});
+    onDisconnect(roomRef).remove();
+    setupHost();
+  }else{
+    role='player';
+    const name=cleanName($('nameInput').value);
+    playerRef=ref(db, `rooms/${roomCode}/players/${playerId}`);
+    await set(playerRef,{name,approved:false,score:0,joinedAt:Date.now()});
+    onDisconnect(playerRef).remove();
+    setupPlayer();
+  }
+  hide('joinScreen'); listenRoom();
+}
+
+function listenRoom(){
+  if(unsubRoom) off(roomRef,'value',unsubRoom);
+  unsubRoom=onValue(roomRef,snap=>{
+    const room=snap.val();
+    if(!room){ resetUI('Místnost byla zavřena.'); return; }
+    if(role==='host') renderHost(room); else renderPlayer(room);
+  });
+}
+function setupHost(){ show('hostLobby'); $('hostRoomCode').textContent=roomCode; status('Jsi hlavní telefon.'); }
+function setupPlayer(){ show('playerLobby'); $('playerRoomCode').textContent=roomCode; status('Čekáš na schválení.'); }
+
+function renderHost(room){
+  if(room.status==='lobby'){
+    hide('gameScreen'); hide('finishScreen'); show('hostLobby');
+    const box=$('hostPlayers'); box.innerHTML='';
+    const players=room.players||{}; const ids=Object.keys(players);
+    if(!ids.length) box.innerHTML='<p class="small">Zatím tu nejsou žádní hráči.</p>';
+    ids.forEach(id=>{
+      const p=players[id]; const div=document.createElement('div'); div.className='player';
+      div.innerHTML=`<div><b>${esc(p.name)}</b><div class="small">${p.approved?'schválen':'čeká na schválení'}</div></div><div class="actions"></div>`;
+      const actions=div.querySelector('.actions');
+      if(!p.approved){ const ok=btn('Schválit'); ok.onclick=()=>update(ref(db,`rooms/${roomCode}/players/${id}`),{approved:true,score:0}); actions.appendChild(ok); }
+      const del=btn('×','danger'); del.onclick=()=>remove(ref(db,`rooms/${roomCode}/players/${id}`)); actions.appendChild(del);
+      box.appendChild(div);
+    });
+    $('startBtn').disabled=!ids.some(id=>players[id].approved);
+  }else if(room.status==='running' || room.status==='roundResult'){
+    showGameHost(room);
+    handleHostWinner(room);
+  }else if(room.status==='finished') renderFinish(room);
+}
+function renderPlayer(room){
+  const me=room.players?.[playerId];
+  if(!me){ resetUI('Byl jsi odpojen z místnosti.'); return; }
+  if(room.status==='lobby'){
+    hide('gameScreen'); hide('finishScreen'); show('playerLobby');
+    $('waitingTitle').textContent=me.approved?'Jsi schválen. Čekej na start hry.':'Čekáš na schválení…';
+    status(me.approved?'Schváleno, čekáš na start.':'Čekáš na schválení.');
+  }else if(room.status==='running' || room.status==='roundResult') showGamePlayer(room,me);
+  else if(room.status==='finished') renderFinish(room,me);
+}
+
+async function startGame(){
+  const snap=await get(roomRef); const room=snap.val(); const players=room.players||{};
+  const approved=Object.fromEntries(Object.entries(players).filter(([_,p])=>p.approved));
+  if(!Object.keys(approved).length) return toast('Nejdřív schval aspoň jednoho hráče.');
+  const rounds=Math.max(1,Math.min(100,Number($('roundsInput').value)||20));
+  const resets={}; Object.keys(approved).forEach(id=>resets[`players/${id}/score`]=0);
+  await update(roomRef,{status:'running',settings:{rounds},game:{usedPairs:{},lastWinner:null},...resets});
+  await generateNextRound(1);
+}
+async function generateNextRound(roundNumber){
+  const snap=await get(roomRef); const room=snap.val(); if(!room) return;
+  const total=room.settings?.rounds||20;
+  if(roundNumber>total){ await update(roomRef,{status:'finished',currentRound:null}); return; }
+  const players=Object.fromEntries(Object.entries(room.players||{}).filter(([_,p])=>p.approved));
+  const mainCardId=Math.floor(Math.random()*CARDS.length);
+  const playerCards={}, locked={}, newPairs={};
+  for(const id of Object.keys(players)){
+    const used=room.game?.usedPairs?.[id]||{};
+    const candidates=[];
+    for(let c=0;c<CARDS.length;c++) if(c!==mainCardId && !used[`${mainCardId}-${c}`]) candidates.push(c);
+    const playerCardId=sample(candidates.length?candidates:CARDS.map((_,i)=>i).filter(i=>i!==mainCardId));
+    playerCards[id]=playerCardId; locked[id]=false; newPairs[`game/usedPairs/${id}/${mainCardId}-${playerCardId}`]=true;
+  }
+  processedWinnerKey=''; autoAdvancing=false; localLockedRound=-1;
+  await update(roomRef,{...newPairs,status:'running',currentRound:{roundNumber,total,mainCardId,playerCards,locked,winner:null,startedAt:Date.now()}});
+}
+function handleHostWinner(room){
+  const r=room.currentRound; if(!r?.winner || autoAdvancing) return;
+  const key=`${r.roundNumber}-${r.winner.playerId}-${r.winner.symbol}`; if(processedWinnerKey===key) return; processedWinnerKey=key; autoAdvancing=true;
+  const pid=r.winner.playerId, p=room.players?.[pid];
+  const pc=r.playerCards?.[pid]; const ok=p && pc!==undefined && commonSymbol(r.mainCardId,pc)===r.winner.symbol;
+  if(!ok){
+    update(roomRef,{[`currentRound/locked/${pid}`]:true,'currentRound/winner':null}).then(()=>{autoAdvancing=false;});
+    return;
+  }
+  const score=(p.score||0)+1;
+  update(roomRef,{status:'roundResult',[`players/${pid}/score`]:score,'game/lastWinner':{name:p.name,playerId:pid,roundNumber:r.roundNumber}});
+  setTimeout(()=>generateNextRound(r.roundNumber+1),1000);
+}
+
+function showGameHost(room){
+  hide('hostLobby'); hide('playerLobby'); hide('finishScreen'); show('gameScreen'); show('hostCard'); hide('playerCard');
+  $('rolePill').textContent='Hlavní karta'; $('roundPill').textContent=`Kolo ${room.currentRound?.roundNumber||'?'} / ${room.currentRound?.total||'?'}`;
+  renderCard($('hostCard'), room.currentRound?.mainCardId, false, room.currentRound);
+  renderScores(room); showWinnerOverlay(room);
+}
+function showGamePlayer(room,me){
+  hide('hostLobby'); hide('playerLobby'); hide('finishScreen'); show('gameScreen'); hide('hostCard'); show('playerCard');
+  const r=room.currentRound; $('rolePill').textContent=me.name; $('roundPill').textContent=`Kolo ${r?.roundNumber||'?'} / ${r?.total||'?'}`;
+  const myCard=r?.playerCards?.[playerId]; const locked=!!r?.locked?.[playerId] || room.status==='roundResult';
+  renderCard($('playerCard'), myCard, !locked, r);
+  $('playerCard').classList.toggle('disabled',locked);
+  $('scorePanel').innerHTML=`<div class="rank">Body: ${me.score||0}</div><div class="small">${locked?'V tomto kole už nemůžeš klikat.':'Najdi společné emoji s hlavním telefonem.'}</div>`;
+  showWinnerOverlay(room);
+}
+function renderCard(el, cardId, clickable, round){
+  el.innerHTML=''; if(cardId===undefined||cardId===null) return;
+  const pos=[[50,18,54],[77,32,42],[78,65,58],[50,82,46],[22,65,52],[23,32,44],[50,50,64],[34,50,38]];
+  shuffle([...CARDS[cardId]]).forEach((sym,i)=>{
+    const b=document.createElement('button'); b.className='symbol'; b.textContent=EMOJIS[sym];
+    b.style.left=pos[i][0]+'%'; b.style.top=pos[i][1]+'%'; b.style.fontSize=pos[i][2]+'px';
+    b.disabled=!clickable;
+    if(clickable) b.onclick=()=>playerClick(sym, b, round);
+    el.appendChild(b);
+  });
+}
+async function playerClick(symbol, btnEl, round){
+  if(role!=='player' || !round || localLockedRound===round.roundNumber) return;
+  const myCard=round.playerCards?.[playerId]; const correct=commonSymbol(round.mainCardId,myCard);
+  localLockedRound=round.roundNumber;
+  if(symbol!==correct){
+    btnEl.classList.add('bad');
+    await update(roomRef,{[`currentRound/locked/${playerId}`]:true});
+    return;
+  }
+  btnEl.classList.add('good');
+  const winnerRef=ref(db,`rooms/${roomCode}/currentRound/winner`);
+  await runTransaction(winnerRef,current=> current ? current : {playerId,name:cleanName($('nameInput').value),symbol,clientTime:Date.now()});
+}
+function renderScores(room){
+  const players=Object.entries(room.players||{}).filter(([_,p])=>p.approved).sort((a,b)=>(b[1].score||0)-(a[1].score||0));
+  $('scorePanel').innerHTML=players.map(([id,p],i)=>`<div class="player"><div><b>${i+1}. ${esc(p.name)}</b></div><div class="score">${p.score||0}</div></div>`).join('') || '<p class="small">Žádní hráči.</p>';
+}
+function showWinnerOverlay(room){
+  if(room.status==='roundResult' && room.game?.lastWinner){ $('centerMsgText').textContent=`🏆 ${room.game.lastWinner.name}`; show('centerMsg'); }
+  else hide('centerMsg');
+}
+function renderFinish(room,me=null){
+  hide('hostLobby'); hide('playerLobby'); hide('gameScreen'); show('finishScreen'); hide('centerMsg');
+  const players=Object.entries(room.players||{}).filter(([_,p])=>p.approved).sort((a,b)=>(b[1].score||0)-(a[1].score||0));
+  if(role==='host'){
+    $('finishScreen').innerHTML=`<h2>Výsledky</h2>${players.map(([id,p],i)=>`<div class="player"><div><b>${i+1}. ${esc(p.name)}</b></div><div class="score">${p.score||0}</div></div>`).join('')}<button class="danger" onclick="location.reload()" style="margin-top:14px">Zavřít</button>`;
+  }else{
+    const place=players.findIndex(([id])=>id===playerId)+1;
+    $('finishScreen').innerHTML=`<div class="confetti">🎉</div><h2>Hotovo</h2><div class="rank">${place}. místo</div><p>Body: <b>${me?.score||0}</b></p><button class="secondary" onclick="location.reload()">Zpět</button>`;
+  }
+  status('Hra skončila.');
+}
+function btn(text,cls='secondary'){ const b=document.createElement('button'); b.textContent=text; b.className=cls; b.style.width='auto'; return b; }
+function esc(s){ return String(s||'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
+function resetUI(msg){ toast(msg); setTimeout(()=>location.reload(),900); }
+
+async function enableWake(){
+  try{ if('wakeLock' in navigator){ wakeLock = await navigator.wakeLock.request('screen'); } }catch(e){}
+  try{
+    const video=$('keepAwakeVideo');
+    if(!video.srcObject){ const canvas=document.createElement('canvas'); canvas.width=1; canvas.height=1; const ctx=canvas.getContext('2d'); ctx.fillRect(0,0,1,1); video.srcObject=canvas.captureStream(1); }
+    await video.play();
+    toast('Obrazovka se bude snažit nezhasínat.');
+  }catch(e){}
+}
+
+async function leaveNow(){
+  try{ if(role==='host' && roomRef) await remove(roomRef); else if(role==='player' && playerRef) await remove(playerRef); }catch(e){}
+}
+window.addEventListener('pagehide', leaveNow);
+document.addEventListener('visibilitychange',()=>{ if(document.hidden) leaveNow(); else if(role) enableWake(); });
+window.addEventListener('beforeunload', leaveNow);
+
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js').catch(()=>{}); }
+</script>
+</body>
+</html>
