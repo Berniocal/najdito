@@ -79,7 +79,7 @@
   <section id="playerLobby" class="card hidden">
     <div class="topbar"><span class="pill">Hráč</span><span class="pill">Místnost <b id="playerRoomCode"></b></span></div>
     <h2 id="waitingTitle">Čekáš na schválení…</h2>
-    <p class="small">Neopouštěj záložku. Když odejdeš ze stránky nebo přepneš aplikaci, automaticky se odpojíš.</p>
+    <p class="small">Během hry nech tuto stránku otevřenou. Na iPhonu se krátké přepnutí nebere jako okamžité odpojení.</p>
   </section>
 
   <section id="gameScreen" class="hidden">
@@ -114,16 +114,39 @@
 <div id="toast" class="toast hidden"></div>
 <video id="keepAwakeVideo" muted loop playsinline></video>
 <script type="module">
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js';
-import { getDatabase, ref, get, set, update, remove, onValue, off, onDisconnect, runTransaction } from 'https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js';
-import { firebaseConfig } from './firebase-config.js';
+let initializeApp, getDatabase, ref, get, set, update, remove, onValue, off, onDisconnect, runTransaction;
+let firebaseConfig, firebaseApp, db;
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+async function ensureFirebase(){
+  if(db) return;
+  const appMod = await import('https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js');
+  const dbMod = await import('https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js');
+  const cfgMod = await import('./firebase-config.js');
+
+  initializeApp = appMod.initializeApp;
+  getDatabase = dbMod.getDatabase;
+  ref = dbMod.ref;
+  get = dbMod.get;
+  set = dbMod.set;
+  update = dbMod.update;
+  remove = dbMod.remove;
+  onValue = dbMod.onValue;
+  off = dbMod.off;
+  onDisconnect = dbMod.onDisconnect;
+  runTransaction = dbMod.runTransaction;
+
+  firebaseConfig = cfgMod.firebaseConfig;
+  firebaseApp = initializeApp(firebaseConfig);
+  db = getDatabase(firebaseApp);
+}
 
 const $ = id => document.getElementById(id);
-const uid = localStorage.getItem('dobble_uid') || crypto.randomUUID();
-localStorage.setItem('dobble_uid', uid);
+function makeUid(){
+  if(window.crypto && crypto.randomUUID) return crypto.randomUUID();
+  return 'u_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2,10);
+}
+const uid = sessionStorage.getItem('dobble_uid') || makeUid();
+sessionStorage.setItem('dobble_uid', uid);
 
 let role = null, roomCode = null, playerId = uid, unsubRoom = null, processedWinnerKey = '', localLockedRound = -1;
 let roomRef = null, playerRef = null, wakeLock = null, autoAdvancing = false;
@@ -310,6 +333,7 @@ function finishOfflineGame(){
 
 async function enterRoom(){
   await enableWake();
+  try{ await ensureFirebase(); }catch(e){ toast('Firebase se nepodařilo načíst. Zkus obnovit stránku.'); return; }
   roomCode=cleanRoom($('roomInput').value);
   if(roomCode.length!==5) return toast('Zadej 5 číslic místnosti.');
   roomRef=ref(db, `rooms/${roomCode}`);
@@ -570,22 +594,26 @@ function esc(s){ return String(s||'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&l
 function resetUI(msg){ toast(msg); setTimeout(()=>location.reload(),900); }
 
 async function enableWake(){
-  try{ if('wakeLock' in navigator){ wakeLock = await navigator.wakeLock.request('screen'); } }catch(e){}
+  try{
+    if('wakeLock' in navigator){
+      wakeLock = await navigator.wakeLock.request('screen');
+    }
+  }catch(e){}
   try{
     const video=$('keepAwakeVideo');
-    if(!video.srcObject){ const canvas=document.createElement('canvas'); canvas.width=1; canvas.height=1; const ctx=canvas.getContext('2d'); ctx.fillRect(0,0,1,1); video.srcObject=canvas.captureStream(1); }
-    await video.play();
-    toast('Obrazovka se bude snažit nezhasínat.');
+    if(video && !video.srcObject && HTMLCanvasElement.prototype.captureStream){
+      const canvas=document.createElement('canvas');
+      canvas.width=1; canvas.height=1;
+      const ctx=canvas.getContext('2d');
+      ctx.fillRect(0,0,1,1);
+      video.srcObject=canvas.captureStream(1);
+      await video.play();
+    }
   }catch(e){}
 }
 
-async function leaveNow(){
-  try{ if(role==='host' && roomRef) await remove(roomRef); else if(role==='player' && playerRef) await remove(playerRef); }catch(e){}
-}
-window.addEventListener('pagehide', leaveNow);
-document.addEventListener('visibilitychange',()=>{ if(document.hidden) leaveNow(); else if(role) enableWake(); });
-window.addEventListener('beforeunload', leaveNow);
-
+async function leaveNow(){ /* iPhone/Safari: automatické mazání při pagehide je vypnuté, používá se Firebase onDisconnect. */ }
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden && role) enableWake(); });
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js').catch(()=>{}); }
 </script>
 </body>
