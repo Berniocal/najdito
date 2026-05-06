@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'dobble-dual-mode-v3';
+const CACHE_VERSION = 'dobble-dual-mode-v4';
 const APP_SHELL = [
   './',
   './index.html',
