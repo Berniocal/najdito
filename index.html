@@ -412,8 +412,8 @@ async function generateNextRound(roundNumber){
   if(roundNumber>total){ await update(roomRef,{status:'finished',currentRound:null}); return; }
   const players=Object.fromEntries(Object.entries(room.players||{}).filter(([_,p])=>p.approved));
   const lastWinnerId = room.game?.lastWinner?.playerId;
-  const lastWinnerCard = lastWinnerId ? room.currentRound?.playerCards?.[lastWinnerId] : undefined;
-  const mainCardId = lastWinnerCard !== undefined ? lastWinnerCard : Math.floor(Math.random()*CARDS.length);
+  const lastWinnerCard = room.game?.lastWinner?.nextMainCardId;
+  const mainCardId = (lastWinnerId && lastWinnerCard !== undefined) ? lastWinnerCard : Math.floor(Math.random()*CARDS.length);
   const playerCards={}, locked={}, newPairs={};
   for(const id of Object.keys(players)){
     const used=room.game?.usedPairs?.[id]||{};
@@ -464,7 +464,8 @@ function handleHostWinner(room){
       'game/lastWinner': {
         name: p.name,
         playerId: pid,
-        roundNumber: r.roundNumber
+        roundNumber: r.roundNumber,
+        nextMainCardId: pc
       }
     });
 
@@ -472,8 +473,34 @@ function handleHostWinner(room){
     return;
   }
 
-  // 2) Špatné kliknutí kartu na hlavním telefonu nikdy neposouvá.
-  // Kolo zůstává stejné, dokud někdo netrefí správný symbol.
+  // 2) Všichni schválení hráči klikli špatně, takže už nikdo nemůže hrát.
+  // Teprve potom se na 1 sekundu ukáže smutná hláška a vybere se náhodná další karta.
+  if(room.status === 'running'){
+    const approvedIds = Object.entries(room.players || {})
+      .filter(([_, p]) => p.approved)
+      .map(([id]) => id);
+
+    const allLocked =
+      approvedIds.length > 0 &&
+      approvedIds.every(id => r.locked?.[id]);
+
+    if(allLocked){
+      autoAdvancing = true;
+
+      update(roomRef,{
+        status: 'roundResult',
+        'game/lastWinner': {
+          name: 'Nikdo se netrefil',
+          playerId: '',
+          roundNumber: r.roundNumber,
+          nextMainCardId: null,
+          missed: true
+        }
+      });
+
+      setTimeout(()=>generateNextRound(r.roundNumber + 1),1000);
+    }
+  }
 }
 function showGameHost(room){
   hide('hostLobby'); hide('playerLobby'); hide('finishScreen'); show('gameScreen'); show('hostCard'); hide('playerCard');
@@ -557,7 +584,10 @@ function renderScores(room){
   $('scorePanel').innerHTML=players.map(([id,p],i)=>`<div class="player"><div><b>${i+1}. ${esc(p.name)}</b></div><div class="score">${p.score||0}</div></div>`).join('') || '<p class="small">Žádní hráči.</p>';
 }
 function showWinnerOverlay(room){
-  if(room.status==='roundResult' && room.game?.lastWinner){ $('centerMsgText').textContent=`🏆 ${room.game.lastWinner.name}`; show('centerMsg'); }
+  if(room.status==='roundResult' && room.game?.lastWinner){
+    $('centerMsgText').textContent=room.game.lastWinner.missed ? `😢 ${room.game.lastWinner.name}` : `🏆 ${room.game.lastWinner.name}`;
+    show('centerMsg');
+  }
   else hide('centerMsg');
 }
 function renderFinish(room,me=null){
