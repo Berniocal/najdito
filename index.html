@@ -23,7 +23,7 @@
     .topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.pill{padding:8px 12px;background:rgba(255,255,255,.08);border:1px solid var(--line);border-radius:999px;font-weight:800;color:var(--muted)}
     .dobble{position:relative;margin:18px auto;width:min(88vw,430px);height:min(88vw,430px);border-radius:50%;background:#f8fafc;color:#111827;box-shadow:inset 0 0 0 8px rgba(15,23,42,.08),0 18px 44px rgba(0,0,0,.34);overflow:hidden;touch-action:manipulation}.dobble.disabled{filter:none;opacity:1}.symbol{position:absolute;transform:translate(-50%,-50%);border:0;background:transparent;box-shadow:none;color:inherit;padding:0;width:auto;line-height:1;display:grid;place-items:center;transition:transform .12s ease,filter .12s ease}.symbol img{width:1em;height:1em;display:block;pointer-events:none;user-select:none}.symbol:active{transform:translate(-50%,-50%) scale(.9)}.symbol.bad{filter:drop-shadow(0 0 10px var(--red))}.symbol.good{filter:drop-shadow(0 0 10px var(--green))}
     .centerMsg{position:fixed;inset:0;display:grid;place-items:center;background:rgba(2,6,23,.35);z-index:50;pointer-events:none}.centerMsg>div{background:rgba(15,23,42,.95);border:1px solid var(--line);padding:20px 28px;border-radius:24px;font-size:clamp(28px,8vw,54px);font-weight:950;text-align:center;box-shadow:var(--shadow)}
-    .players{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-top:12px}.player{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.06)}.player b{font-size:18px}.actions{display:flex;gap:8px}.actions button{padding:9px 10px;border-radius:12px}.score{font-weight:950;color:var(--yellow)}.footer{position:fixed;left:0;right:0;bottom:0;padding:8px 12px calc(8px + env(safe-area-inset-bottom));background:rgba(15,23,42,.82);backdrop-filter:blur(10px);border-top:1px solid var(--line);z-index:20}.footer .inner{max-width:860px;margin:auto;display:flex;gap:10px;align-items:center;justify-content:space-between}.statusText{font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rank{font-size:22px;font-weight:950}.confetti{font-size:42px}.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:#111827;color:white;border:1px solid var(--line);border-radius:999px;padding:10px 16px;font-weight:850;z-index:100;box-shadow:var(--shadow);max-width:90vw;text-align:center}#keepAwakeVideo{position:fixed;left:-20px;top:-20px;width:1px;height:1px;opacity:0;pointer-events:none}.offlineSplit{display:grid;grid-template-rows:1fr 1fr;gap:10px;height:calc(100vh - 150px);min-height:560px}.offlineCard{width:min(78vw,360px);height:min(78vw,360px);margin:8px auto 4px}.offlineLabel{text-align:center;font-weight:850}@media (max-height:760px){.offlineSplit{height:auto;min-height:0}.offlineCard{width:min(68vw,300px);height:min(68vw,300px)}}
+    .players{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-top:12px}.player{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.06)}.player b{font-size:18px}.actions{display:flex;gap:8px}.actions button{padding:9px 10px;border-radius:12px}.score{font-weight:950;color:var(--yellow)}.footer{position:fixed;left:0;right:0;bottom:0;padding:8px 12px calc(8px + env(safe-area-inset-bottom));background:rgba(15,23,42,.82);backdrop-filter:blur(10px);border-top:1px solid var(--line);z-index:20}.footer .inner{max-width:860px;margin:auto;display:flex;gap:10px;align-items:center;justify-content:space-between}.statusText{font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rank{font-size:22px;font-weight:950}.confetti{font-size:42px}.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:#111827;color:white;border:1px solid var(--line);border-radius:999px;padding:10px 16px;font-weight:850;z-index:100;box-shadow:var(--shadow);max-width:90vw;text-align:center}#keepAwakeVideo{position:fixed;left:-20px;top:-20px;width:1px;height:1px;opacity:0;pointer-events:none}.offlineSplit{display:grid;grid-template-rows:1fr 1fr;gap:10px;height:calc(100vh - 150px);min-height:560px}.onlineSplit{display:grid;grid-template-rows:auto 1fr auto 1fr;gap:8px;height:calc(100vh - 150px);min-height:560px}.onlineCard{width:min(78vw,360px);height:min(78vw,360px);margin:6px auto 2px}.offlineCard{width:min(78vw,360px);height:min(78vw,360px);margin:8px auto 4px}.offlineLabel{text-align:center;font-weight:850}@media (max-height:760px){.offlineSplit,.onlineSplit{height:auto;min-height:0}.offlineCard,.onlineCard{width:min(68vw,300px);height:min(68vw,300px)}}
   </style>
 </head>
 <body>
@@ -41,6 +41,12 @@
   </section>
 
   <section id="joinScreen" class="card hidden">
+    <label>Varianta online hry</label>
+    <div class="row" style="margin-top:8px">
+      <button id="onlineClassicBtn">Klasická online</button>
+      <button id="onlineHostPlaysBtn" class="secondary">Online hraje i hlavní</button>
+    </div>
+    <p class="small" id="onlineVariantInfo">Hlavní telefon je jen centrální karta. Hráči mají svou kartu na svém telefonu.</p>
     <label>Číslo místnosti</label>
     <input id="roomInput" inputmode="numeric" maxlength="5" placeholder="58321" />
     <label>Jméno hráče</label>
@@ -84,7 +90,9 @@
 
   <section id="gameScreen" class="hidden">
     <div class="topbar"><span class="pill" id="rolePill"></span><span class="pill" id="roundPill"></span></div>
+    <div id="onlineMainLabel" class="small offlineLabel hidden">Společná karta</div>
     <div id="hostCard" class="dobble hidden"></div>
+    <div id="onlinePlayerLabel" class="small offlineLabel hidden">Tvoje karta</div>
     <div id="playerCard" class="dobble hidden"></div>
     <div id="scorePanel" class="card"></div>
   </section>
@@ -149,6 +157,7 @@ const uid = sessionStorage.getItem('dobble_uid') || makeUid();
 sessionStorage.setItem('dobble_uid', uid);
 
 let role = null, roomCode = null, playerId = uid, unsubRoom = null, processedWinnerKey = '', localLockedRound = -1;
+let onlineVariant = 'classic';
 let roomRef = null, playerRef = null, wakeLock = null, autoAdvancing = false;
 let offlineGame = null, offlineTimer = null;
 
@@ -177,6 +186,16 @@ function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.rando
 function sample(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
 $('onlineModeBtn').onclick=()=>{ hide('modeScreen'); show('joinScreen'); status('Online režim.'); };
+$('onlineClassicBtn').onclick=()=>setOnlineVariant('classic');
+$('onlineHostPlaysBtn').onclick=()=>setOnlineVariant('hostPlays');
+function setOnlineVariant(v){
+  onlineVariant = v;
+  $('onlineClassicBtn').className = v === 'classic' ? '' : 'secondary';
+  $('onlineHostPlaysBtn').className = v === 'hostPlays' ? '' : 'secondary';
+  $('onlineVariantInfo').textContent = v === 'hostPlays'
+    ? 'Hraje i hlavní telefon. Na každém telefonu bude nahoře společná karta a dole vlastní karta hráče.'
+    : 'Hlavní telefon je jen centrální karta. Hráči mají svou kartu na svém telefonu.';
+}
 $('onlineBackBtn').onclick=()=>{ hide('joinScreen'); show('modeScreen'); status('Nepřipojeno'); };
 $('offlineModeBtn').onclick=()=>{ hide('modeScreen'); show('offlineSetup'); status('Offline výzva.'); };
 $('offlineBackBtn').onclick=()=>{ hide('offlineSetup'); show('modeScreen'); status('Nepřipojeno'); };
@@ -340,7 +359,10 @@ async function enterRoom(){
   const snap=await get(roomRef);
   if(!snap.exists()){
     role='host';
-    await set(roomRef,{hostId:uid,status:'lobby',createdAt:Date.now(),settings:{rounds:Number($('roundsInput').value)||20},players:{}});
+    const hostPlays = onlineVariant === 'hostPlays';
+    const hostName = cleanName($('nameInput').value || 'Hlavní');
+    const initialPlayers = hostPlays ? {[playerId]:{name:hostName,approved:true,score:0,joinedAt:Date.now(),hostPlayer:true}} : {};
+    await set(roomRef,{hostId:uid,status:'lobby',createdAt:Date.now(),settings:{rounds:Number($('roundsInput').value)||20,hostPlays},players:initialPlayers});
     onDisconnect(roomRef).remove();
     setupHost();
   }else{
@@ -403,7 +425,7 @@ async function startGame(){
   if(!Object.keys(approved).length) return toast('Nejdřív schval aspoň jednoho hráče.');
   const rounds=Math.max(1,Math.min(100,Number($('roundsInput').value)||20));
   const resets={}; Object.keys(approved).forEach(id=>resets[`players/${id}/score`]=0);
-  await update(roomRef,{status:'running',settings:{rounds},game:{usedPairs:{},lastWinner:null},...resets});
+  await update(roomRef,{status:'running',settings:{rounds,hostPlays:!!room.settings?.hostPlays},game:{usedPairs:{},lastWinner:null},...resets});
   await generateNextRound(1);
 }
 async function generateNextRound(roundNumber){
@@ -503,20 +525,50 @@ function handleHostWinner(room){
   }
 }
 function showGameHost(room){
-  hide('hostLobby'); hide('playerLobby'); hide('finishScreen'); show('gameScreen'); show('hostCard'); hide('playerCard');
-  $('rolePill').textContent='Hlavní karta'; $('roundPill').textContent=`Kolo ${room.currentRound?.roundNumber||'?'} / ${room.currentRound?.total||'?'}`;
-  renderCard($('hostCard'), room.currentRound?.mainCardId, false, room.currentRound);
-  $('scorePanel').innerHTML='';
-  hide('scorePanel');
+  hide('hostLobby'); hide('playerLobby'); hide('finishScreen'); show('gameScreen');
+  const hostPlays = !!room.settings?.hostPlays;
+  const r = room.currentRound;
+  $('rolePill').textContent = hostPlays ? (room.players?.[playerId]?.name || 'Hlavní') : 'Hlavní karta';
+  $('roundPill').textContent=`Kolo ${r?.roundNumber||'?'} / ${r?.total||'?'}`;
+  if(hostPlays){
+    $('gameScreen').classList.add('onlineSplit');
+    show('onlineMainLabel'); show('onlinePlayerLabel'); show('hostCard'); show('playerCard'); show('scorePanel');
+    $('hostCard').classList.add('onlineCard'); $('playerCard').classList.add('onlineCard');
+    renderCard($('hostCard'), r?.mainCardId, false, r);
+    const myCard = r?.playerCards?.[playerId];
+    const locked = !!r?.locked?.[playerId] || room.status === 'roundResult';
+    renderCard($('playerCard'), myCard, !locked, r);
+    $('playerCard').classList.toggle('disabled',locked);
+    const me = room.players?.[playerId] || {};
+    $('scorePanel').innerHTML=`<div class="rank">Body: ${me.score||0}</div><div class="small">${locked?'V tomto kole už nemůžeš klikat.':'Najdi společné emoji se společnou kartou.'}</div>`;
+  }else{
+    $('gameScreen').classList.remove('onlineSplit');
+    hide('onlineMainLabel'); hide('onlinePlayerLabel'); show('hostCard'); hide('playerCard');
+    $('hostCard').classList.remove('onlineCard'); $('playerCard').classList.remove('onlineCard');
+    renderCard($('hostCard'), r?.mainCardId, false, r);
+    $('scorePanel').innerHTML='';
+    hide('scorePanel');
+  }
   showWinnerOverlay(room);
 }
 function showGamePlayer(room,me){
-  hide('hostLobby'); hide('playerLobby'); hide('finishScreen'); show('gameScreen'); hide('hostCard'); show('playerCard'); show('scorePanel');
-  const r=room.currentRound; $('rolePill').textContent=me.name; $('roundPill').textContent=`Kolo ${r?.roundNumber||'?'} / ${r?.total||'?'}`;
+  hide('hostLobby'); hide('playerLobby'); hide('finishScreen'); show('gameScreen'); show('scorePanel');
+  const r=room.currentRound; const hostPlays = !!room.settings?.hostPlays;
+  $('rolePill').textContent=me.name; $('roundPill').textContent=`Kolo ${r?.roundNumber||'?'} / ${r?.total||'?'}`;
   const myCard=r?.playerCards?.[playerId]; const locked=!!r?.locked?.[playerId] || room.status==='roundResult';
+  if(hostPlays){
+    $('gameScreen').classList.add('onlineSplit');
+    show('onlineMainLabel'); show('onlinePlayerLabel'); show('hostCard'); show('playerCard');
+    $('hostCard').classList.add('onlineCard'); $('playerCard').classList.add('onlineCard');
+    renderCard($('hostCard'), r?.mainCardId, false, r);
+  }else{
+    $('gameScreen').classList.remove('onlineSplit');
+    hide('onlineMainLabel'); hide('onlinePlayerLabel'); hide('hostCard'); show('playerCard');
+    $('hostCard').classList.remove('onlineCard'); $('playerCard').classList.remove('onlineCard');
+  }
   renderCard($('playerCard'), myCard, !locked, r);
   $('playerCard').classList.toggle('disabled',locked);
-  $('scorePanel').innerHTML=`<div class="rank">Body: ${me.score||0}</div><div class="small">${locked?'V tomto kole už nemůžeš klikat.':'Najdi společné emoji s hlavním telefonem.'}</div>`;
+  $('scorePanel').innerHTML=`<div class="rank">Body: ${me.score||0}</div><div class="small">${locked?'V tomto kole už nemůžeš klikat.':'Najdi společné emoji se společnou kartou.'}</div>`;
   showWinnerOverlay(room);
 }
 function getPositions(count){
@@ -567,7 +619,7 @@ function renderCard(el, cardId, clickable, round){
   });
 }
 async function playerClick(symbol, btnEl, round){
-  if(role!=='player' || !round || localLockedRound===round.roundNumber) return;
+  if((role!=='player' && role!=='host') || !round || localLockedRound===round.roundNumber) return;
   const myCard=round.playerCards?.[playerId]; const correct=commonSymbol(round.mainCardId,myCard);
   localLockedRound=round.roundNumber;
   if(symbol!==correct){
