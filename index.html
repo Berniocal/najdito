@@ -184,6 +184,22 @@ function cleanRoom(v){ return (v||'').replace(/\D/g,'').slice(0,5); }
 function cleanName(v){ return (v||'').trim().slice(0,18) || 'Hráč'; }
 function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
 function sample(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function hashSeed(text){
+  let h = 2166136261;
+  for(let i=0;i<String(text).length;i++){
+    h ^= String(text).charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+function stableShuffle(a, seedText){
+  const rng = mulberry32(hashSeed(seedText));
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(rng()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
 
 $('onlineModeBtn').onclick=()=>{ hide('modeScreen'); show('joinScreen'); status('Online režim.'); };
 $('onlineClassicBtn').onclick=()=>setOnlineVariant('classic');
@@ -278,7 +294,7 @@ function renderOfflineRound(){
 function renderOfflineMainCard(el, cardId){
   el.innerHTML='';
   const pos=getPositions(CARDS[cardId].length);
-  shuffle([...CARDS[cardId]]).forEach((sym,i)=>{
+  stableShuffle([...CARDS[cardId]], `card-${cardId}`).forEach((sym,i)=>{
     const b=document.createElement('button');
     b.className='symbol';
     b.style.left=pos[i][0]+'%';
@@ -299,7 +315,7 @@ function renderOfflinePlayerCard(el, round){
   el.innerHTML='';
   const cardId = round.playerCardId;
   const pos=getPositions(CARDS[cardId].length);
-  shuffle([...CARDS[cardId]]).forEach((sym,i)=>{
+  stableShuffle([...CARDS[cardId]], `card-${cardId}`).forEach((sym,i)=>{
     const b=document.createElement('button');
     b.className='symbol';
     b.style.left=pos[i][0]+'%';
@@ -594,12 +610,20 @@ function getPositions(count){
 }
 
 function renderCard(el, cardId, clickable, round){
+  if(cardId===undefined||cardId===null){ el.innerHTML=''; delete el.dataset.staticCardKey; return; }
+
+  // Nehratelná společná karta se při stejném kole znovu nepřekresluje.
+  // Díky tomu se po špatném kliknutí hráče nerozhází rozložení symbolů.
+  const staticCardKey = `static-${round?.roundNumber || 0}-${cardId}`;
+  if(!clickable && el.dataset.staticCardKey === staticCardKey && el.children.length) return;
+
   el.innerHTML='';
-  if(cardId===undefined||cardId===null) return;
+  if(!clickable) el.dataset.staticCardKey = staticCardKey;
+  else delete el.dataset.staticCardKey;
 
   const pos=getPositions(CARDS[cardId].length);
 
-  shuffle([...CARDS[cardId]]).forEach((sym,i)=>{
+  stableShuffle([...CARDS[cardId]], `card-${cardId}`).forEach((sym,i)=>{
     const b=document.createElement('button');
     b.className='symbol';
     b.style.left=pos[i][0]+'%';
