@@ -182,6 +182,7 @@ async function ensureFirebase(){
   firebaseConfig = cfgMod.firebaseConfig;
   firebaseApp = initializeApp(firebaseConfig);
   db = getDatabase(firebaseApp);
+  startServerTimeSync();
 }
 
 const $ = id => document.getElementById(id);
@@ -196,7 +197,8 @@ let role = null, roomCode = null, playerId = uid, unsubRoom = null, processedWin
 let onlineVariant = 'classic';
 let onlineSoloGame = null;
 let roomRef = null, playerRef = null, wakeLock = null, autoAdvancing = false;
-let offlineGame = null, offlineTimer = null, kahootTimerKey = '', challengeTimerKey = '', liveUiTimer = null, latestRoom = null; 
+let offlineGame = null, offlineTimer = null, kahootTimerKey = '', challengeTimerKey = '', liveUiTimer = null, latestRoom = null;
+let serverTimeOffset = 0, serverTimeOffsetStarted = false; 
 
 const EMOJIS = ["😀", "😎", "🥳", "🤖", "👻", "🐶", "🐱", "🦊", "🐼", "🐸", "🦁", "🐵", "🐧", "🦄", "🐝", "🦋", "🐙", "🦖", "🐢", "🐬", "🌵", "🌈", "⭐", "🔥", "⚡", "❄️", "💧", "🍎", "🍋", "🍕", "🍔", "🍟", "🍩", "🍪", "⚽", "🏀", "🎾", "🎲", "🎯", "🎸", "🚗", "🚀", "✈️", "🚲", "⛵", "🏠", "⛺", "🎁", "💎", "🔑", "🧲", "🔔", "📚", "✏️", "❤️", "☂️", "👑"];
 const SYMBOL_FILES = ["symbols/e00.png", "symbols/e01.png", "symbols/e02.png", "symbols/e03.png", "symbols/e04.png", "symbols/e05.png", "symbols/e06.png", "symbols/e07.png", "symbols/e08.png", "symbols/e09.png", "symbols/e10.png", "symbols/e11.png", "symbols/e12.png", "symbols/e13.png", "symbols/e14.png", "symbols/e15.png", "symbols/e16.png", "symbols/e17.png", "symbols/e18.png", "symbols/e19.png", "symbols/e20.png", "symbols/e21.png", "symbols/e22.png", "symbols/e23.png", "symbols/e24.png", "symbols/e25.png", "symbols/e26.png", "symbols/e27.png", "symbols/e28.png", "symbols/e29.png", "symbols/e30.png", "symbols/e31.png", "symbols/e32.png", "symbols/e33.png", "symbols/e34.png", "symbols/e35.png", "symbols/e36.png", "symbols/e37.png", "symbols/e38.png", "symbols/e39.png", "symbols/e40.png", "symbols/e41.png", "symbols/e42.png", "symbols/e43.png", "symbols/e44.png", "symbols/e45.png", "symbols/e46.png", "symbols/e47.png", "symbols/e48.png", "symbols/e49.png", "symbols/e50.png", "symbols/e51.png", "symbols/e52.png", "symbols/e53.png", "symbols/e54.png", "symbols/e55.png", "symbols/e56.png"];
@@ -494,11 +496,26 @@ function setupPlayer(){ show('playerLobby'); $('playerRoomCode').textContent=roo
 
 
 
+
+function nowMs(){
+  return Date.now() + serverTimeOffset;
+}
+function startServerTimeSync(){
+  if(serverTimeOffsetStarted || !db || !ref || !onValue) return;
+  serverTimeOffsetStarted = true;
+  try{
+    onValue(ref(db,'.info/serverTimeOffset'), snap=>{
+      const v=snap.val();
+      if(typeof v==='number') serverTimeOffset=v;
+    });
+  }catch(e){}
+}
+
 function updateFreezeOverlay(until){
   const overlay=$('freezeOverlay');
   const num=$('freezeNumber');
   if(!overlay || !num) return;
-  const left=Math.max(0, Math.ceil(((until||0)-Date.now())/1000));
+  const left=Math.max(0, Math.ceil(((until||0)-nowMs())/1000));
   if(left>0){
     num.textContent=left;
     overlay.classList.remove('hidden');
@@ -511,7 +528,7 @@ function hideFreezeOverlay(){
   if(overlay) overlay.classList.add('hidden');
 }
 function wholeLeftSeconds(until){
-  return Math.max(0, Math.ceil(((until||0)-Date.now())/1000));
+  return Math.max(0, Math.ceil(((until||0)-nowMs())/1000));
 }
 
 function ensureLiveUiTicker(){
@@ -608,6 +625,7 @@ async function startGame(){
   const gameType=$('gameTypeSelect')?.value || 'classic';
   const family=room.settings?.family || (room.settings?.soloChallenge?'all':'main');
   const hostPlays = family === 'all';
+  const serverNow=nowMs();
   const resets={};
   Object.keys(approved).forEach(id=>{
     resets[`players/${id}/score`]=0;
@@ -628,10 +646,10 @@ async function startGame(){
     await update(roomRef,{status:'kahootRunning',settings,game:{usedPairs:{},lastWinner:null},...resets});
     await generateKahootRound(1);
   }else if(gameType==='onecard'){
-    await update(roomRef,{status:'challengeRunning',settings,game:{mode:'onecard',startedAt:Date.now(),endsAt:Date.now()+timeLimit*1000,mainCardId:Math.floor(Math.random()*CARDS.length),playerCards:{},clicks:{}},...resets});
+    await update(roomRef,{status:'challengeRunning',settings,game:{mode:'onecard',startedAt:serverNow,endsAt:serverNow+timeLimit*1000,mainCardId:Math.floor(Math.random()*CARDS.length),playerCards:{},clicks:{}},...resets});
     await initChallengeCards('onecard');
   }else if(gameType==='timeattack' || gameType==='deck'){
-    await update(roomRef,{status:'challengeRunning',settings,game:{mode:gameType,challengeSeed:String(Math.floor(1000000+Math.random()*9000000)),startedAt:Date.now(),endsAt:gameType==='timeattack'?Date.now()+timeLimit*1000:null},...resets});
+    await update(roomRef,{status:'challengeRunning',settings,game:{mode:gameType,challengeSeed:String(Math.floor(1000000+Math.random()*9000000)),startedAt:serverNow,endsAt:gameType==='timeattack'?serverNow+timeLimit*1000:null},...resets});
   }
 }
 async function generateNextRound(roundNumber){
@@ -670,7 +688,7 @@ async function generateNextRound(roundNumber){
     playerCards[id]=playerCardId; locked[id]=false; newPairs[`game/usedPairs/${id}/${mainCardId}-${playerCardId}`]=true;
   }
   processedWinnerKey=''; autoAdvancing=false; localLockedRound=-1;
-  await update(roomRef,{...newPairs,status:'running',currentRound:{roundNumber,total,mainCardId,playerCards,locked,winner:null,startedAt:Date.now()}});
+  await update(roomRef,{...newPairs,status:'running',currentRound:{roundNumber,total,mainCardId,playerCards,locked,winner:null,startedAt:nowMs()}});
 }
 function handleHostWinner(room){
   const r = room.currentRound;
@@ -956,7 +974,7 @@ async function generateKahootRound(roundNumber){
     const candidates=CARDS.map((_,i)=>i).filter(i=>i!==mainCardId);
     playerCards[id]=sample(candidates); locked[id]=false;
   }
-  const now=Date.now();
+  const now=nowMs();
   const roundDurationSec=Math.max(5, Math.min(180, Number(room.settings?.timeLimit)||10));
   processedWinnerKey=''; autoAdvancing=false; localLockedRound=-1; kahootTimerKey='';
   await update(roomRef,{status:'kahootRunning',currentRound:{roundNumber,total,mainCardId,playerCards,locked,responses:{},startedAt:now,roundDurationSec,endsAt:now+roundDurationSec*1000}});
@@ -972,7 +990,7 @@ function handleKahootHost(room){
     return;
   }
 
-  if(Date.now()>=r.endsAt){
+  if(nowMs()>=r.endsAt){
     finishKahootRound(room);
     return;
   }
@@ -984,7 +1002,7 @@ function handleKahootHost(room){
       const snap=await get(roomRef);
       const fresh=snap.val();
       if(fresh?.status==='kahootRunning') finishKahootRound(fresh);
-    }, Math.max(100,r.endsAt-Date.now()+80));
+    }, Math.max(100,r.endsAt-nowMs()+80));
   }
 }
 
@@ -1097,7 +1115,7 @@ async function kahootClick(symbol, btnEl, round){
   const correct=commonSymbol(round.mainCardId,myCard)===symbol;
   btnEl.classList.add(correct?'good':'bad');
 
-  const timeMs=Math.max(0,Date.now()-round.startedAt);
+  const timeMs=Math.max(0,nowMs()-round.startedAt);
   const timeLimitMs=(latestRoom?.settings?.timeLimit || 10) * 1000;
   const streakAfter=correct ? ((latestRoom?.players?.[playerId]?.streak || 0) + 1) : 0;
   const points=calcKahootPoints(timeMs, timeLimitMs, streakAfter, correct);
@@ -1109,7 +1127,6 @@ async function kahootClick(symbol, btnEl, round){
     [`currentRound/locked/${playerId}`]:true
   });
 
-  // Když odpoví všichni, host ukončí kolo hned při dalším živém tiknutí / Firebase updatu.
   if(role==='host'){
     const snap=await get(roomRef);
     const fresh=snap.val();
@@ -1121,7 +1138,7 @@ function renderKahootPanel(room, hostControls=false){
   const responses=r?.responses||{};
   const ranking=getRanking(room);
   const maxSec=Number(r?.roundDurationSec || room.settings?.timeLimit || 10);
-  const rawLeft=r?.endsAt ? Math.max(0, Math.floor((r.endsAt-Date.now())/1000)) : 0;
+  const rawLeft=r?.endsAt ? Math.max(0, Math.floor((r.endsAt-nowMs())/1000)) : 0;
   const leftSec=Math.min(maxSec, rawLeft);
   const meIndex=ranking.findIndex(([id])=>id===playerId);
   const meRow=meIndex>=0 ? ranking[meIndex] : null;
@@ -1196,9 +1213,16 @@ function handleChallengeHost(room){
   const mode=room.settings?.gameType;
   if(mode==='onecard' || mode==='timeattack'){
     const endsAt=room.game?.endsAt; if(!endsAt) return;
-    if(Date.now()>=endsAt){ update(roomRef,{status:'challengeResult'}); return; }
+    if(nowMs()>=endsAt){ update(roomRef,{status:'challengeResult'}); return; }
     const key=`${mode}-${endsAt}`;
-    if(challengeTimerKey!==key){ challengeTimerKey=key; setTimeout(async()=>{ const snap=await get(roomRef); const fresh=snap.val(); if(fresh?.status==='challengeRunning') update(roomRef,{status:'challengeResult'}); }, Math.max(100,endsAt-Date.now()+80)); }
+    if(challengeTimerKey!==key){
+      challengeTimerKey=key;
+      setTimeout(async()=>{
+        const snap=await get(roomRef);
+        const fresh=snap.val();
+        if(fresh?.status==='challengeRunning') update(roomRef,{status:'challengeResult'});
+      }, Math.max(100,endsAt-nowMs()+80));
+    }
   }else if(mode==='deck'){
     const approved=Object.entries(room.players||{}).filter(([_,p])=>p.approved);
     if(approved.length && approved.every(([_,p])=>p.soloFinished)) update(roomRef,{status:'challengeResult'});
@@ -1206,13 +1230,17 @@ function handleChallengeHost(room){
 }
 function showChallengePlayer(room,me){
   const mode=room.settings?.gameType;
+  if(room.status==='challengeResult'){
+    renderFinish(room, me);
+    return;
+  }
   if(mode==='timeattack' || mode==='deck') return showSoloSpeedMode(room,me,mode);
   hide('hostLobby'); hide('playerLobby'); hide('finishScreen'); hide('centerMsg'); show('gameScreen'); show('scorePanel');
   const hostPlays=!!room.settings?.hostPlays;
   $('rolePill').textContent=me?.name||'Hráč'; $('roundPill').textContent='Jedna karta';
   if(hostPlays){ $('gameScreen').classList.add('onlineSplit'); show('onlineMainLabel'); show('onlinePlayerLabel'); show('hostCard'); show('playerCard'); $('hostCard').classList.add('onlineCard'); $('playerCard').classList.add('onlineCard'); renderCard($('hostCard'), room.game?.mainCardId, false, {roundNumber:1}); }
   else{ $('gameScreen').classList.remove('onlineSplit'); hide('onlineMainLabel'); hide('onlinePlayerLabel'); hide('hostCard'); show('playerCard'); }
-  const frozen=(me?.frozenUntil||0)>Date.now();
+  const frozen=(me?.frozenUntil||0)>nowMs();
   updateFreezeOverlay(me?.frozenUntil);
   renderChallengeClickCard($('playerCard'), room, !frozen && room.status==='challengeRunning');
   $('playerCard').classList.toggle('frozen',frozen);
@@ -1243,7 +1271,7 @@ async function challengeOneCardClick(symbol, btnEl, room){
   }else{
     btnEl.classList.add('bad');
     updates[`players/${playerId}/streak`]=0;
-    updates[`players/${playerId}/frozenUntil`]=Date.now()+5000;
+    updates[`players/${playerId}/frozenUntil`]=nowMs()+5000;
   }
   await update(roomRef,updates);
 }
@@ -1265,16 +1293,20 @@ function ensureSoloSpeedGame(room,mode){
   onlineSoloGame={mode,seed,rounds,current:0,score:0,streak:0,startTime:performance.now(),endTime:null,finishedSent:false,frozenUntil:0,data:makeOfflineRounds(String(hashSeed(seed)).slice(0,7).padStart(7,'1'), Math.min(rounds,100))};
 }
 function showSoloSpeedMode(room,me,mode){
+  if(room.status==='challengeResult'){
+    renderFinish(room, me);
+    return;
+  }
   hide('hostLobby'); hide('playerLobby'); hide('finishScreen'); hide('centerMsg'); show('gameScreen'); show('scorePanel');
   $('gameScreen').classList.add('onlineSplit'); show('onlineMainLabel'); show('onlinePlayerLabel'); show('hostCard'); show('playerCard'); $('hostCard').classList.add('onlineCard'); $('playerCard').classList.add('onlineCard');
   $('rolePill').textContent=me?.name||'Hráč'; ensureSoloSpeedGame(room,mode);
-  const game=onlineSoloGame; const ended = mode==='timeattack' ? Date.now()>room.game.endsAt : game.current>=game.rounds;
+  const game=onlineSoloGame; const ended = mode==='timeattack' ? nowMs()>room.game.endsAt : game.current>=game.rounds;
   if(ended && !game.finishedSent) finishSoloSpeedMode(room,game);
   const r=game.data[game.current % game.data.length];
   $('roundPill').textContent = mode==='deck' ? `Karta ${Math.min(game.current+1,game.rounds)} / ${game.rounds}` : `Body ${game.score}`;
   renderCard($('hostCard'), r?.mainCardId, false, r);
-  renderSoloSpeedPlayerCard($('playerCard'), r, !ended && Date.now()>=game.frozenUntil);
-  $('playerCard').classList.toggle('frozen',Date.now()<game.frozenUntil);
+  renderSoloSpeedPlayerCard($('playerCard'), r, !ended && nowMs()>=game.frozenUntil);
+  $('playerCard').classList.toggle('frozen',nowMs()<game.frozenUntil);
   renderSoloSpeedPanel(room,me,game,mode);
 }
 function renderSoloSpeedPlayerCard(el, round, clickable){
@@ -1288,11 +1320,11 @@ function renderSoloSpeedPlayerCard(el, round, clickable){
   });
 }
 async function soloSpeedClick(symbol, btnEl, round){
-  const game=onlineSoloGame; if(!game || Date.now()<game.frozenUntil) return;
+  const game=onlineSoloGame; if(!game || nowMs()<game.frozenUntil) return;
   const correct=commonSymbol(round.mainCardId,round.playerCardId)===symbol;
   if(correct){
     btnEl.classList.add('good'); game.streak++; const bonus=game.streak>=3?Math.min(5,game.streak-2):0; game.score+=1+bonus; game.current++;
-  }else{ btnEl.classList.add('bad'); game.streak=0; game.frozenUntil=Date.now()+5000; }
+  }else{ btnEl.classList.add('bad'); game.streak=0; game.frozenUntil=nowMs()+5000; }
   await update(ref(db,`rooms/${roomCode}/players/${playerId}`),{score:game.score,streak:game.streak,frozenUntil:game.frozenUntil});
   setTimeout(async()=>{ const snap=await get(roomRef); const room=snap.val(); if(room) showSoloSpeedMode(room,room.players?.[playerId]||{},room.settings?.gameType); },180);
 }
