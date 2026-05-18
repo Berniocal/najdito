@@ -497,18 +497,21 @@ function ensureLiveUiTicker(){
   liveUiTimer = setInterval(()=>{
     if(!latestRoom || !role) return;
     const s = latestRoom.status;
-    const ticking =
-      s === 'kahootRunning' ||
-      s === 'challengeRunning' ||
-      s === 'challengeResult' ||
-      s === 'kahootResult';
-    if(!ticking) return;
 
-    // Živé odpočty pro Kahoot a pro 5s stopku po špatném kliknutí.
-    // Nekreslí lobby ani klasiku, aby se zbytečně nepřepisovala běžná hra.
-    if(role === 'host') renderHost(latestRoom);
-    else renderPlayer(latestRoom);
-  }, 200);
+    if(s === 'kahootRunning' || s === 'kahootResult'){
+      // U Kahootu nepřekreslujeme karty, jen textový panel s celými sekundami.
+      // Tím se zmenší zpoždění dotyku na mobilu.
+      renderKahootPanel(latestRoom, role === 'host');
+      if(role === 'host') handleKahootHost(latestRoom);
+      return;
+    }
+
+    if(s === 'challengeRunning' || s === 'challengeResult'){
+      // Časovka / jedna karta potřebuje překreslit stopku 5 s.
+      if(role === 'host') renderHost(latestRoom);
+      else renderPlayer(latestRoom);
+    }
+  }, 1000);
 }
 
 
@@ -918,14 +921,54 @@ function handleKahootHost(room){
   const r=room.currentRound; if(!r || room.status!=='kahootRunning') return;
   const approvedIds=Object.entries(room.players||{}).filter(([_,p])=>p.approved).map(([id])=>id);
   const responses=r.responses||{};
-  const allDone=approvedIds.length && approvedIds.every(id=>responses[id]);
-  if(allDone || Date.now()>=r.endsAt){ finishKahootRound(room); return; }
+  const allDone=approvedIds.length > 0 && approvedIds.every(id=>!!responses[id]);
+
+  if(allDone){
+    finishKahootRound(room);
+    return;
+  }
+
+  if(Date.now()>=r.endsAt){
+    finishKahootRound(room);
+    return;
+  }
+
   const key=`${r.roundNumber}-${r.endsAt}`;
   if(kahootTimerKey!==key){
     kahootTimerKey=key;
-    setTimeout(async()=>{ const snap=await get(roomRef); const fresh=snap.val(); if(fresh?.status==='kahootRunning') finishKahootRound(fresh); }, Math.max(100,r.endsAt-Date.now()+80));
+    setTimeout(async()=>{
+      const snap=await get(roomRef);
+      const fresh=snap.val();
+      if(fresh?.status==='kahootRunning') finishKahootRound(fresh);
+    }, Math.max(100,r.endsAt-Date.now()+80));
   }
 }
+
+function calcKahootPoints(timeMs, timeLimitMs, streakAfter, correct){
+  if(!correct) return 0;
+  const safeLimit=Math.max(1000, timeLimitMs || 10000);
+  const speed=Math.max(0, 1 - (timeMs / safeLimit));
+  let pts=Math.round(350 + 650 * speed);
+  if(streakAfter>=3) pts += Math.min(500, (streakAfter-2)*100);
+  return pts;
+}
+
+function renderKahootInstantAnswer(correct, points){
+  hide('onlineMainLabel'); hide('onlinePlayerLabel'); hide('hostCard'); hide('playerCard');
+  $('gameScreen').classList.remove('onlineSplit');
+  show('scorePanel');
+  $('scorePanel').innerHTML = `
+    <div class="rank">${correct ? '✅ Správně' : '❌ Vedle'}</div>
+    <p class="small">Tvoje odpověď: <b>+${points || 0} bodů</b></p>
+    <p class="small">Čekej na konec kola.</p>
+  `;
+}
+
+function formatWholeSeconds(ms){
+  return Math.max(0, Math.ceil(ms / 1000));
+}
+
+
 async function finishKahootRound(room){
   const r=room.currentRound; if(!r || room.status!=='kahootRunning') return;
   const responses=r.responses||{}; const updates={status:'kahootResult'};
@@ -935,10 +978,8 @@ async function finishKahootRound(room){
   Object.entries(room.players||{}).filter(([_,p])=>p.approved).forEach(([id,p])=>{
     const res=byId[id];
     if(res){
-      const speed=Math.max(0, 1 - (res.timeMs/timeLimit));
-      let pts=Math.round(350 + 650*speed);
       const streak=(p.streak||0)+1;
-      if(streak>=3) pts += Math.min(500, (streak-2)*100);
+      const pts=Number.isFinite(res.points) ? res.points : calcKahootPoints(res.timeMs, timeLimit, streak, true);
       updates[`players/${id}/score`]=(p.score||0)+pts;
       updates[`players/${id}/streak`]=streak;
       updates[`currentRound/responses/${id}/points`]=pts;
@@ -972,6 +1013,12 @@ function showKahootPlayer(room,me){
     return;
   }
 
+  const myResponse=r?.responses?.[playerId];
+  if(myResponse){
+    renderKahootInstantAnswer(!!myResponse.correct, myResponse.points || 0);
+    return;
+  }
+
   if(hostPlays){
     $('gameScreen').classList.add('onlineSplit');
     show('onlineMainLabel'); show('onlinePlayerLabel'); show('hostCard'); show('playerCard');
@@ -983,9 +1030,8 @@ function showKahootPlayer(room,me){
     $('hostCard').classList.remove('onlineCard'); $('playerCard').classList.remove('onlineCard');
   }
 
-  const responded=!!r?.responses?.[playerId];
-  renderKahootPlayerCard($('playerCard'), r, !responded && room.status==='kahootRunning');
-  $('playerCard').classList.toggle('disabled',responded);
+  renderKahootPlayerCard($('playerCard'), r, room.status==='kahootRunning');
+  $('playerCard').classList.remove('disabled');
   renderKahootPanel(room, role==='host');
 }
 function renderKahootPlayerCard(el, round, clickable){
@@ -1002,17 +1048,34 @@ function renderKahootPlayerCard(el, round, clickable){
 async function kahootClick(symbol, btnEl, round){
   if(!round || localLockedRound===round.roundNumber || roomCode==null) return;
   localLockedRound=round.roundNumber;
-  const myCard=round.playerCards?.[playerId]; const correct=commonSymbol(round.mainCardId,myCard)===symbol;
+  const myCard=round.playerCards?.[playerId];
+  const correct=commonSymbol(round.mainCardId,myCard)===symbol;
   btnEl.classList.add(correct?'good':'bad');
+
   const timeMs=Math.max(0,Date.now()-round.startedAt);
-  await update(roomRef,{[`currentRound/responses/${playerId}`]:{correct,symbol,timeMs,points:0},[`currentRound/locked/${playerId}`]:true});
+  const timeLimitMs=(latestRoom?.settings?.timeLimit || 10) * 1000;
+  const streakAfter=correct ? ((latestRoom?.players?.[playerId]?.streak || 0) + 1) : 0;
+  const points=calcKahootPoints(timeMs, timeLimitMs, streakAfter, correct);
+
+  renderKahootInstantAnswer(correct, points);
+
+  await update(roomRef,{
+    [`currentRound/responses/${playerId}`]:{correct,symbol,timeMs,points},
+    [`currentRound/locked/${playerId}`]:true
+  });
+
+  // Když odpoví všichni, host ukončí kolo hned při dalším živém tiknutí / Firebase updatu.
+  if(role==='host'){
+    const snap=await get(roomRef);
+    const fresh=snap.val();
+    if(fresh?.status==='kahootRunning') handleKahootHost(fresh);
+  }
 }
 function renderKahootPanel(room, hostControls=false){
   const r=room.currentRound;
   const responses=r?.responses||{};
   const ranking=getRanking(room);
-  const left=r?.endsAt?Math.max(0,(r.endsAt-Date.now())/1000):0;
-  const limit=room.settings?.timeLimit||10;
+  const leftSec=r?.endsAt ? formatWholeSeconds(r.endsAt-Date.now()) : 0;
   const meIndex=ranking.findIndex(([id])=>id===playerId);
   const meRow=meIndex>=0 ? ranking[meIndex] : null;
   const gap=meIndex>0 ? Math.max(0,(ranking[meIndex-1][1].score||0)-(ranking[meIndex][1].score||0)) : 0;
@@ -1021,12 +1084,15 @@ function renderKahootPanel(room, hostControls=false){
 
   if(room.status==='kahootRunning'){
     const answered=!!responses[playerId];
-    let html=`<div class="rank">Zbývá ${left.toFixed(1)} s</div>
-      <div class="timerBar"><div style="width:${Math.max(0,Math.min(100,100*left/limit))}%"></div></div>`;
-    if(role!=='host' || room.settings?.hostPlays){
-      html += `<p class="small">${answered?'Odpověď odeslána. Čekej na výsledky kola.':'Najdi společný symbol.'}</p>`;
+    if(answered && (role!=='host' || room.settings?.hostPlays)){
+      $('scorePanel').innerHTML = `
+        <div class="rank">${responses[playerId].correct ? '✅ Správně' : '❌ Vedle'}</div>
+        <p class="small">Tvoje odpověď: <b>+${myPts} bodů</b></p>
+        <p class="small">Čekej na konec kola. Zbývá ${leftSec} s.</p>
+      `;
+      return;
     }
-    $('scorePanel').innerHTML=html;
+    $('scorePanel').innerHTML=`<div class="rank">Zbývá ${leftSec} s</div><p class="small">Najdi společný symbol.</p>`;
     return;
   }
 
