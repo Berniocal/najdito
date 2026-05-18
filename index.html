@@ -19,6 +19,8 @@
     .app{max-width:860px;margin:0 auto}.card{background:color-mix(in srgb,var(--panel) 92%,transparent);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:18px;backdrop-filter:blur(12px)}
     h1{font-size:clamp(32px,8vw,58px);line-height:1;margin:8px 0 6px;text-align:center}.sub{text-align:center;color:var(--muted);margin:0 0 18px}.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1}.hidden{display:none!important}
     label{font-size:13px;color:var(--muted);font-weight:700;display:block;margin:10px 0 6px}input,button,select{width:100%;border:1px solid var(--line);border-radius:16px;padding:14px 15px;font:inherit;color:var(--text);background:rgba(255,255,255,.08)}
+    select option{background:#1f2a44;color:#f8fafc;}
+    .hostEndBtn{width:auto!important;padding:10px 12px!important;border-radius:14px!important;white-space:nowrap;}
     input{text-align:center;font-size:22px;font-weight:850;letter-spacing:.08em}input.name{font-size:18px;letter-spacing:0;text-align:left}button{font-weight:850;cursor:pointer;background:linear-gradient(135deg,#16a34a,#22c55e);border:0;color:#052e16;box-shadow:0 10px 28px rgba(34,197,94,.2)}button.secondary{background:rgba(255,255,255,.09);color:var(--text);box-shadow:none;border:1px solid var(--line)}button.danger{background:linear-gradient(135deg,#dc2626,#fb7185);color:#fff}button:disabled{cursor:not-allowed}.small{font-size:13px;color:var(--muted)}
     .hostSettings{margin:12px 0;padding:12px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.045)}.hostSettings select,.hostSettings input[type="range"]{width:100%}.hostSettings .hint{margin-top:8px}.nextBtn{margin-top:12px}.timerBar{height:10px;border-radius:999px;background:rgba(255,255,255,.1);overflow:hidden;margin:8px 0}.timerBar>div{height:100%;background:linear-gradient(90deg,#22c55e,#facc15);width:100%;transition:width .2s linear}.frozen{opacity:.65;filter:grayscale(.25)}
     .topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.pill{padding:8px 12px;background:rgba(255,255,255,.08);border:1px solid var(--line);border-radius:999px;font-weight:800;color:var(--muted)}
@@ -122,7 +124,7 @@
   </section>
 
   <section id="gameScreen" class="hidden">
-    <div class="topbar"><span class="pill" id="rolePill"></span><span class="pill" id="roundPill"></span></div>
+    <div class="topbar"><span class="pill" id="rolePill"></span><span class="pill" id="roundPill"></span><button id="forceFinishBtn" class="danger hostEndBtn hidden" type="button">Ukončit hru</button></div>
     <div id="onlineMainLabel" class="small offlineLabel hidden">Společná karta</div>
     <div id="hostCard" class="dobble hidden"></div>
     <div id="onlinePlayerLabel" class="small offlineLabel hidden">Tvoje karta</div>
@@ -198,6 +200,13 @@ let offlineGame = null, offlineTimer = null, kahootTimerKey = '', challengeTimer
 const EMOJIS = ["😀", "😎", "🥳", "🤖", "👻", "🐶", "🐱", "🦊", "🐼", "🐸", "🦁", "🐵", "🐧", "🦄", "🐝", "🦋", "🐙", "🦖", "🐢", "🐬", "🌵", "🌈", "⭐", "🔥", "⚡", "❄️", "💧", "🍎", "🍋", "🍕", "🍔", "🍟", "🍩", "🍪", "⚽", "🏀", "🎾", "🎲", "🎯", "🎸", "🚗", "🚀", "✈️", "🚲", "⛵", "🏠", "⛺", "🎁", "💎", "🔑", "🧲", "🔔", "📚", "✏️", "❤️", "☂️", "👑"];
 const SYMBOL_FILES = ["symbols/e00.png", "symbols/e01.png", "symbols/e02.png", "symbols/e03.png", "symbols/e04.png", "symbols/e05.png", "symbols/e06.png", "symbols/e07.png", "symbols/e08.png", "symbols/e09.png", "symbols/e10.png", "symbols/e11.png", "symbols/e12.png", "symbols/e13.png", "symbols/e14.png", "symbols/e15.png", "symbols/e16.png", "symbols/e17.png", "symbols/e18.png", "symbols/e19.png", "symbols/e20.png", "symbols/e21.png", "symbols/e22.png", "symbols/e23.png", "symbols/e24.png", "symbols/e25.png", "symbols/e26.png", "symbols/e27.png", "symbols/e28.png", "symbols/e29.png", "symbols/e30.png", "symbols/e31.png", "symbols/e32.png", "symbols/e33.png", "symbols/e34.png", "symbols/e35.png", "symbols/e36.png", "symbols/e37.png", "symbols/e38.png", "symbols/e39.png", "symbols/e40.png", "symbols/e41.png", "symbols/e42.png", "symbols/e43.png", "symbols/e44.png", "symbols/e45.png", "symbols/e46.png", "symbols/e47.png", "symbols/e48.png", "symbols/e49.png", "symbols/e50.png", "symbols/e51.png", "symbols/e52.png", "symbols/e53.png", "symbols/e54.png", "symbols/e55.png", "symbols/e56.png"];
 const CARDS = makeDobbleCards(7);
+const GAME_TYPES = {
+  classic: {label:'Klasika', hint:'Společná karta je uprostřed. Každý hráč hledá shodný symbol. Kdo se trefí první, dostane bod a jeho karta jde doprostřed. Špatný klik jen zamkne hráče do konce kola.'},
+  kahoot: {label:'Kahoot', hint:'Každý hledá shodný symbol co nejrychleji. Rychlejší správné odpovědi mají víc bodů, špatná odpověď je za nulu. Po limitu nebo po odpovědi všech se ukáže pořadí.'},
+  onecard: {label:'Jedna karta', hint:'Na hlavním telefonu je jedna společná karta. Hráči mají časový limit a snaží se naklikat co nejvíce správných shod. Špatný klik stopne hráče na 5 s.'},
+  timeattack: {label:'Časovka', hint:'Hrají všichni na svém telefonu. Po správném kliknutí se tvoje karta posune nahoru a dole dostaneš novou. Špatný klik nechá karty stát a dá stopku 5 s.'},
+  deck: {label:'Balíček karet', hint:'Každý dostane nastavený počet karet a snaží se balíčkem co nejrychleji proklikat. Za správné série jsou bonusy, za chybu stopka 5 s.'}
+};
 
 function makeDobbleCards(n){
   const cards=[];
@@ -261,6 +270,7 @@ $('gameTypeSelect').onchange=()=> updateGameTypeHint();
 $('enterBtn').onclick=enterRoom;
 $('startBtn').onclick=startGame;
 $('closeRoomBtn').onclick=()=> roomRef && remove(roomRef);
+$('forceFinishBtn').onclick=forceFinishGame;
 if($('wakeBtn')) $('wakeBtn').onclick=enableWake;
 $('roomInput').addEventListener('input',e=>e.target.value=cleanRoom(e.target.value));
 
@@ -438,36 +448,51 @@ function listenRoom(){
   });
 }
 
-function fillGameTypeSelect(){
+function fillGameTypeSelect(family){
   const select = $('gameTypeSelect');
   if(!select) return;
 
-  const hostPlays = onlineVariant === 'hostPlays';
+  const resolvedFamily = family || (onlineVariant === 'soloChallenge' ? 'all' : 'main');
+  const previous = select.value;
 
-  const types = hostPlays
+  const types = resolvedFamily === 'all'
     ? [
-        ['classic', 'Klasika'],
-        ['kahoot', 'Kahoot'],
-        ['timeAttack', 'Časovka'],
-        ['deckRace', 'Balíček']
+        ['classic', GAME_TYPES.classic.label],
+        ['kahoot', GAME_TYPES.kahoot.label],
+        ['timeattack', GAME_TYPES.timeattack.label],
+        ['deck', GAME_TYPES.deck.label]
       ]
     : [
-        ['classic', 'Klasika'],
-        ['kahoot', 'Kahoot'],
-        ['oneCard', 'Jedna karta']
+        ['classic', GAME_TYPES.classic.label],
+        ['kahoot', GAME_TYPES.kahoot.label],
+        ['onecard', GAME_TYPES.onecard.label]
       ];
 
   select.innerHTML = types
     .map(([value,label]) => `<option value="${value}">${label}</option>`)
     .join('');
+
+  if(types.some(([value]) => value === previous)) select.value = previous;
+  else select.value = types[0][0];
+
+  select.dataset.family = resolvedFamily;
+  updateGameTypeHint();
 }
 
-function setupHost(){ show('hostLobby'); $('hostRoomCode').textContent=roomCode; fillGameTypeSelect(); status('Jsi hlavní telefon.'); }
+function updateGameTypeHint(){
+  const select = $('gameTypeSelect');
+  const hint = $('gameTypeHint');
+  if(!select || !hint) return;
+  hint.textContent = GAME_TYPES[select.value]?.hint || '';
+}
+
+function setupHost(){ show('hostLobby'); $('hostRoomCode').textContent=roomCode; fillGameTypeSelect(onlineVariant === 'soloChallenge' ? 'all' : 'main'); status('Jsi hlavní telefon.'); }
 function setupPlayer(){ show('playerLobby'); $('playerRoomCode').textContent=roomCode; status('Čekáš na schválení.'); }
 
 function renderHost(room){
+  updateHostEndButton(room);
   if(room.status==='lobby'){
-    hide('gameScreen'); hide('finishScreen'); hide('centerMsg'); show('hostLobby'); fillGameTypeSelect();
+    hide('gameScreen'); hide('finishScreen'); hide('centerMsg'); updateHostEndButton(null); show('hostLobby'); fillGameTypeSelect(room.settings?.family || (room.settings?.soloChallenge?'all':'main'));
     const box=$('hostPlayers'); box.innerHTML='';
     const players=room.players||{};
     const ids=Object.keys(players).sort((a,b)=>(players[b]?.joinedAt||0)-(players[a]?.joinedAt||0));
@@ -496,10 +521,11 @@ function renderHost(room){
   }else if(room.status==='finished') renderFinish(room);
 }
 function renderPlayer(room){
+  updateHostEndButton(null);
   const me=room.players?.[playerId];
   if(!me){ resetUI('Byl jsi odpojen z místnosti.'); return; }
   if(room.status==='lobby'){
-    hide('gameScreen'); hide('finishScreen'); show('playerLobby');
+    hide('gameScreen'); hide('finishScreen'); updateHostEndButton(null); show('playerLobby');
     $('waitingTitle').textContent=me.approved?'Jsi schválen. Čekej na start hry.':'Čekáš na schválení…';
     status(me.approved?'Schváleno, čekáš na start.':'Čekáš na schválení.');
   }else if(room.status==='running' || room.status==='roundResult') showGamePlayer(room,me);
@@ -507,6 +533,18 @@ function renderPlayer(room){
   else if(room.status==='challengeRunning' || room.status==='challengeResult') showChallengePlayer(room,me);
   else if(room.status==='soloRunning' || room.status==='soloFinished') showSoloChallenge(room,me);
   else if(room.status==='finished') renderFinish(room,me);
+}
+
+function updateHostEndButton(room){
+  const btn = $('forceFinishBtn');
+  if(!btn) return;
+  const active = room && role === 'host' && !['lobby','finished'].includes(room.status);
+  btn.classList.toggle('hidden', !active);
+}
+
+async function forceFinishGame(){
+  if(role !== 'host' || !roomRef) return;
+  await update(roomRef,{status:'finished',currentRound:null});
 }
 
 async function startGame(){
@@ -1161,7 +1199,7 @@ function showWinnerOverlay(room){
   else hide('centerMsg');
 }
 function renderFinish(room,me=null){
-  hide('hostLobby'); hide('playerLobby'); hide('gameScreen'); show('finishScreen'); hide('centerMsg');
+  hide('hostLobby'); hide('playerLobby'); hide('gameScreen'); updateHostEndButton(null); show('finishScreen'); hide('centerMsg');
   const players=Object.entries(room.players||{}).filter(([_,p])=>p.approved).sort((a,b)=>{
     const ds=(b[1].score||0)-(a[1].score||0); if(ds) return ds;
     const ta=a[1].soloTimeMs ?? 999999999; const tb=b[1].soloTimeMs ?? 999999999; return ta-tb;
