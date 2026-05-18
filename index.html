@@ -437,6 +437,31 @@ function listenRoom(){
     if(role==='host') renderHost(room); else renderPlayer(room);
   });
 }
+
+function fillGameTypeSelect(){
+  const select = $('gameTypeSelect');
+  if(!select) return;
+
+  const hostPlays = onlineVariant === 'hostPlays';
+
+  const types = hostPlays
+    ? [
+        ['classic', 'Klasika'],
+        ['kahoot', 'Kahoot'],
+        ['timeAttack', 'Časovka'],
+        ['deckRace', 'Balíček']
+      ]
+    : [
+        ['classic', 'Klasika'],
+        ['kahoot', 'Kahoot'],
+        ['oneCard', 'Jedna karta']
+      ];
+
+  select.innerHTML = types
+    .map(([value,label]) => `<option value="${value}">${label}</option>`)
+    .join('');
+}
+
 function setupHost(){ show('hostLobby'); $('hostRoomCode').textContent=roomCode; fillGameTypeSelect(); status('Jsi hlavní telefon.'); }
 function setupPlayer(){ show('playerLobby'); $('playerRoomCode').textContent=roomCode; status('Čekáš na schválení.'); }
 
