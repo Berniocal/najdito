@@ -998,11 +998,20 @@ function handleKahootHost(room){
   const key=`${r.roundNumber}-${r.endsAt}`;
   if(kahootTimerKey!==key){
     kahootTimerKey=key;
+    const expectedRound=r.roundNumber;
+    const expectedEndsAt=r.endsAt;
     setTimeout(async()=>{
       const snap=await get(roomRef);
       const fresh=snap.val();
-      if(fresh?.status==='kahootRunning') finishKahootRound(fresh);
-    }, Math.max(100,r.endsAt-nowMs()+80));
+      const fr=fresh?.currentRound;
+      if(
+        fresh?.status==='kahootRunning' &&
+        fr?.roundNumber===expectedRound &&
+        fr?.endsAt===expectedEndsAt
+      ){
+        finishKahootRound(fresh);
+      }
+    }, Math.max(100,expectedEndsAt-nowMs()+80));
   }
 }
 
@@ -1098,8 +1107,12 @@ function showKahootPlayer(room,me){
   renderKahootPanel(room, role==='host');
 }
 function renderKahootPlayerCard(el, round, clickable){
-  el.innerHTML=''; if(!round) return;
+  if(!round) { el.innerHTML=''; delete el.dataset.kahootCardKey; return; }
   const cardId=round.playerCards?.[playerId]; if(cardId===undefined) return;
+  const key=`${round.roundNumber}-${cardId}-${clickable?'on':'off'}`;
+  if(el.dataset.kahootCardKey===key && el.children.length) return;
+  el.dataset.kahootCardKey=key;
+  el.innerHTML='';
   const pos=getPositions(CARDS[cardId].length);
   stableShuffle([...CARDS[cardId]], `kahoot-${round.roundNumber}-${cardId}`).forEach((sym,i)=>{
     const b=document.createElement('button'); b.className='symbol'; b.style.left=pos[i][0]+'%'; b.style.top=pos[i][1]+'%'; b.style.fontSize=pos[i][2]+'px'; b.disabled=!clickable;
@@ -1217,11 +1230,17 @@ function handleChallengeHost(room){
     const key=`${mode}-${endsAt}`;
     if(challengeTimerKey!==key){
       challengeTimerKey=key;
+      const expectedEndsAt=endsAt;
+      const expectedMode=mode;
       setTimeout(async()=>{
         const snap=await get(roomRef);
         const fresh=snap.val();
-        if(fresh?.status==='challengeRunning') update(roomRef,{status:'challengeResult'});
-      }, Math.max(100,endsAt-nowMs()+80));
+        if(
+          fresh?.status==='challengeRunning' &&
+          fresh?.settings?.gameType===expectedMode &&
+          fresh?.game?.endsAt===expectedEndsAt
+        ) update(roomRef,{status:'challengeResult'});
+      }, Math.max(100,expectedEndsAt-nowMs()+80));
     }
   }else if(mode==='deck'){
     const approved=Object.entries(room.players||{}).filter(([_,p])=>p.approved);
@@ -1290,7 +1309,20 @@ function ensureSoloSpeedGame(room,mode){
   const rounds = mode==='deck' ? (room.settings?.rounds||20) : 9999;
   const seed = `${room.game?.challengeSeed||'1234567'}-${playerId}-${mode}`;
   if(onlineSoloGame && onlineSoloGame.seed===seed && onlineSoloGame.mode===mode) return;
-  onlineSoloGame={mode,seed,rounds,current:0,score:0,streak:0,startTime:performance.now(),endTime:null,finishedSent:false,frozenUntil:0,data:makeOfflineRounds(String(hashSeed(seed)).slice(0,7).padStart(7,'1'), Math.min(rounds,100))};
+  onlineSoloGame={
+    mode,
+    seed,
+    rounds,
+    current:0,
+    score:0,
+    streak:0,
+    startTime:nowMs(),
+    cardStartedAt:nowMs(),
+    endTime:null,
+    finishedSent:false,
+    frozenUntil:0,
+    data:makeOfflineRounds(String(hashSeed(seed)).slice(0,7).padStart(7,'1'), Math.min(rounds,100))
+  };
 }
 function showSoloSpeedMode(room,me,mode){
   if(room.status==='challengeResult'){
@@ -1300,12 +1332,18 @@ function showSoloSpeedMode(room,me,mode){
   hide('hostLobby'); hide('playerLobby'); hide('finishScreen'); hide('centerMsg'); show('gameScreen'); show('scorePanel');
   $('gameScreen').classList.add('onlineSplit'); show('onlineMainLabel'); show('onlinePlayerLabel'); show('hostCard'); show('playerCard'); $('hostCard').classList.add('onlineCard'); $('playerCard').classList.add('onlineCard');
   $('rolePill').textContent=me?.name||'Hráč'; ensureSoloSpeedGame(room,mode);
-  const game=onlineSoloGame; const ended = mode==='timeattack' ? nowMs()>room.game.endsAt : game.current>=game.rounds;
-  if(ended && !game.finishedSent) finishSoloSpeedMode(room,game);
-  const r=game.data[game.current % game.data.length];
-  $('roundPill').textContent = mode==='deck' ? `Karta ${Math.min(game.current+1,game.rounds)} / ${game.rounds}` : `Body ${game.score}`;
+  const game=onlineSoloGame;
+  const ended = mode==='timeattack' ? nowMs()>room.game.endsAt : game.current>=game.rounds;
+  if(ended){
+    hide('onlineMainLabel'); hide('onlinePlayerLabel'); hide('hostCard'); hide('playerCard');
+    if(!game.finishedSent) finishSoloSpeedMode(room,game);
+    renderSoloSpeedPanel(room,me,game,mode);
+    return;
+  }
+  const r=game.data[game.current];
+  $('roundPill').textContent = mode==='deck' ? `Karta ${game.current+1} / ${game.rounds}` : `Body ${game.score}`;
   renderCard($('hostCard'), r?.mainCardId, false, r);
-  renderSoloSpeedPlayerCard($('playerCard'), r, !ended && nowMs()>=game.frozenUntil);
+  renderSoloSpeedPlayerCard($('playerCard'), r, nowMs()>=game.frozenUntil);
   $('playerCard').classList.toggle('frozen',nowMs()<game.frozenUntil);
   renderSoloSpeedPanel(room,me,game,mode);
 }
@@ -1323,10 +1361,23 @@ async function soloSpeedClick(symbol, btnEl, round){
   const game=onlineSoloGame; if(!game || nowMs()<game.frozenUntil) return;
   const correct=commonSymbol(round.mainCardId,round.playerCardId)===symbol;
   if(correct){
-    btnEl.classList.add('good'); game.streak++; const bonus=game.streak>=3?Math.min(5,game.streak-2):0; game.score+=1+bonus; game.current++;
-  }else{ btnEl.classList.add('bad'); game.streak=0; game.frozenUntil=nowMs()+5000; }
+    btnEl.classList.add('good');
+    game.streak++;
+    const timeMs=Math.max(0, nowMs()-(game.cardStartedAt || game.startTime || nowMs()));
+    const timeLimitMs=(latestRoom?.settings?.timeLimit || 10) * 1000;
+    const pts = game.mode==='deck'
+      ? calcKahootPoints(timeMs, timeLimitMs, game.streak, true)
+      : (1 + (game.streak>=3 ? Math.min(5,game.streak-2) : 0));
+    game.score += pts;
+    game.current++;
+    game.cardStartedAt=nowMs();
+  }else{
+    btnEl.classList.add('bad');
+    game.streak=0;
+    game.frozenUntil=nowMs()+5000;
+  }
   await update(ref(db,`rooms/${roomCode}/players/${playerId}`),{score:game.score,streak:game.streak,frozenUntil:game.frozenUntil});
-  setTimeout(async()=>{ const snap=await get(roomRef); const room=snap.val(); if(room) showSoloSpeedMode(room,room.players?.[playerId]||{},room.settings?.gameType); },180);
+  setTimeout(async()=>{ const snap=await get(roomRef); const room=snap.val(); if(room) showSoloSpeedMode(room,room.players?.[playerId]||{},room.settings?.gameType); },120);
 }
 async function finishSoloSpeedMode(room,game){
   if(game.finishedSent) return; game.finishedSent=true; game.endTime=performance.now();
@@ -1339,7 +1390,9 @@ function renderSoloSpeedPanel(room,me,game,mode){
   const left=mode==='timeattack'?wholeLeftSeconds(room.game.endsAt):null;
   const freezeLeft=wholeLeftSeconds(game.frozenUntil);
   updateFreezeOverlay(game.frozenUntil);
-  $('scorePanel').innerHTML=`<div class="rank">${place>0?place+'. místo':'Hraješ'} · ${game.score} bodů</div>${left!==null?`<div class="rank">Zbývá ${left} s</div>`:''}<p class="small">${freezeLeft>0?'<span style="color:#ef4444;font-weight:950">Stopka '+freezeLeft+' s</span><br>':''}${gap>0?'Na soupeře před tebou ztrácíš '+gap+' bodů.':'Jsi průběžně první nebo bez soupeřů.'}</p>`;
+  const ended = mode==='deck' ? game.current>=game.rounds : (mode==='timeattack' && nowMs()>room.game.endsAt);
+  const deckInfo = mode==='deck' ? `<p class="small">Balíček: ${Math.min(game.current,game.rounds)} / ${game.rounds} karet · body jako Kahoot podle rychlosti a série.</p>` : '';
+  $('scorePanel').innerHTML=`<div class="rank">${ended?'Hotovo · ':''}${place>0?place+'. místo':'Hraješ'} · ${game.score} bodů</div>${left!==null?`<div class="rank">Zbývá ${left} s</div>`:''}${deckInfo}<p class="small">${freezeLeft>0?'<span style="color:#ef4444;font-weight:950">Stopka '+freezeLeft+' s</span><br>':''}${gap>0?'Na soupeře před tebou ztrácíš '+gap+' bodů.':'Jsi průběžně první nebo bez soupeřů.'}</p>`;
 }
 
 function getPositions(count){
