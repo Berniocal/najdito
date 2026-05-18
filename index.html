@@ -27,7 +27,7 @@
     .dobble{position:relative;margin:18px auto;width:min(88vw,430px);height:min(88vw,430px);border-radius:50%;background:#f8fafc;color:#111827;box-shadow:inset 0 0 0 8px rgba(15,23,42,.08),0 18px 44px rgba(0,0,0,.34);overflow:hidden;touch-action:manipulation}.dobble.disabled{filter:none;opacity:1}.symbol{position:absolute;transform:translate(-50%,-50%);border:0;background:transparent;box-shadow:none;color:inherit;padding:0;width:auto;line-height:1;display:grid;place-items:center;transition:transform .12s ease,filter .12s ease}.symbol img{width:1em;height:1em;display:block;pointer-events:none;user-select:none}.symbol:active{transform:translate(-50%,-50%) scale(.9)}.symbol.bad{filter:drop-shadow(0 0 10px var(--red))}.symbol.good{filter:drop-shadow(0 0 10px var(--green))}
     .onlineChoices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:10px 0 12px}.modeChoice{position:relative;text-align:left;border:1px solid var(--line);border-radius:22px;padding:12px;background:rgba(255,255,255,.075);color:var(--text);box-shadow:none;overflow:hidden}.modeChoice.selected{outline:3px solid rgba(34,197,94,.45);background:linear-gradient(180deg,rgba(34,197,94,.2),rgba(255,255,255,.07));color:var(--text)}.modeChoice h3{margin:8px 0 4px;font-size:18px}.modeChoice p{margin:0;color:var(--muted);font-size:13px;line-height:1.25}.modeIllustration{position:relative;height:210px;border-radius:18px;background:radial-gradient(circle at center,rgba(56,189,248,.18),rgba(255,255,255,.04));border:1px solid var(--line);overflow:hidden}.phone{position:absolute;width:40px;height:66px;border-radius:10px;background:linear-gradient(180deg,#334155,#0f172a);border:2px solid rgba(255,255,255,.48);box-shadow:0 10px 22px rgba(0,0,0,.28)}.phone.big{width:66px;height:106px;border-radius:16px}.phone::before{content:"";position:absolute;left:50%;top:5px;transform:translateX(-50%);width:18px;height:3px;border-radius:999px;background:rgba(255,255,255,.42)}.phone::after{content:"";position:absolute;left:50%;bottom:5px;transform:translateX(-50%);width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.26)}.dobbleMini{position:absolute;border-radius:50%;background:#f8fafc;box-shadow:inset 0 0 0 3px rgba(15,23,42,.12),0 5px 12px rgba(0,0,0,.28)}.dobbleMini.big{width:50px;height:50px}.dobbleMini.small{width:24px;height:24px}.dobbleMini::before,.dobbleMini::after{content:"";position:absolute;border-radius:50%;background:#22c55e}.dobbleMini::before{width:7px;height:7px;left:7px;top:8px}.dobbleMini::after{width:6px;height:6px;right:7px;bottom:8px;background:#38bdf8}.dobbleMini span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:11px}.centralPhone{left:50%;top:50%;transform:translate(-50%,-50%)}.centralPhone .dobbleMini{left:50%;top:50%;transform:translate(-50%,-50%)}.ringPhone{left:calc(50% + var(--x));top:calc(50% + var(--y));transform:translate(-50%,-50%) rotate(var(--rot,0deg))}.ringPhone .dobbleMini.one{left:50%;top:50%;transform:translate(-50%,-50%)}.ringPhone .dobbleMini.twoA{left:50%;top:33%;transform:translate(-50%,-50%)}.ringPhone .dobbleMini.twoB{left:50%;top:67%;transform:translate(-50%,-50%)}@media (max-width:680px){.onlineChoices{grid-template-columns:1fr}.modeIllustration{height:190px}}
     .centerMsg{position:fixed;inset:0;display:grid;place-items:center;background:rgba(2,6,23,.35);z-index:50;pointer-events:none}.centerMsg>div{background:rgba(15,23,42,.95);border:1px solid var(--line);padding:20px 28px;border-radius:24px;font-size:clamp(28px,8vw,54px);font-weight:950;text-align:center;box-shadow:var(--shadow)}
-    .players{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-top:12px}.player{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.06)}.player b{font-size:18px}.actions{display:flex;gap:8px}.actions button{padding:9px 10px;border-radius:12px}.score{font-weight:950;color:var(--yellow)}.footer{position:fixed;left:0;right:0;bottom:0;padding:8px 12px calc(8px + env(safe-area-inset-bottom));background:rgba(15,23,42,.82);backdrop-filter:blur(10px);border-top:1px solid var(--line);z-index:20}.footer .inner{max-width:860px;margin:auto;display:flex;gap:10px;align-items:center;justify-content:space-between}.statusText{font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rank{font-size:22px;font-weight:950}.confetti{font-size:42px}.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:#111827;color:white;border:1px solid var(--line);border-radius:999px;padding:10px 16px;font-weight:850;z-index:100;box-shadow:var(--shadow);max-width:90vw;text-align:center}#keepAwakeVideo{position:fixed;left:-20px;top:-20px;width:1px;height:1px;opacity:0;pointer-events:none}.offlineSplit{display:grid;grid-template-rows:1fr 1fr;gap:10px;height:calc(100vh - 150px);min-height:560px}.onlineSplit{display:grid;grid-template-rows:auto auto auto auto;gap:6px;min-height:0;align-content:center}.onlineCard{width:min(78vw,34svh,340px);height:min(78vw,34svh,340px);margin:4px auto 2px}.offlineCard{width:min(78vw,34svh,340px);height:min(78vw,34svh,340px);margin:4px auto 2px}.offlineLabel{text-align:center;font-weight:850}@media (max-height:760px){.offlineSplit,.onlineSplit{height:auto;min-height:0}.offlineCard,.onlineCard{width:min(68vw,30svh,290px);height:min(68vw,30svh,290px)}.topbar{margin-bottom:6px}.card{padding:14px}}@media (max-height:620px){.offlineCard,.onlineCard{width:min(62vw,27svh,240px);height:min(62vw,27svh,240px)}.onlineSplit{gap:3px}.offlineLabel{font-size:12px}}
+    .players{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-top:12px}.player{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.06)}.player b{font-size:18px}.actions{display:flex;gap:8px}.actions button{padding:9px 10px;border-radius:12px}.score{font-weight:950;color:var(--yellow)}.footer{position:fixed;left:0;right:0;bottom:0;padding:8px 12px calc(8px + env(safe-area-inset-bottom));background:rgba(15,23,42,.82);backdrop-filter:blur(10px);border-top:1px solid var(--line);z-index:20}.footer .inner{max-width:860px;margin:auto;display:flex;gap:10px;align-items:center;justify-content:space-between}.statusText{font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rank{font-size:22px;font-weight:950}.confetti{font-size:42px}.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:#111827;color:white;border:1px solid var(--line);border-radius:999px;padding:10px 16px;font-weight:850;z-index:100;box-shadow:var(--shadow);max-width:90vw;text-align:center}#keepAwakeVideo{position:fixed;left:-20px;top:-20px;width:1px;height:1px;opacity:0;pointer-events:none}.offlineSplit{display:grid;grid-template-rows:1fr 1fr;gap:10px;height:calc(100vh - 150px);min-height:560px}.onlineSplit{display:grid;grid-template-rows:auto 1fr auto 1fr;gap:8px;height:calc(100vh - 150px);min-height:560px}.onlineCard{width:min(78vw,360px);height:min(78vw,360px);margin:6px auto 2px}.offlineCard{width:min(78vw,360px);height:min(78vw,360px);margin:8px auto 4px}.offlineLabel{text-align:center;font-weight:850}@media (max-height:760px){.offlineSplit,.onlineSplit{height:auto;min-height:0}.offlineCard,.onlineCard{width:min(68vw,300px);height:min(68vw,300px)}}
   </style>
 </head>
 <body>
@@ -1024,17 +1024,6 @@ function calcKahootPoints(timeMs, timeLimitMs, streakAfter, correct){
   return pts;
 }
 
-
-function calcDeckKahootPoints(timeMs, streak){
-  // Balíček: krátký kahootový čas na jednu kartu.
-  // Rychlý klik má hodně bodů, pozdní klik méně, série 3+ dává malý lineární bonus.
-  const baseMs = 7000;
-  const t = Math.max(0, Math.min(1, timeMs / baseMs));
-  let pts = Math.round(300 + 700 * (1 - t));
-  if(streak >= 3) pts += Math.min(250, 100 + (streak - 3) * 50);
-  return pts;
-}
-
 function renderKahootInstantAnswer(correct, points){
   hide('onlineMainLabel'); hide('onlinePlayerLabel'); hide('hostCard'); hide('playerCard');
   $('gameScreen').classList.remove('onlineSplit');
@@ -1327,7 +1316,6 @@ function ensureSoloSpeedGame(room,mode){
     current:0,
     score:0,
     streak:0,
-    lastPoints:0,
     startTime:nowMs(),
     cardStartedAt:nowMs(),
     endTime:null,
@@ -1376,17 +1364,16 @@ async function soloSpeedClick(symbol, btnEl, round){
     btnEl.classList.add('good');
     game.streak++;
     const timeMs=Math.max(0, nowMs()-(game.cardStartedAt || game.startTime || nowMs()));
+    const timeLimitMs=(latestRoom?.settings?.timeLimit || 10) * 1000;
     const pts = game.mode==='deck'
-      ? calcDeckKahootPoints(timeMs, game.streak)
+      ? calcKahootPoints(timeMs, timeLimitMs, game.streak, true)
       : (1 + (game.streak>=3 ? Math.min(5,game.streak-2) : 0));
-    game.lastPoints=pts;
     game.score += pts;
     game.current++;
     game.cardStartedAt=nowMs();
   }else{
     btnEl.classList.add('bad');
     game.streak=0;
-    game.lastPoints=0;
     game.frozenUntil=nowMs()+5000;
   }
   await update(ref(db,`rooms/${roomCode}/players/${playerId}`),{score:game.score,streak:game.streak,frozenUntil:game.frozenUntil});
@@ -1404,9 +1391,7 @@ function renderSoloSpeedPanel(room,me,game,mode){
   const freezeLeft=wholeLeftSeconds(game.frozenUntil);
   updateFreezeOverlay(game.frozenUntil);
   const ended = mode==='deck' ? game.current>=game.rounds : (mode==='timeattack' && nowMs()>room.game.endsAt);
-  const deckInfo = mode==='deck'
-    ? `<p class="small">Balíček: ${Math.min(game.current,game.rounds)} / ${game.rounds} karet · poslední karta: <b>+${game.lastPoints||0}</b> · série: ${game.streak||0}</p>`
-    : '';
+  const deckInfo = mode==='deck' ? `<p class="small">Balíček: ${Math.min(game.current,game.rounds)} / ${game.rounds} karet · body jako Kahoot podle rychlosti a série.</p>` : '';
   $('scorePanel').innerHTML=`<div class="rank">${ended?'Hotovo · ':''}${place>0?place+'. místo':'Hraješ'} · ${game.score} bodů</div>${left!==null?`<div class="rank">Zbývá ${left} s</div>`:''}${deckInfo}<p class="small">${freezeLeft>0?'<span style="color:#ef4444;font-weight:950">Stopka '+freezeLeft+' s</span><br>':''}${gap>0?'Na soupeře před tebou ztrácíš '+gap+' bodů.':'Jsi průběžně první nebo bez soupeřů.'}</p>`;
 }
 
