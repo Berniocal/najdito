@@ -20,8 +20,10 @@
     h1{font-size:clamp(32px,8vw,58px);line-height:1;margin:8px 0 6px;text-align:center}.sub{text-align:center;color:var(--muted);margin:0 0 18px}.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1}.hidden{display:none!important}
     label{font-size:13px;color:var(--muted);font-weight:700;display:block;margin:10px 0 6px}input,button,select{width:100%;border:1px solid var(--line);border-radius:16px;padding:14px 15px;font:inherit;color:var(--text);background:rgba(255,255,255,.08)}
     input{text-align:center;font-size:22px;font-weight:850;letter-spacing:.08em}input.name{font-size:18px;letter-spacing:0;text-align:left}button{font-weight:850;cursor:pointer;background:linear-gradient(135deg,#16a34a,#22c55e);border:0;color:#052e16;box-shadow:0 10px 28px rgba(34,197,94,.2)}button.secondary{background:rgba(255,255,255,.09);color:var(--text);box-shadow:none;border:1px solid var(--line)}button.danger{background:linear-gradient(135deg,#dc2626,#fb7185);color:#fff}button:disabled{cursor:not-allowed}.small{font-size:13px;color:var(--muted)}
+    .hostSettings{margin:12px 0;padding:12px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.045)}.hostSettings select,.hostSettings input[type="range"]{width:100%}.hostSettings .hint{margin-top:8px}.nextBtn{margin-top:12px}.timerBar{height:10px;border-radius:999px;background:rgba(255,255,255,.1);overflow:hidden;margin:8px 0}.timerBar>div{height:100%;background:linear-gradient(90deg,#22c55e,#facc15);width:100%;transition:width .2s linear}.frozen{opacity:.65;filter:grayscale(.25)}
     .topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.pill{padding:8px 12px;background:rgba(255,255,255,.08);border:1px solid var(--line);border-radius:999px;font-weight:800;color:var(--muted)}
     .dobble{position:relative;margin:18px auto;width:min(88vw,430px);height:min(88vw,430px);border-radius:50%;background:#f8fafc;color:#111827;box-shadow:inset 0 0 0 8px rgba(15,23,42,.08),0 18px 44px rgba(0,0,0,.34);overflow:hidden;touch-action:manipulation}.dobble.disabled{filter:none;opacity:1}.symbol{position:absolute;transform:translate(-50%,-50%);border:0;background:transparent;box-shadow:none;color:inherit;padding:0;width:auto;line-height:1;display:grid;place-items:center;transition:transform .12s ease,filter .12s ease}.symbol img{width:1em;height:1em;display:block;pointer-events:none;user-select:none}.symbol:active{transform:translate(-50%,-50%) scale(.9)}.symbol.bad{filter:drop-shadow(0 0 10px var(--red))}.symbol.good{filter:drop-shadow(0 0 10px var(--green))}
+    .onlineChoices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:10px 0 12px}.modeChoice{position:relative;text-align:left;border:1px solid var(--line);border-radius:22px;padding:12px;background:rgba(255,255,255,.075);color:var(--text);box-shadow:none;overflow:hidden}.modeChoice.selected{outline:3px solid rgba(34,197,94,.45);background:linear-gradient(180deg,rgba(34,197,94,.2),rgba(255,255,255,.07));color:var(--text)}.modeChoice h3{margin:8px 0 4px;font-size:18px}.modeChoice p{margin:0;color:var(--muted);font-size:13px;line-height:1.25}.modeIllustration{position:relative;height:210px;border-radius:18px;background:radial-gradient(circle at center,rgba(56,189,248,.18),rgba(255,255,255,.04));border:1px solid var(--line);overflow:hidden}.phone{position:absolute;width:40px;height:66px;border-radius:10px;background:linear-gradient(180deg,#334155,#0f172a);border:2px solid rgba(255,255,255,.48);box-shadow:0 10px 22px rgba(0,0,0,.28)}.phone.big{width:66px;height:106px;border-radius:16px}.phone::before{content:"";position:absolute;left:50%;top:5px;transform:translateX(-50%);width:18px;height:3px;border-radius:999px;background:rgba(255,255,255,.42)}.phone::after{content:"";position:absolute;left:50%;bottom:5px;transform:translateX(-50%);width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.26)}.dobbleMini{position:absolute;border-radius:50%;background:#f8fafc;box-shadow:inset 0 0 0 3px rgba(15,23,42,.12),0 5px 12px rgba(0,0,0,.28)}.dobbleMini.big{width:50px;height:50px}.dobbleMini.small{width:24px;height:24px}.dobbleMini::before,.dobbleMini::after{content:"";position:absolute;border-radius:50%;background:#22c55e}.dobbleMini::before{width:7px;height:7px;left:7px;top:8px}.dobbleMini::after{width:6px;height:6px;right:7px;bottom:8px;background:#38bdf8}.dobbleMini span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:11px}.centralPhone{left:50%;top:50%;transform:translate(-50%,-50%)}.centralPhone .dobbleMini{left:50%;top:50%;transform:translate(-50%,-50%)}.ringPhone{left:calc(50% + var(--x));top:calc(50% + var(--y));transform:translate(-50%,-50%) rotate(var(--rot,0deg))}.ringPhone .dobbleMini.one{left:50%;top:50%;transform:translate(-50%,-50%)}.ringPhone .dobbleMini.twoA{left:50%;top:33%;transform:translate(-50%,-50%)}.ringPhone .dobbleMini.twoB{left:50%;top:67%;transform:translate(-50%,-50%)}@media (max-width:680px){.onlineChoices{grid-template-columns:1fr}.modeIllustration{height:190px}}
     .centerMsg{position:fixed;inset:0;display:grid;place-items:center;background:rgba(2,6,23,.35);z-index:50;pointer-events:none}.centerMsg>div{background:rgba(15,23,42,.95);border:1px solid var(--line);padding:20px 28px;border-radius:24px;font-size:clamp(28px,8vw,54px);font-weight:950;text-align:center;box-shadow:var(--shadow)}
     .players{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-top:12px}.player{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.06)}.player b{font-size:18px}.actions{display:flex;gap:8px}.actions button{padding:9px 10px;border-radius:12px}.score{font-weight:950;color:var(--yellow)}.footer{position:fixed;left:0;right:0;bottom:0;padding:8px 12px calc(8px + env(safe-area-inset-bottom));background:rgba(15,23,42,.82);backdrop-filter:blur(10px);border-top:1px solid var(--line);z-index:20}.footer .inner{max-width:860px;margin:auto;display:flex;gap:10px;align-items:center;justify-content:space-between}.statusText{font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rank{font-size:22px;font-weight:950}.confetti{font-size:42px}.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:#111827;color:white;border:1px solid var(--line);border-radius:999px;padding:10px 16px;font-weight:850;z-index:100;box-shadow:var(--shadow);max-width:90vw;text-align:center}#keepAwakeVideo{position:fixed;left:-20px;top:-20px;width:1px;height:1px;opacity:0;pointer-events:none}.offlineSplit{display:grid;grid-template-rows:1fr 1fr;gap:10px;height:calc(100vh - 150px);min-height:560px}.onlineSplit{display:grid;grid-template-rows:auto 1fr auto 1fr;gap:8px;height:calc(100vh - 150px);min-height:560px}.onlineCard{width:min(78vw,360px);height:min(78vw,360px);margin:6px auto 2px}.offlineCard{width:min(78vw,360px);height:min(78vw,360px);margin:8px auto 4px}.offlineLabel{text-align:center;font-weight:850}@media (max-height:760px){.offlineSplit,.onlineSplit{height:auto;min-height:0}.offlineCard,.onlineCard{width:min(68vw,300px);height:min(68vw,300px)}}
   </style>
@@ -42,10 +44,33 @@
 
   <section id="joinScreen" class="card hidden">
     <label>Varianta online hry</label>
-    <div class="row" style="margin-top:8px">
-      <button id="onlineClassicBtn">Klasická online</button>
-      <button id="onlineHostPlaysBtn" class="secondary">Online hraje i hlavní</button>
-      <button id="onlineSoloChallengeBtn" class="secondary">Online výzva každý sám</button>
+    <div class="onlineChoices" aria-label="Výběr varianty online hry">
+      <button id="onlineClassicBtn" class="modeChoice selected" type="button">
+        <div class="modeIllustration" aria-hidden="true">
+          <div class="phone big centralPhone"><div class="dobbleMini big"><span>⭐</span></div></div>
+          <div class="phone ringPhone" style="--x:0px;--y:-78px;--rot:0deg"><div class="dobbleMini small one"><span>⚡</span></div></div>
+          <div class="phone ringPhone" style="--x:68px;--y:-39px;--rot:20deg"><div class="dobbleMini small one"><span>🐸</span></div></div>
+          <div class="phone ringPhone" style="--x:68px;--y:39px;--rot:-20deg"><div class="dobbleMini small one"><span>🚀</span></div></div>
+          <div class="phone ringPhone" style="--x:0px;--y:78px;--rot:0deg"><div class="dobbleMini small one"><span>🍎</span></div></div>
+          <div class="phone ringPhone" style="--x:-68px;--y:39px;--rot:20deg"><div class="dobbleMini small one"><span>🎲</span></div></div>
+          <div class="phone ringPhone" style="--x:-68px;--y:-39px;--rot:-20deg"><div class="dobbleMini small one"><span>🔥</span></div></div>
+        </div>
+        <h3>Hra s hlavním telefonem</h3>
+        <p>Uprostřed je hlavní telefon se společnou kartou. Okolo hráči hledají shodný symbol na své kartě.</p>
+      </button>
+      <button id="onlineSoloChallengeBtn" class="modeChoice" type="button">
+        <div class="modeIllustration" aria-hidden="true">
+          <div class="phone ringPhone" style="--x:0px;--y:-76px;--rot:0deg"><div class="dobbleMini small twoA"><span>⭐</span></div><div class="dobbleMini small twoB"><span>🐶</span></div></div>
+          <div class="phone ringPhone" style="--x:59px;--y:-47px;--rot:16deg"><div class="dobbleMini small twoA"><span>⚡</span></div><div class="dobbleMini small twoB"><span>🍋</span></div></div>
+          <div class="phone ringPhone" style="--x:74px;--y:17px;--rot:50deg"><div class="dobbleMini small twoA"><span>🐸</span></div><div class="dobbleMini small twoB"><span>🚲</span></div></div>
+          <div class="phone ringPhone" style="--x:33px;--y:68px;--rot:82deg"><div class="dobbleMini small twoA"><span>🚀</span></div><div class="dobbleMini small twoB"><span>🎸</span></div></div>
+          <div class="phone ringPhone" style="--x:-33px;--y:68px;--rot:-82deg"><div class="dobbleMini small twoA"><span>🍎</span></div><div class="dobbleMini small twoB"><span>💎</span></div></div>
+          <div class="phone ringPhone" style="--x:-74px;--y:17px;--rot:-50deg"><div class="dobbleMini small twoA"><span>🎲</span></div><div class="dobbleMini small twoB"><span>👑</span></div></div>
+          <div class="phone ringPhone" style="--x:-59px;--y:-47px;--rot:-16deg"><div class="dobbleMini small twoA"><span>🔥</span></div><div class="dobbleMini small twoB"><span>🦊</span></div></div>
+        </div>
+        <h3>Hrají všichni</h3>
+        <p>Každý telefon má na obrazovce dvě menší Dobble karty. Všichni hrají souběžně na body a čas.</p>
+      </button>
     </div>
     <p class="small" id="onlineVariantInfo">Hlavní telefon je jen centrální karta. Hráči mají svou kartu na svém telefonu.</p>
     <label>Číslo místnosti</label>
@@ -76,8 +101,15 @@
 
   <section id="hostLobby" class="card hidden">
     <div class="topbar"><span class="pill">Hlavní telefon</span><span class="pill">Místnost <b id="hostRoomCode"></b></span></div>
-    <label>Počet kol: <span id="roundsValue">20</span></label>
-    <input id="roundsInput" type="range" min="1" max="100" value="20" />
+    <div class="hostSettings">
+      <label>Druh hry</label>
+      <select id="gameTypeSelect"></select>
+      <p class="small hint" id="gameTypeHint"></p>
+      <label>Počet kol / karet: <span id="roundsValue">20</span></label>
+      <input id="roundsInput" type="range" min="1" max="100" value="20" />
+      <label>Časový limit: <span id="timeLimitValue">10</span> s</label>
+      <input id="timeLimitInput" type="range" min="5" max="60" value="10" />
+    </div>
     <h2>Hráči</h2>
     <div id="hostPlayers" class="players"></div>
     <div class="row" style="margin-top:14px"><button id="startBtn">Start hry</button><button id="closeRoomBtn" class="danger">Zavřít místnost</button></div>
@@ -161,7 +193,7 @@ let role = null, roomCode = null, playerId = uid, unsubRoom = null, processedWin
 let onlineVariant = 'classic';
 let onlineSoloGame = null;
 let roomRef = null, playerRef = null, wakeLock = null, autoAdvancing = false;
-let offlineGame = null, offlineTimer = null;
+let offlineGame = null, offlineTimer = null, kahootTimerKey = '', challengeTimerKey = ''; 
 
 const EMOJIS = ["😀", "😎", "🥳", "🤖", "👻", "🐶", "🐱", "🦊", "🐼", "🐸", "🦁", "🐵", "🐧", "🦄", "🐝", "🦋", "🐙", "🦖", "🐢", "🐬", "🌵", "🌈", "⭐", "🔥", "⚡", "❄️", "💧", "🍎", "🍋", "🍕", "🍔", "🍟", "🍩", "🍪", "⚽", "🏀", "🎾", "🎲", "🎯", "🎸", "🚗", "🚀", "✈️", "🚲", "⛵", "🏠", "⛺", "🎁", "💎", "🔑", "🧲", "🔔", "📚", "✏️", "❤️", "☂️", "👑"];
 const SYMBOL_FILES = ["symbols/e00.png", "symbols/e01.png", "symbols/e02.png", "symbols/e03.png", "symbols/e04.png", "symbols/e05.png", "symbols/e06.png", "symbols/e07.png", "symbols/e08.png", "symbols/e09.png", "symbols/e10.png", "symbols/e11.png", "symbols/e12.png", "symbols/e13.png", "symbols/e14.png", "symbols/e15.png", "symbols/e16.png", "symbols/e17.png", "symbols/e18.png", "symbols/e19.png", "symbols/e20.png", "symbols/e21.png", "symbols/e22.png", "symbols/e23.png", "symbols/e24.png", "symbols/e25.png", "symbols/e26.png", "symbols/e27.png", "symbols/e28.png", "symbols/e29.png", "symbols/e30.png", "symbols/e31.png", "symbols/e32.png", "symbols/e33.png", "symbols/e34.png", "symbols/e35.png", "symbols/e36.png", "symbols/e37.png", "symbols/e38.png", "symbols/e39.png", "symbols/e40.png", "symbols/e41.png", "symbols/e42.png", "symbols/e43.png", "symbols/e44.png", "symbols/e45.png", "symbols/e46.png", "symbols/e47.png", "symbols/e48.png", "symbols/e49.png", "symbols/e50.png", "symbols/e51.png", "symbols/e52.png", "symbols/e53.png", "symbols/e54.png", "symbols/e55.png", "symbols/e56.png"];
@@ -205,18 +237,14 @@ function stableShuffle(a, seedText){
 
 $('onlineModeBtn').onclick=()=>{ hide('modeScreen'); show('joinScreen'); status('Online režim.'); };
 $('onlineClassicBtn').onclick=()=>setOnlineVariant('classic');
-$('onlineHostPlaysBtn').onclick=()=>setOnlineVariant('hostPlays');
 $('onlineSoloChallengeBtn').onclick=()=>setOnlineVariant('soloChallenge');
 function setOnlineVariant(v){
   onlineVariant = v;
-  $('onlineClassicBtn').className = v === 'classic' ? '' : 'secondary';
-  $('onlineHostPlaysBtn').className = v === 'hostPlays' ? '' : 'secondary';
-  $('onlineSoloChallengeBtn').className = v === 'soloChallenge' ? '' : 'secondary';
+  $('onlineClassicBtn').className = 'modeChoice' + (v === 'classic' ? ' selected' : '');
+  $('onlineSoloChallengeBtn').className = 'modeChoice' + (v === 'soloChallenge' ? ' selected' : '');
   $('onlineVariantInfo').textContent = v === 'soloChallenge'
-    ? 'Online výzva: hraje každý samostatně na svém telefonu, nahoře společná karta, dole vlastní karta, pořadí se počítá podle bodů a času.'
-    : (v === 'hostPlays'
-      ? 'Hraje i hlavní telefon. Na každém telefonu bude nahoře společná karta a dole vlastní karta hráče.'
-      : 'Hlavní telefon je jen centrální karta. Hráči mají svou kartu na svém telefonu.');
+    ? 'Hrají všichni: každý telefon má nahoře společnou kartu, dole vlastní kartu, pořadí se počítá podle bodů a času.'
+    : 'Hra s hlavním telefonem: hlavní telefon ukazuje společnou kartu, hráči mají svou kartu na svém telefonu.';
 }
 $('onlineBackBtn').onclick=()=>{ hide('joinScreen'); show('modeScreen'); status('Nepřipojeno'); };
 $('offlineModeBtn').onclick=()=>{ hide('modeScreen'); show('offlineSetup'); status('Offline výzva.'); };
@@ -228,6 +256,8 @@ $('offlineStartBtn').onclick=startOfflineGame;
 
 $('randomRoomBtn').onclick=()=>{ $('roomInput').value=String(Math.floor(10000+Math.random()*90000)); };
 $('roundsInput').oninput=()=> $('roundsValue').textContent=$('roundsInput').value;
+$('timeLimitInput').oninput=()=> $('timeLimitValue').textContent=$('timeLimitInput').value;
+$('gameTypeSelect').onchange=()=> updateGameTypeHint();
 $('enterBtn').onclick=enterRoom;
 $('startBtn').onclick=startGame;
 $('closeRoomBtn').onclick=()=> roomRef && remove(roomRef);
@@ -385,7 +415,7 @@ async function enterRoom(){
     const soloChallenge = onlineVariant === 'soloChallenge';
     const hostName = cleanName($('nameInput').value || 'Hlavní');
     const initialPlayers = hostPlays ? {[playerId]:{name:hostName,approved:true,score:0,joinedAt:Date.now(),hostPlayer:true}} : {};
-    await set(roomRef,{hostId:uid,status:'lobby',createdAt:Date.now(),settings:{rounds:Number($('roundsInput').value)||20,hostPlays,soloChallenge,onlineVariant},players:initialPlayers});
+    await set(roomRef,{hostId:uid,status:'lobby',createdAt:Date.now(),settings:{rounds:Number($('roundsInput').value)||20,timeLimit:Number($('timeLimitInput')?.value)||10,hostPlays,soloChallenge,onlineVariant,family:soloChallenge?'all':'main',gameType:'classic'},players:initialPlayers});
     onDisconnect(roomRef).remove();
     setupHost();
   }else{
@@ -407,12 +437,12 @@ function listenRoom(){
     if(role==='host') renderHost(room); else renderPlayer(room);
   });
 }
-function setupHost(){ show('hostLobby'); $('hostRoomCode').textContent=roomCode; status('Jsi hlavní telefon.'); }
+function setupHost(){ show('hostLobby'); $('hostRoomCode').textContent=roomCode; fillGameTypeSelect(); status('Jsi hlavní telefon.'); }
 function setupPlayer(){ show('playerLobby'); $('playerRoomCode').textContent=roomCode; status('Čekáš na schválení.'); }
 
 function renderHost(room){
   if(room.status==='lobby'){
-    hide('gameScreen'); hide('finishScreen'); show('hostLobby');
+    hide('gameScreen'); hide('finishScreen'); hide('centerMsg'); show('hostLobby'); fillGameTypeSelect();
     const box=$('hostPlayers'); box.innerHTML='';
     const players=room.players||{};
     const ids=Object.keys(players).sort((a,b)=>(players[b]?.joinedAt||0)-(players[a]?.joinedAt||0));
@@ -429,6 +459,12 @@ function renderHost(room){
   }else if(room.status==='running' || room.status==='roundResult'){
     showGameHost(room);
     handleHostWinner(room);
+  }else if(room.status==='kahootRunning' || room.status==='kahootResult'){
+    showKahootHost(room);
+    handleKahootHost(room);
+  }else if(room.status==='challengeRunning' || room.status==='challengeResult'){
+    showChallengeHost(room);
+    handleChallengeHost(room);
   }else if(room.status==='soloRunning' || room.status==='soloFinished'){
     showSoloChallenge(room, room.players?.[playerId] || {});
     checkSoloFinished(room);
@@ -442,6 +478,8 @@ function renderPlayer(room){
     $('waitingTitle').textContent=me.approved?'Jsi schválen. Čekej na start hry.':'Čekáš na schválení…';
     status(me.approved?'Schváleno, čekáš na start.':'Čekáš na schválení.');
   }else if(room.status==='running' || room.status==='roundResult') showGamePlayer(room,me);
+  else if(room.status==='kahootRunning' || room.status==='kahootResult') showKahootPlayer(room,me);
+  else if(room.status==='challengeRunning' || room.status==='challengeResult') showChallengePlayer(room,me);
   else if(room.status==='soloRunning' || room.status==='soloFinished') showSoloChallenge(room,me);
   else if(room.status==='finished') renderFinish(room,me);
 }
@@ -451,26 +489,35 @@ async function startGame(){
   const approved=Object.fromEntries(Object.entries(players).filter(([_,p])=>p.approved));
   if(!Object.keys(approved).length) return toast('Nejdřív schval aspoň jednoho hráče.');
   const rounds=Math.max(1,Math.min(100,Number($('roundsInput').value)||20));
+  const timeLimit=Math.max(5,Math.min(60,Number($('timeLimitInput').value)||10));
+  const gameType=$('gameTypeSelect')?.value || 'classic';
+  const family=room.settings?.family || (room.settings?.soloChallenge?'all':'main');
+  const hostPlays = family === 'all';
   const resets={};
   Object.keys(approved).forEach(id=>{
     resets[`players/${id}/score`]=0;
+    resets[`players/${id}/streak`]=0;
     resets[`players/${id}/soloScore`]=0;
     resets[`players/${id}/soloTimeMs`]=null;
     resets[`players/${id}/soloFinished`]=false;
     resets[`players/${id}/soloPlace`]=null;
+    resets[`players/${id}/frozenUntil`]=null;
   });
-  if(room.settings?.soloChallenge){
-    onlineSoloGame = null;
-    await update(roomRef,{
-      status:'soloRunning',
-      settings:{rounds,hostPlays:true,soloChallenge:true,onlineVariant:'soloChallenge'},
-      game:{challengeSeed:String(Math.floor(1000000+Math.random()*9000000)),startedAt:Date.now(),lastWinner:null},
-      ...resets
-    });
-    return;
+  const settings={rounds,timeLimit,hostPlays,soloChallenge:hostPlays,onlineVariant:hostPlays?'soloChallenge':'classic',family,gameType};
+  onlineSoloGame = null;
+  processedWinnerKey=''; autoAdvancing=false; localLockedRound=-1;
+  if(gameType==='classic'){
+    await update(roomRef,{status:'running',settings,game:{usedPairs:{},lastWinner:null},...resets});
+    await generateNextRound(1);
+  }else if(gameType==='kahoot'){
+    await update(roomRef,{status:'kahootRunning',settings,game:{usedPairs:{},lastWinner:null},...resets});
+    await generateKahootRound(1);
+  }else if(gameType==='onecard'){
+    await update(roomRef,{status:'challengeRunning',settings,game:{mode:'onecard',startedAt:Date.now(),endsAt:Date.now()+timeLimit*1000,mainCardId:Math.floor(Math.random()*CARDS.length),playerCards:{},clicks:{}},...resets});
+    await initChallengeCards('onecard');
+  }else if(gameType==='timeattack' || gameType==='deck'){
+    await update(roomRef,{status:'challengeRunning',settings,game:{mode:gameType,challengeSeed:String(Math.floor(1000000+Math.random()*9000000)),startedAt:Date.now(),endsAt:gameType==='timeattack'?Date.now()+timeLimit*1000:null},...resets});
   }
-  await update(roomRef,{status:'running',settings:{rounds,hostPlays:!!room.settings?.hostPlays,soloChallenge:false,onlineVariant:room.settings?.hostPlays?'hostPlays':'classic'},game:{usedPairs:{},lastWinner:null},...resets});
-  await generateNextRound(1);
 }
 async function generateNextRound(roundNumber){
   const snap=await get(roomRef); const room=snap.val(); if(!room) return;
@@ -479,13 +526,18 @@ async function generateNextRound(roundNumber){
   const players=Object.fromEntries(Object.entries(room.players||{}).filter(([_,p])=>p.approved));
   const lastWinnerId = room.game?.lastWinner?.playerId;
   const lastWinnerCard = room.game?.lastWinner?.nextMainCardId;
-  const mainCardId = (lastWinnerId && lastWinnerCard !== undefined) ? lastWinnerCard : Math.floor(Math.random()*CARDS.length);
+  const mainCardId = (lastWinnerId && lastWinnerCard !== undefined && lastWinnerCard !== null) ? lastWinnerCard : Math.floor(Math.random()*CARDS.length);
+  const prevCards = room.currentRound?.playerCards || {};
   const playerCards={}, locked={}, newPairs={};
   for(const id of Object.keys(players)){
-    const used=room.game?.usedPairs?.[id]||{};
-    const candidates=[];
-    for(let c=0;c<CARDS.length;c++) if(c!==mainCardId && !used[`${mainCardId}-${c}`]) candidates.push(c);
-    const playerCardId=sample(candidates.length?candidates:CARDS.map((_,i)=>i).filter(i=>i!==mainCardId));
+    let playerCardId = prevCards[id];
+    // Klasika: hráčům, kteří se netrefili, zůstává karta. Novou kartu dostane jen vítěz nebo hráč bez karty.
+    if(playerCardId === undefined || playerCardId === null || id === lastWinnerId || playerCardId === mainCardId){
+      const used=room.game?.usedPairs?.[id]||{};
+      const candidates=[];
+      for(let c=0;c<CARDS.length;c++) if(c!==mainCardId && !used[`${mainCardId}-${c}`]) candidates.push(c);
+      playerCardId=sample(candidates.length?candidates:CARDS.map((_,i)=>i).filter(i=>i!==mainCardId));
+    }
     playerCards[id]=playerCardId; locked[id]=false; newPairs[`game/usedPairs/${id}/${mainCardId}-${playerCardId}`]=true;
   }
   processedWinnerKey=''; autoAdvancing=false; localLockedRound=-1;
@@ -583,6 +635,7 @@ function showGameHost(room){
     const locked = !!r?.locked?.[playerId] || room.status === 'roundResult';
     renderCard($('playerCard'), myCard, !locked, r);
     $('playerCard').classList.toggle('disabled',locked);
+    setTimeout(()=>$('gameScreen').scrollIntoView({block:'center',behavior:'smooth'}),80);
     const me = room.players?.[playerId] || {};
     $('scorePanel').innerHTML=`<div class="rank">Body: ${me.score||0}</div><div class="small">${locked?'V tomto kole už nemůžeš klikat.':'Najdi společné emoji se společnou kartou.'}</div>`;
   }else{
@@ -612,6 +665,7 @@ function showGamePlayer(room,me){
   }
   renderCard($('playerCard'), myCard, !locked, r);
   $('playerCard').classList.toggle('disabled',locked);
+  if(hostPlays) setTimeout(()=>$('gameScreen').scrollIntoView({block:'center',behavior:'smooth'}),80);
   $('scorePanel').innerHTML=`<div class="rank">Body: ${me.score||0}</div><div class="small">${locked?'V tomto kole už nemůžeš klikat.':'Najdi společné emoji se společnou kartou.'}</div>`;
   showWinnerOverlay(room);
 }
@@ -758,6 +812,250 @@ async function checkSoloFinished(room){
   }
 }
 
+
+async function generateKahootRound(roundNumber){
+  const snap=await get(roomRef); const room=snap.val(); if(!room) return;
+  const total=room.settings?.rounds||20;
+  if(roundNumber>total){ await update(roomRef,{status:'finished',currentRound:null}); return; }
+  const players=Object.fromEntries(Object.entries(room.players||{}).filter(([_,p])=>p.approved));
+  const mainCardId=Math.floor(Math.random()*CARDS.length);
+  const playerCards={}, locked={};
+  for(const id of Object.keys(players)){
+    const candidates=CARDS.map((_,i)=>i).filter(i=>i!==mainCardId);
+    playerCards[id]=sample(candidates); locked[id]=false;
+  }
+  const now=Date.now(); const limit=(room.settings?.timeLimit||10)*1000;
+  processedWinnerKey=''; autoAdvancing=false; localLockedRound=-1; kahootTimerKey='';
+  await update(roomRef,{status:'kahootRunning',currentRound:{roundNumber,total,mainCardId,playerCards,locked,responses:{},startedAt:now,endsAt:now+limit}});
+}
+function handleKahootHost(room){
+  const r=room.currentRound; if(!r || room.status!=='kahootRunning') return;
+  const approvedIds=Object.entries(room.players||{}).filter(([_,p])=>p.approved).map(([id])=>id);
+  const responses=r.responses||{};
+  const allDone=approvedIds.length && approvedIds.every(id=>responses[id]);
+  if(allDone || Date.now()>=r.endsAt){ finishKahootRound(room); return; }
+  const key=`${r.roundNumber}-${r.endsAt}`;
+  if(kahootTimerKey!==key){
+    kahootTimerKey=key;
+    setTimeout(async()=>{ const snap=await get(roomRef); const fresh=snap.val(); if(fresh?.status==='kahootRunning') finishKahootRound(fresh); }, Math.max(100,r.endsAt-Date.now()+80));
+  }
+}
+async function finishKahootRound(room){
+  const r=room.currentRound; if(!r || room.status!=='kahootRunning') return;
+  const responses=r.responses||{}; const updates={status:'kahootResult'};
+  const timeLimit=(room.settings?.timeLimit||10)*1000;
+  const correctRows=Object.entries(responses).filter(([id,res])=>res.correct).sort((a,b)=>a[1].timeMs-b[1].timeMs);
+  const byId=Object.fromEntries(correctRows.map(([id,res],i)=>[id,{...res,place:i+1}]));
+  Object.entries(room.players||{}).filter(([_,p])=>p.approved).forEach(([id,p])=>{
+    const res=byId[id];
+    if(res){
+      const speed=Math.max(0, 1 - (res.timeMs/timeLimit));
+      let pts=Math.round(350 + 650*speed);
+      const streak=(p.streak||0)+1;
+      if(streak>=3) pts += Math.min(500, (streak-2)*100);
+      updates[`players/${id}/score`]=(p.score||0)+pts;
+      updates[`players/${id}/streak`]=streak;
+      updates[`currentRound/responses/${id}/points`]=pts;
+      updates[`currentRound/responses/${id}/place`]=res.place;
+    }else{
+      updates[`players/${id}/streak`]=0;
+      if(!responses[id]) updates[`currentRound/responses/${id}`]={correct:false,timeMs:null,points:0,missed:true};
+    }
+  });
+  await update(roomRef,updates);
+}
+function showKahootHost(room){
+  hide('hostLobby'); hide('playerLobby'); hide('finishScreen'); hide('centerMsg'); show('gameScreen'); show('hostCard'); show('scorePanel');
+  const r=room.currentRound; const hostPlays=!!room.settings?.hostPlays;
+  $('rolePill').textContent='Kahoot'; $('roundPill').textContent=`Kolo ${r?.roundNumber||'?'} / ${r?.total||'?'}`;
+  if(hostPlays){ showKahootPlayer(room, room.players?.[playerId]||{}); return; }
+  $('gameScreen').classList.remove('onlineSplit'); hide('onlineMainLabel'); hide('onlinePlayerLabel'); hide('playerCard');
+  renderCard($('hostCard'), r?.mainCardId, false, r);
+  renderKahootPanel(room, true);
+}
+function showKahootPlayer(room,me){
+  hide('hostLobby'); hide('playerLobby'); hide('finishScreen'); hide('centerMsg'); show('gameScreen'); show('scorePanel');
+  const r=room.currentRound; const hostPlays=!!room.settings?.hostPlays;
+  $('rolePill').textContent=me?.name || 'Hráč'; $('roundPill').textContent=`Kolo ${r?.roundNumber||'?'} / ${r?.total||'?'}`;
+  if(hostPlays){ $('gameScreen').classList.add('onlineSplit'); show('onlineMainLabel'); show('onlinePlayerLabel'); show('hostCard'); show('playerCard'); $('hostCard').classList.add('onlineCard'); $('playerCard').classList.add('onlineCard'); renderCard($('hostCard'), r?.mainCardId, false, r); }
+  else{ $('gameScreen').classList.remove('onlineSplit'); hide('onlineMainLabel'); hide('onlinePlayerLabel'); hide('hostCard'); show('playerCard'); }
+  const responded=!!r?.responses?.[playerId] || room.status==='kahootResult';
+  renderKahootPlayerCard($('playerCard'), r, !responded && room.status==='kahootRunning');
+  $('playerCard').classList.toggle('disabled',responded);
+  renderKahootPanel(room, role==='host');
+}
+function renderKahootPlayerCard(el, round, clickable){
+  el.innerHTML=''; if(!round) return;
+  const cardId=round.playerCards?.[playerId]; if(cardId===undefined) return;
+  const pos=getPositions(CARDS[cardId].length);
+  stableShuffle([...CARDS[cardId]], `kahoot-${round.roundNumber}-${cardId}`).forEach((sym,i)=>{
+    const b=document.createElement('button'); b.className='symbol'; b.style.left=pos[i][0]+'%'; b.style.top=pos[i][1]+'%'; b.style.fontSize=pos[i][2]+'px'; b.disabled=!clickable;
+    const img=document.createElement('img'); img.src=SYMBOL_FILES[sym]; img.alt=EMOJIS[sym]; img.draggable=false; b.appendChild(img);
+    if(clickable) b.onclick=()=>kahootClick(sym,b,round);
+    el.appendChild(b);
+  });
+}
+async function kahootClick(symbol, btnEl, round){
+  if(!round || localLockedRound===round.roundNumber || roomCode==null) return;
+  localLockedRound=round.roundNumber;
+  const myCard=round.playerCards?.[playerId]; const correct=commonSymbol(round.mainCardId,myCard)===symbol;
+  btnEl.classList.add(correct?'good':'bad');
+  const timeMs=Math.max(0,Date.now()-round.startedAt);
+  await update(roomRef,{[`currentRound/responses/${playerId}`]:{correct,symbol,timeMs,points:0},[`currentRound/locked/${playerId}`]:true});
+}
+function renderKahootPanel(room, hostControls=false){
+  const r=room.currentRound; const responses=r?.responses||{}; const ranking=getRanking(room);
+  const left=r?.endsAt?Math.max(0,(r.endsAt-Date.now())/1000):0;
+  const meIndex=ranking.findIndex(([id])=>id===playerId);
+  const gap=meIndex>0 ? Math.max(0,(ranking[meIndex-1][1].score||0)-(ranking[meIndex][1].score||0)) : 0;
+  let html=`<div class="rank">${room.status==='kahootResult'?'Výsledky kola':'Zbývá '+left.toFixed(1)+' s'}</div><div class="timerBar"><div style="width:${r?.endsAt?Math.max(0,Math.min(100,100*left/(room.settings?.timeLimit||10))):0}%"></div></div>`;
+  html += Object.entries(room.players||{}).filter(([_,p])=>p.approved).map(([id,p])=>{
+    const res=responses[id]; const score=p.score||0; const pts=res?.points||0;
+    return `<div class="player"><div><b>${esc(p.name)}</b><div class="small">${res?(res.correct?`správně · +${pts}`:'špatně / nic'):'čeká se'}</div></div><div class="score">${score}</div></div>`;
+  }).join('');
+  if(meIndex>=0 && role!=='host') html = `<div class="rank">Aktuálně ${meIndex+1}. místo</div><p class="small">Na soupeře před tebou ztrácíš ${gap} bodů.</p>` + html;
+  if(room.status==='kahootResult' && hostControls && r){ html += `<button class="nextBtn" onclick="window.nextDobbleRound()">${r.roundNumber>=r.total?'Ukončit hru':'Další kolo'}</button>`; }
+  $('scorePanel').innerHTML=html;
+}
+window.nextDobbleRound=async()=>{
+  const snap=await get(roomRef); const room=snap.val(); if(!room?.currentRound) return;
+  const r=room.currentRound;
+  if(room.status==='kahootResult') await generateKahootRound(r.roundNumber+1);
+  else if(room.status==='challengeResult') await update(roomRef,{status:'finished'});
+};
+function getRanking(room){ return Object.entries(room.players||{}).filter(([_,p])=>p.approved).sort((a,b)=>(b[1].score||0)-(a[1].score||0)); }
+
+async function initChallengeCards(mode){
+  const snap=await get(roomRef); const room=snap.val(); if(!room) return;
+  const mainCardId=room.game?.mainCardId ?? Math.floor(Math.random()*CARDS.length);
+  const updates={};
+  Object.entries(room.players||{}).filter(([_,p])=>p.approved).forEach(([id])=>{
+    const candidates=CARDS.map((_,i)=>i).filter(i=>i!==mainCardId);
+    updates[`game/playerCards/${id}`]=sample(candidates);
+    updates[`game/clicks/${id}`]=0;
+  });
+  await update(roomRef,updates);
+}
+function showChallengeHost(room){
+  hide('hostLobby'); hide('playerLobby'); hide('finishScreen'); hide('centerMsg'); show('gameScreen'); show('hostCard'); show('scorePanel');
+  const mode=room.settings?.gameType;
+  if(room.settings?.hostPlays){ showChallengePlayer(room, room.players?.[playerId]||{}); return; }
+  $('gameScreen').classList.remove('onlineSplit'); hide('onlineMainLabel'); hide('onlinePlayerLabel'); hide('playerCard');
+  $('rolePill').textContent=GAME_TYPES[mode]?.label || 'Hra'; $('roundPill').textContent='Běží hra';
+  renderCard($('hostCard'), room.game?.mainCardId, false, {roundNumber:1});
+  renderChallengePanel(room, true);
+}
+function handleChallengeHost(room){
+  if(room.status!=='challengeRunning') return;
+  const mode=room.settings?.gameType;
+  if(mode==='onecard' || mode==='timeattack'){
+    const endsAt=room.game?.endsAt; if(!endsAt) return;
+    if(Date.now()>=endsAt){ update(roomRef,{status:'challengeResult'}); return; }
+    const key=`${mode}-${endsAt}`;
+    if(challengeTimerKey!==key){ challengeTimerKey=key; setTimeout(async()=>{ const snap=await get(roomRef); const fresh=snap.val(); if(fresh?.status==='challengeRunning') update(roomRef,{status:'challengeResult'}); }, Math.max(100,endsAt-Date.now()+80)); }
+  }else if(mode==='deck'){
+    const approved=Object.entries(room.players||{}).filter(([_,p])=>p.approved);
+    if(approved.length && approved.every(([_,p])=>p.soloFinished)) update(roomRef,{status:'challengeResult'});
+  }
+}
+function showChallengePlayer(room,me){
+  const mode=room.settings?.gameType;
+  if(mode==='timeattack' || mode==='deck') return showSoloSpeedMode(room,me,mode);
+  hide('hostLobby'); hide('playerLobby'); hide('finishScreen'); hide('centerMsg'); show('gameScreen'); show('scorePanel');
+  const hostPlays=!!room.settings?.hostPlays;
+  $('rolePill').textContent=me?.name||'Hráč'; $('roundPill').textContent='Jedna karta';
+  if(hostPlays){ $('gameScreen').classList.add('onlineSplit'); show('onlineMainLabel'); show('onlinePlayerLabel'); show('hostCard'); show('playerCard'); $('hostCard').classList.add('onlineCard'); $('playerCard').classList.add('onlineCard'); renderCard($('hostCard'), room.game?.mainCardId, false, {roundNumber:1}); }
+  else{ $('gameScreen').classList.remove('onlineSplit'); hide('onlineMainLabel'); hide('onlinePlayerLabel'); hide('hostCard'); show('playerCard'); }
+  const frozen=(me?.frozenUntil||0)>Date.now();
+  renderChallengeClickCard($('playerCard'), room, !frozen && room.status==='challengeRunning');
+  $('playerCard').classList.toggle('frozen',frozen);
+  renderChallengePanel(room, role==='host');
+}
+function renderChallengeClickCard(el, room, clickable){
+  el.innerHTML=''; const cardId=room.game?.playerCards?.[playerId]; if(cardId===undefined) return;
+  const pos=getPositions(CARDS[cardId].length);
+  stableShuffle([...CARDS[cardId]], `onecard-${cardId}-${room.game?.clicks?.[playerId]||0}`).forEach((sym,i)=>{
+    const b=document.createElement('button'); b.className='symbol'; b.style.left=pos[i][0]+'%'; b.style.top=pos[i][1]+'%'; b.style.fontSize=pos[i][2]+'px'; b.disabled=!clickable;
+    const img=document.createElement('img'); img.src=SYMBOL_FILES[sym]; img.alt=EMOJIS[sym]; img.draggable=false; b.appendChild(img);
+    if(clickable) b.onclick=()=>challengeOneCardClick(sym,b,room);
+    el.appendChild(b);
+  });
+}
+async function challengeOneCardClick(symbol, btnEl, room){
+  const mainCardId=room.game?.mainCardId; const cardId=room.game?.playerCards?.[playerId]; if(cardId===undefined) return;
+  const correct=commonSymbol(mainCardId,cardId)===symbol; const updates={};
+  if(correct){
+    btnEl.classList.add('good');
+    const streak=(room.players?.[playerId]?.streak||0)+1;
+    const bonus=streak>=3?Math.min(5,streak-2):0;
+    updates[`players/${playerId}/score`]=(room.players?.[playerId]?.score||0)+1+bonus;
+    updates[`players/${playerId}/streak`]=streak;
+    updates[`game/clicks/${playerId}`]=(room.game?.clicks?.[playerId]||0)+1;
+    const candidates=CARDS.map((_,i)=>i).filter(i=>i!==mainCardId);
+    updates[`game/playerCards/${playerId}`]=sample(candidates);
+  }else{
+    btnEl.classList.add('bad');
+    updates[`players/${playerId}/streak`]=0;
+    updates[`players/${playerId}/frozenUntil`]=Date.now()+5000;
+  }
+  await update(roomRef,updates);
+}
+function renderChallengePanel(room, hostControls=false){
+  const left=room.game?.endsAt?Math.max(0,(room.game.endsAt-Date.now())/1000):0;
+  let html=`<div class="rank">${room.status==='challengeResult'?'Konec časového limitu':'Zbývá '+left.toFixed(1)+' s'}</div>`;
+  if(room.game?.endsAt) html+=`<div class="timerBar"><div style="width:${Math.max(0,Math.min(100,100*left/(room.settings?.timeLimit||10)))}%"></div></div>`;
+  html += getRanking(room).map(([id,p],i)=>`<div class="player"><div><b>${i+1}. ${esc(p.name)}</b><div class="small">${(p.frozenUntil||0)>Date.now()?'stopka za chybu':'hraje'}</div></div><div class="score">${p.score||0}</div></div>`).join('');
+  if(room.status==='challengeResult' && hostControls) html+=`<button class="nextBtn" onclick="window.nextDobbleRound()">Ukončit a ukázat pořadí</button>`;
+  $('scorePanel').innerHTML=html;
+}
+function ensureSoloSpeedGame(room,mode){
+  const rounds = mode==='deck' ? (room.settings?.rounds||20) : 9999;
+  const seed = `${room.game?.challengeSeed||'1234567'}-${playerId}-${mode}`;
+  if(onlineSoloGame && onlineSoloGame.seed===seed && onlineSoloGame.mode===mode) return;
+  onlineSoloGame={mode,seed,rounds,current:0,score:0,streak:0,startTime:performance.now(),endTime:null,finishedSent:false,frozenUntil:0,data:makeOfflineRounds(String(hashSeed(seed)).slice(0,7).padStart(7,'1'), Math.min(rounds,100))};
+}
+function showSoloSpeedMode(room,me,mode){
+  hide('hostLobby'); hide('playerLobby'); hide('finishScreen'); hide('centerMsg'); show('gameScreen'); show('scorePanel');
+  $('gameScreen').classList.add('onlineSplit'); show('onlineMainLabel'); show('onlinePlayerLabel'); show('hostCard'); show('playerCard'); $('hostCard').classList.add('onlineCard'); $('playerCard').classList.add('onlineCard');
+  $('rolePill').textContent=me?.name||'Hráč'; ensureSoloSpeedGame(room,mode);
+  const game=onlineSoloGame; const ended = mode==='timeattack' ? Date.now()>room.game.endsAt : game.current>=game.rounds;
+  if(ended && !game.finishedSent) finishSoloSpeedMode(room,game);
+  const r=game.data[game.current % game.data.length];
+  $('roundPill').textContent = mode==='deck' ? `Karta ${Math.min(game.current+1,game.rounds)} / ${game.rounds}` : `Body ${game.score}`;
+  renderCard($('hostCard'), r?.mainCardId, false, r);
+  renderSoloSpeedPlayerCard($('playerCard'), r, !ended && Date.now()>=game.frozenUntil);
+  $('playerCard').classList.toggle('frozen',Date.now()<game.frozenUntil);
+  renderSoloSpeedPanel(room,me,game,mode);
+}
+function renderSoloSpeedPlayerCard(el, round, clickable){
+  el.innerHTML=''; if(!round) return;
+  const pos=getPositions(CARDS[round.playerCardId].length);
+  stableShuffle([...CARDS[round.playerCardId]], `speed-${onlineSoloGame.seed}-${round.roundNumber}-${onlineSoloGame.current}`).forEach((sym,i)=>{
+    const b=document.createElement('button'); b.className='symbol'; b.style.left=pos[i][0]+'%'; b.style.top=pos[i][1]+'%'; b.style.fontSize=pos[i][2]+'px'; b.disabled=!clickable;
+    const img=document.createElement('img'); img.src=SYMBOL_FILES[sym]; img.alt=EMOJIS[sym]; img.draggable=false; b.appendChild(img);
+    if(clickable) b.onclick=()=>soloSpeedClick(sym,b,round);
+    el.appendChild(b);
+  });
+}
+async function soloSpeedClick(symbol, btnEl, round){
+  const game=onlineSoloGame; if(!game || Date.now()<game.frozenUntil) return;
+  const correct=commonSymbol(round.mainCardId,round.playerCardId)===symbol;
+  if(correct){
+    btnEl.classList.add('good'); game.streak++; const bonus=game.streak>=3?Math.min(5,game.streak-2):0; game.score+=1+bonus; game.current++;
+  }else{ btnEl.classList.add('bad'); game.streak=0; game.frozenUntil=Date.now()+5000; }
+  await update(ref(db,`rooms/${roomCode}/players/${playerId}`),{score:game.score,streak:game.streak,frozenUntil:game.frozenUntil});
+  setTimeout(async()=>{ const snap=await get(roomRef); const room=snap.val(); if(room) showSoloSpeedMode(room,room.players?.[playerId]||{},room.settings?.gameType); },180);
+}
+async function finishSoloSpeedMode(room,game){
+  if(game.finishedSent) return; game.finishedSent=true; game.endTime=performance.now();
+  await update(ref(db,`rooms/${roomCode}/players/${playerId}`),{score:game.score,soloFinished:true,soloTimeMs:Math.round(game.endTime-game.startTime)});
+}
+function renderSoloSpeedPanel(room,me,game,mode){
+  const ranking=getRanking(room); const place=ranking.findIndex(([id])=>id===playerId)+1; const gap=place>1?((ranking[place-2][1].score||0)-(ranking[place-1][1].score||0)):0;
+  const left=mode==='timeattack'?Math.max(0,(room.game.endsAt-Date.now())/1000):null;
+  $('scorePanel').innerHTML=`<div class="rank">${place>0?place+'. místo':'Hraješ'} · ${game.score} bodů</div><p class="small">${gap>0?'Na soupeře před tebou ztrácíš '+gap+' bodů.':'Jsi průběžně první nebo bez soupeřů.'}</p>${left!==null?`<div class="timerBar"><div style="width:${Math.max(0,Math.min(100,100*left/(room.settings?.timeLimit||10)))}%"></div></div>`:''}${Date.now()<game.frozenUntil?`<p class="small">Stopka ještě ${((game.frozenUntil-Date.now())/1000).toFixed(1)} s</p>`:''}`;
+}
+
 function getPositions(count){
   const positions = [];
 
@@ -839,15 +1137,20 @@ function showWinnerOverlay(room){
 }
 function renderFinish(room,me=null){
   hide('hostLobby'); hide('playerLobby'); hide('gameScreen'); show('finishScreen'); hide('centerMsg');
-  const players=Object.entries(room.players||{}).filter(([_,p])=>p.approved).sort((a,b)=>(b[1].score||0)-(a[1].score||0));
-  if(role==='host'){
-    $('finishScreen').innerHTML=`<h2>Výsledky</h2>${players.map(([id,p],i)=>`<div class="player"><div><b>${i+1}. ${esc(p.name)}</b></div><div class="score">${p.score||0}</div></div>`).join('')}<button class="danger" onclick="location.reload()" style="margin-top:14px">Zavřít</button>`;
-  }else{
-    const place=players.findIndex(([id])=>id===playerId)+1;
-    $('finishScreen').innerHTML=`<div class="confetti">🎉</div><h2>Hotovo</h2><div class="rank">${place}. místo</div><p>Body: <b>${me?.score||0}</b></p><button class="secondary" onclick="location.reload()">Zpět</button>`;
-  }
+  const players=Object.entries(room.players||{}).filter(([_,p])=>p.approved).sort((a,b)=>{
+    const ds=(b[1].score||0)-(a[1].score||0); if(ds) return ds;
+    const ta=a[1].soloTimeMs ?? 999999999; const tb=b[1].soloTimeMs ?? 999999999; return ta-tb;
+  });
+  const rows=players.map(([id,p],i)=>`<div class="player"><div><b>${i+1}. ${esc(p.name)}</b><div class="small">${p.soloTimeMs?((p.soloTimeMs/1000).toFixed(2)+' s'):''}</div></div><div class="score">${p.score||0}</div></div>`).join('');
+  const place=players.findIndex(([id])=>id===playerId)+1;
+  $('finishScreen').innerHTML=`<div class="confetti">🎉</div><h2>Celkové pořadí</h2>${role!=='host'?`<div class="rank">${place}. místo · ${me?.score||0} bodů</div>`:''}${rows}<div class="row" style="margin-top:14px"><button onclick="window.backToLobby()">Zpět do místnosti</button><button class="secondary" onclick="location.reload()">Odejít</button></div>`;
   status('Hra skončila.');
 }
+window.backToLobby=async()=>{
+  if(!roomRef) return location.reload();
+  onlineSoloGame=null; processedWinnerKey=''; autoAdvancing=false; localLockedRound=-1;
+  await update(roomRef,{status:'lobby',currentRound:null,game:null});
+};
 function btn(text,cls='secondary'){ const b=document.createElement('button'); b.textContent=text; b.className=cls; b.style.width='auto'; return b; }
 function esc(s){ return String(s||'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
 function resetUI(msg){ toast(msg); setTimeout(()=>location.reload(),900); }
