@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#22c55e" />
-  <title>Dobble Reflex</title>
+  <title>NajdiTo! Reflex</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icons/icon-192.png" />
   <style>
@@ -24,15 +24,15 @@
     input{text-align:center;font-size:22px;font-weight:850;letter-spacing:.08em}input.name{font-size:18px;letter-spacing:0;text-align:left}button{font-weight:850;cursor:pointer;background:linear-gradient(135deg,#16a34a,#22c55e);border:0;color:#052e16;box-shadow:0 10px 28px rgba(34,197,94,.2)}button.secondary{background:rgba(255,255,255,.09);color:var(--text);box-shadow:none;border:1px solid var(--line)}button.danger{background:linear-gradient(135deg,#dc2626,#fb7185);color:#fff}button:disabled{cursor:not-allowed}.small{font-size:13px;color:var(--muted)}
     .hostSettings{margin:12px 0;padding:12px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.045)}.hostSettings select,.hostSettings input[type="range"]{width:100%}.hostSettings .hint{margin-top:8px}.nextBtn{margin-top:12px}.timerBar{height:10px;border-radius:999px;background:rgba(255,255,255,.1);overflow:hidden;margin:8px 0}.timerBar>div{height:100%;background:linear-gradient(90deg,#22c55e,#facc15);width:100%;transition:width .2s linear}.frozen{opacity:.65;filter:grayscale(.25)}
     .topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.pill{padding:8px 12px;background:rgba(255,255,255,.08);border:1px solid var(--line);border-radius:999px;font-weight:800;color:var(--muted)}
-    .dobble{position:relative;margin:18px auto;width:min(88vw,430px);height:min(88vw,430px);border-radius:50%;background:#f8fafc;color:#111827;box-shadow:inset 0 0 0 8px rgba(15,23,42,.08),0 18px 44px rgba(0,0,0,.34);overflow:hidden;touch-action:manipulation}.dobble.disabled{filter:none;opacity:1}.symbol{position:absolute;transform:translate(-50%,-50%);border:0;background:transparent;box-shadow:none;color:inherit;padding:0;width:auto;line-height:1;display:grid;place-items:center;transition:transform .12s ease,filter .12s ease}.symbol img{width:1em;height:1em;display:block;pointer-events:none;user-select:none}.symbol:active{transform:translate(-50%,-50%) scale(.9)}.symbol.bad{filter:drop-shadow(0 0 10px var(--red))}.symbol.good{filter:drop-shadow(0 0 10px var(--green))}
-    .onlineChoices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:10px 0 12px}.modeChoice{position:relative;text-align:left;border:1px solid var(--line);border-radius:22px;padding:12px;background:rgba(255,255,255,.075);color:var(--text);box-shadow:none;overflow:hidden}.modeChoice.selected{outline:3px solid rgba(34,197,94,.45);background:linear-gradient(180deg,rgba(34,197,94,.2),rgba(255,255,255,.07));color:var(--text)}.modeChoice h3{margin:8px 0 4px;font-size:18px}.modeChoice p{margin:0;color:var(--muted);font-size:13px;line-height:1.25}.modeIllustration{position:relative;height:210px;border-radius:18px;background:radial-gradient(circle at center,rgba(56,189,248,.18),rgba(255,255,255,.04));border:1px solid var(--line);overflow:hidden}.phone{position:absolute;width:40px;height:66px;border-radius:10px;background:linear-gradient(180deg,#334155,#0f172a);border:2px solid rgba(255,255,255,.48);box-shadow:0 10px 22px rgba(0,0,0,.28)}.phone.big{width:66px;height:106px;border-radius:16px}.phone::before{content:"";position:absolute;left:50%;top:5px;transform:translateX(-50%);width:18px;height:3px;border-radius:999px;background:rgba(255,255,255,.42)}.phone::after{content:"";position:absolute;left:50%;bottom:5px;transform:translateX(-50%);width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.26)}.dobbleMini{position:absolute;border-radius:50%;background:#f8fafc;box-shadow:inset 0 0 0 3px rgba(15,23,42,.12),0 5px 12px rgba(0,0,0,.28)}.dobbleMini.big{width:50px;height:50px}.dobbleMini.small{width:24px;height:24px}.dobbleMini::before,.dobbleMini::after{content:"";position:absolute;border-radius:50%;background:#22c55e}.dobbleMini::before{width:7px;height:7px;left:7px;top:8px}.dobbleMini::after{width:6px;height:6px;right:7px;bottom:8px;background:#38bdf8}.dobbleMini span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:11px}.centralPhone{left:50%;top:50%;transform:translate(-50%,-50%)}.centralPhone .dobbleMini{left:50%;top:50%;transform:translate(-50%,-50%)}.ringPhone{left:calc(50% + var(--x));top:calc(50% + var(--y));transform:translate(-50%,-50%) rotate(var(--rot,0deg))}.ringPhone .dobbleMini.one{left:50%;top:50%;transform:translate(-50%,-50%)}.ringPhone .dobbleMini.twoA{left:50%;top:33%;transform:translate(-50%,-50%)}.ringPhone .dobbleMini.twoB{left:50%;top:67%;transform:translate(-50%,-50%)}@media (max-width:680px){.onlineChoices{grid-template-columns:1fr}.modeIllustration{height:190px}}
+    .najdito{position:relative;margin:18px auto;width:min(88vw,430px);height:min(88vw,430px);border-radius:50%;background:#f8fafc;color:#111827;box-shadow:inset 0 0 0 8px rgba(15,23,42,.08),0 18px 44px rgba(0,0,0,.34);overflow:hidden;touch-action:manipulation}.najdito.disabled{filter:none;opacity:1}.symbol{position:absolute;transform:translate(-50%,-50%);border:0;background:transparent;box-shadow:none;color:inherit;padding:0;width:auto;line-height:1;display:grid;place-items:center;transition:transform .12s ease,filter .12s ease}.symbol img{width:1em;height:1em;display:block;pointer-events:none;user-select:none}.symbol:active{transform:translate(-50%,-50%) scale(.9)}.symbol.bad{filter:drop-shadow(0 0 10px var(--red))}.symbol.good{filter:drop-shadow(0 0 10px var(--green))}
+    .onlineChoices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:10px 0 12px}.modeChoice{position:relative;text-align:left;border:1px solid var(--line);border-radius:22px;padding:12px;background:rgba(255,255,255,.075);color:var(--text);box-shadow:none;overflow:hidden}.modeChoice.selected{outline:3px solid rgba(34,197,94,.45);background:linear-gradient(180deg,rgba(34,197,94,.2),rgba(255,255,255,.07));color:var(--text)}.modeChoice h3{margin:8px 0 4px;font-size:18px}.modeChoice p{margin:0;color:var(--muted);font-size:13px;line-height:1.25}.modeIllustration{position:relative;height:210px;border-radius:18px;background:radial-gradient(circle at center,rgba(56,189,248,.18),rgba(255,255,255,.04));border:1px solid var(--line);overflow:hidden}.phone{position:absolute;width:40px;height:66px;border-radius:10px;background:linear-gradient(180deg,#334155,#0f172a);border:2px solid rgba(255,255,255,.48);box-shadow:0 10px 22px rgba(0,0,0,.28)}.phone.big{width:66px;height:106px;border-radius:16px}.phone::before{content:"";position:absolute;left:50%;top:5px;transform:translateX(-50%);width:18px;height:3px;border-radius:999px;background:rgba(255,255,255,.42)}.phone::after{content:"";position:absolute;left:50%;bottom:5px;transform:translateX(-50%);width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.26)}.najditoMini{position:absolute;border-radius:50%;background:#f8fafc;box-shadow:inset 0 0 0 3px rgba(15,23,42,.12),0 5px 12px rgba(0,0,0,.28)}.najditoMini.big{width:50px;height:50px}.najditoMini.small{width:24px;height:24px}.najditoMini::before,.najditoMini::after{content:"";position:absolute;border-radius:50%;background:#22c55e}.najditoMini::before{width:7px;height:7px;left:7px;top:8px}.najditoMini::after{width:6px;height:6px;right:7px;bottom:8px;background:#38bdf8}.najditoMini span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:11px}.centralPhone{left:50%;top:50%;transform:translate(-50%,-50%)}.centralPhone .najditoMini{left:50%;top:50%;transform:translate(-50%,-50%)}.ringPhone{left:calc(50% + var(--x));top:calc(50% + var(--y));transform:translate(-50%,-50%) rotate(var(--rot,0deg))}.ringPhone .najditoMini.one{left:50%;top:50%;transform:translate(-50%,-50%)}.ringPhone .najditoMini.twoA{left:50%;top:33%;transform:translate(-50%,-50%)}.ringPhone .najditoMini.twoB{left:50%;top:67%;transform:translate(-50%,-50%)}@media (max-width:680px){.onlineChoices{grid-template-columns:1fr}.modeIllustration{height:190px}}
     .centerMsg{position:fixed;inset:0;display:grid;place-items:center;background:rgba(2,6,23,.35);z-index:50;pointer-events:none}.centerMsg>div{background:rgba(15,23,42,.95);border:1px solid var(--line);padding:20px 28px;border-radius:24px;font-size:clamp(28px,8vw,54px);font-weight:950;text-align:center;box-shadow:var(--shadow)}
     .players{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-top:12px}.player{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.06)}.player b{font-size:18px}.actions{display:flex;gap:8px}.actions button{padding:9px 10px;border-radius:12px}.score{font-weight:950;color:var(--yellow)}.footer{position:fixed;left:0;right:0;bottom:0;padding:8px 12px calc(8px + env(safe-area-inset-bottom));background:rgba(15,23,42,.82);backdrop-filter:blur(10px);border-top:1px solid var(--line);z-index:20}.footer .inner{max-width:860px;margin:auto;display:flex;gap:10px;align-items:center;justify-content:space-between}.statusText{font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rank{font-size:22px;font-weight:950}.confetti{font-size:42px}.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:#111827;color:white;border:1px solid var(--line);border-radius:999px;padding:10px 16px;font-weight:850;z-index:100;box-shadow:var(--shadow);max-width:90vw;text-align:center}#keepAwakeVideo{position:fixed;left:-20px;top:-20px;width:1px;height:1px;opacity:0;pointer-events:none}.offlineSplit{display:grid;grid-template-rows:1fr 1fr;gap:10px;height:calc(100vh - 150px);min-height:560px}.onlineSplit{display:grid;grid-template-rows:auto 1fr auto 1fr;gap:8px;height:calc(100vh - 150px);min-height:560px}.onlineCard{width:min(78vw,360px);height:min(78vw,360px);margin:6px auto 2px}.offlineCard{width:min(78vw,360px);height:min(78vw,360px);margin:8px auto 4px}.offlineLabel{text-align:center;font-weight:850}@media (max-height:760px){.offlineSplit,.onlineSplit{height:auto;min-height:0}.offlineCard,.onlineCard{width:min(68vw,300px);height:min(68vw,300px)}}
   </style>
 </head>
 <body>
 <div class="app">
-  <h1>Dobble Reflex</h1>
+  <h1>NajdiTo! Reflex</h1>
   <p class="sub">Jeden hlavní telefon uprostřed. Ostatní hráči hledají společné emoji.</p>
 
   <section id="modeScreen" class="card">
@@ -49,29 +49,29 @@
     <div class="onlineChoices" aria-label="Výběr varianty online hry">
       <button id="onlineClassicBtn" class="modeChoice selected" type="button">
         <div class="modeIllustration" aria-hidden="true">
-          <div class="phone big centralPhone"><div class="dobbleMini big"><span>⭐</span></div></div>
-          <div class="phone ringPhone" style="--x:0px;--y:-78px;--rot:0deg"><div class="dobbleMini small one"><span>⚡</span></div></div>
-          <div class="phone ringPhone" style="--x:68px;--y:-39px;--rot:20deg"><div class="dobbleMini small one"><span>🐸</span></div></div>
-          <div class="phone ringPhone" style="--x:68px;--y:39px;--rot:-20deg"><div class="dobbleMini small one"><span>🚀</span></div></div>
-          <div class="phone ringPhone" style="--x:0px;--y:78px;--rot:0deg"><div class="dobbleMini small one"><span>🍎</span></div></div>
-          <div class="phone ringPhone" style="--x:-68px;--y:39px;--rot:20deg"><div class="dobbleMini small one"><span>🎲</span></div></div>
-          <div class="phone ringPhone" style="--x:-68px;--y:-39px;--rot:-20deg"><div class="dobbleMini small one"><span>🔥</span></div></div>
+          <div class="phone big centralPhone"><div class="najditoMini big"><span>⭐</span></div></div>
+          <div class="phone ringPhone" style="--x:0px;--y:-78px;--rot:0deg"><div class="najditoMini small one"><span>⚡</span></div></div>
+          <div class="phone ringPhone" style="--x:68px;--y:-39px;--rot:20deg"><div class="najditoMini small one"><span>🐸</span></div></div>
+          <div class="phone ringPhone" style="--x:68px;--y:39px;--rot:-20deg"><div class="najditoMini small one"><span>🚀</span></div></div>
+          <div class="phone ringPhone" style="--x:0px;--y:78px;--rot:0deg"><div class="najditoMini small one"><span>🍎</span></div></div>
+          <div class="phone ringPhone" style="--x:-68px;--y:39px;--rot:20deg"><div class="najditoMini small one"><span>🎲</span></div></div>
+          <div class="phone ringPhone" style="--x:-68px;--y:-39px;--rot:-20deg"><div class="najditoMini small one"><span>🔥</span></div></div>
         </div>
         <h3>Hra s hlavním telefonem</h3>
         <p>Uprostřed je hlavní telefon se společnou kartou. Okolo hráči hledají shodný symbol na své kartě.</p>
       </button>
       <button id="onlineSoloChallengeBtn" class="modeChoice" type="button">
         <div class="modeIllustration" aria-hidden="true">
-          <div class="phone ringPhone" style="--x:0px;--y:-76px;--rot:0deg"><div class="dobbleMini small twoA"><span>⭐</span></div><div class="dobbleMini small twoB"><span>🐶</span></div></div>
-          <div class="phone ringPhone" style="--x:59px;--y:-47px;--rot:16deg"><div class="dobbleMini small twoA"><span>⚡</span></div><div class="dobbleMini small twoB"><span>🍋</span></div></div>
-          <div class="phone ringPhone" style="--x:74px;--y:17px;--rot:50deg"><div class="dobbleMini small twoA"><span>🐸</span></div><div class="dobbleMini small twoB"><span>🚲</span></div></div>
-          <div class="phone ringPhone" style="--x:33px;--y:68px;--rot:82deg"><div class="dobbleMini small twoA"><span>🚀</span></div><div class="dobbleMini small twoB"><span>🎸</span></div></div>
-          <div class="phone ringPhone" style="--x:-33px;--y:68px;--rot:-82deg"><div class="dobbleMini small twoA"><span>🍎</span></div><div class="dobbleMini small twoB"><span>💎</span></div></div>
-          <div class="phone ringPhone" style="--x:-74px;--y:17px;--rot:-50deg"><div class="dobbleMini small twoA"><span>🎲</span></div><div class="dobbleMini small twoB"><span>👑</span></div></div>
-          <div class="phone ringPhone" style="--x:-59px;--y:-47px;--rot:-16deg"><div class="dobbleMini small twoA"><span>🔥</span></div><div class="dobbleMini small twoB"><span>🦊</span></div></div>
+          <div class="phone ringPhone" style="--x:0px;--y:-76px;--rot:0deg"><div class="najditoMini small twoA"><span>⭐</span></div><div class="najditoMini small twoB"><span>🐶</span></div></div>
+          <div class="phone ringPhone" style="--x:59px;--y:-47px;--rot:16deg"><div class="najditoMini small twoA"><span>⚡</span></div><div class="najditoMini small twoB"><span>🍋</span></div></div>
+          <div class="phone ringPhone" style="--x:74px;--y:17px;--rot:50deg"><div class="najditoMini small twoA"><span>🐸</span></div><div class="najditoMini small twoB"><span>🚲</span></div></div>
+          <div class="phone ringPhone" style="--x:33px;--y:68px;--rot:82deg"><div class="najditoMini small twoA"><span>🚀</span></div><div class="najditoMini small twoB"><span>🎸</span></div></div>
+          <div class="phone ringPhone" style="--x:-33px;--y:68px;--rot:-82deg"><div class="najditoMini small twoA"><span>🍎</span></div><div class="najditoMini small twoB"><span>💎</span></div></div>
+          <div class="phone ringPhone" style="--x:-74px;--y:17px;--rot:-50deg"><div class="najditoMini small twoA"><span>🎲</span></div><div class="najditoMini small twoB"><span>👑</span></div></div>
+          <div class="phone ringPhone" style="--x:-59px;--y:-47px;--rot:-16deg"><div class="najditoMini small twoA"><span>🔥</span></div><div class="najditoMini small twoB"><span>🦊</span></div></div>
         </div>
         <h3>Hrají všichni</h3>
-        <p>Každý telefon má na obrazovce dvě menší Dobble karty. Všichni hrají souběžně na body a čas.</p>
+        <p>Každý telefon má na obrazovce dvě menší NajdiTo! karty. Všichni hrají souběžně na body a čas.</p>
       </button>
     </div>
     <p class="small" id="onlineVariantInfo">Hlavní telefon je jen centrální karta. Hráči mají svou kartu na svém telefonu.</p>
@@ -126,9 +126,9 @@
   <section id="gameScreen" class="hidden">
     <div class="topbar"><span class="pill" id="rolePill"></span><span class="pill" id="roundPill"></span><button id="forceFinishBtn" class="danger hostEndBtn hidden" type="button">Ukončit hru</button></div>
     <div id="onlineMainLabel" class="small offlineLabel hidden">Společná karta</div>
-    <div id="hostCard" class="dobble hidden"></div>
+    <div id="hostCard" class="najdito hidden"></div>
     <div id="onlinePlayerLabel" class="small offlineLabel hidden">Tvoje karta</div>
-    <div id="playerCard" class="dobble hidden"></div>
+    <div id="playerCard" class="najdito hidden"></div>
     <div id="scorePanel" class="card"></div>
   </section>
 
@@ -141,11 +141,11 @@
     <div class="offlineSplit">
       <div>
         <div class="small offlineLabel">Hlavní karta</div>
-        <div id="offlineMainCard" class="dobble offlineCard"></div>
+        <div id="offlineMainCard" class="najdito offlineCard"></div>
       </div>
       <div>
         <div class="small offlineLabel">Tvoje karta</div>
-        <div id="offlinePlayerCard" class="dobble offlineCard"></div>
+        <div id="offlinePlayerCard" class="najdito offlineCard"></div>
       </div>
     </div>
   </section>
@@ -190,8 +190,8 @@ function makeUid(){
   if(window.crypto && crypto.randomUUID) return crypto.randomUUID();
   return 'u_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2,10);
 }
-const uid = sessionStorage.getItem('dobble_uid') || makeUid();
-sessionStorage.setItem('dobble_uid', uid);
+const uid = sessionStorage.getItem('najdito_uid') || makeUid();
+sessionStorage.setItem('najdito_uid', uid);
 
 let role = null, roomCode = null, playerId = uid, unsubRoom = null, processedWinnerKey = '', localLockedRound = -1;
 let onlineVariant = 'classic';
@@ -202,7 +202,7 @@ let serverTimeOffset = 0, serverTimeOffsetStarted = false;
 
 const EMOJIS = ["😀", "😎", "🥳", "🤖", "👻", "🐶", "🐱", "🦊", "🐼", "🐸", "🦁", "🐵", "🐧", "🦄", "🐝", "🦋", "🐙", "🦖", "🐢", "🐬", "🌵", "🌈", "⭐", "🔥", "⚡", "❄️", "💧", "🍎", "🍋", "🍕", "🍔", "🍟", "🍩", "🍪", "⚽", "🏀", "🎾", "🎲", "🎯", "🎸", "🚗", "🚀", "✈️", "🚲", "⛵", "🏠", "⛺", "🎁", "💎", "🔑", "🧲", "🔔", "📚", "✏️", "❤️", "☂️", "👑"];
 const SYMBOL_FILES = ["symbols/e00.png", "symbols/e01.png", "symbols/e02.png", "symbols/e03.png", "symbols/e04.png", "symbols/e05.png", "symbols/e06.png", "symbols/e07.png", "symbols/e08.png", "symbols/e09.png", "symbols/e10.png", "symbols/e11.png", "symbols/e12.png", "symbols/e13.png", "symbols/e14.png", "symbols/e15.png", "symbols/e16.png", "symbols/e17.png", "symbols/e18.png", "symbols/e19.png", "symbols/e20.png", "symbols/e21.png", "symbols/e22.png", "symbols/e23.png", "symbols/e24.png", "symbols/e25.png", "symbols/e26.png", "symbols/e27.png", "symbols/e28.png", "symbols/e29.png", "symbols/e30.png", "symbols/e31.png", "symbols/e32.png", "symbols/e33.png", "symbols/e34.png", "symbols/e35.png", "symbols/e36.png", "symbols/e37.png", "symbols/e38.png", "symbols/e39.png", "symbols/e40.png", "symbols/e41.png", "symbols/e42.png", "symbols/e43.png", "symbols/e44.png", "symbols/e45.png", "symbols/e46.png", "symbols/e47.png", "symbols/e48.png", "symbols/e49.png", "symbols/e50.png", "symbols/e51.png", "symbols/e52.png", "symbols/e53.png", "symbols/e54.png", "symbols/e55.png", "symbols/e56.png"];
-const CARDS = makeDobbleCards(7);
+const CARDS = makeNajdiToCards(7);
 const GAME_TYPES = {
   classic: {label:'Klasika', hint:'Společná karta je uprostřed. Každý hráč hledá shodný symbol. Kdo se trefí první, dostane bod a jeho karta jde doprostřed. Špatný klik jen zamkne hráče do konce kola.'},
   kahoot: {label:'Kahoot', hint:'Každý hledá shodný symbol co nejrychleji. Rychlejší správné odpovědi mají víc bodů, špatná odpověď je za nulu. Po limitu nebo po odpovědi všech se ukáže pořadí.'},
@@ -211,7 +211,7 @@ const GAME_TYPES = {
   deck: {label:'Balíček karet', hint:'Každý dostane nastavený počet karet a snaží se balíčkem co nejrychleji proklikat. Za správné série jsou bonusy, za chybu stopka 5 s.'}
 };
 
-function makeDobbleCards(n){
+function makeNajdiToCards(n){
   const cards=[];
   cards.push([...Array(n+1).keys()]);
   for(let i=0;i<n;i++) cards.push([0,...Array.from({length:n},(_,j)=>n+1+i*n+j)]);
@@ -1235,11 +1235,11 @@ function renderKahootPanel(room, hostControls=false){
     html += `<div class="player"><div><b>${meIndex+1}. ${esc(meRow[1].name)}</b><div class="small">tvoje umístění</div></div><div class="score">${meRow[1].score||0}</div></div>`;
   }
   if(room.status==='kahootResult' && hostControls && r){
-    html += `<button class="nextBtn" onclick="window.nextDobbleRound()">${r.roundNumber>=r.total?'Ukončit hru':'Další kolo'}</button>`;
+    html += `<button class="nextBtn" onclick="window.nextNajdiToRound()">${r.roundNumber>=r.total?'Ukončit hru':'Další kolo'}</button>`;
   }
   $('scorePanel').innerHTML=html;
 }
-window.nextDobbleRound=async()=>{
+window.nextNajdiToRound=async()=>{
   const snap=await get(roomRef); const room=snap.val(); if(!room?.currentRound) return;
   const r=room.currentRound;
   if(room.status==='kahootResult') await generateKahootRound(r.roundNumber+1);
@@ -1349,7 +1349,7 @@ function renderChallengePanel(room, hostControls=false){
     const note=freezeLeft>0 ? `<span style="color:#ef4444;font-weight:950">stopka ${freezeLeft} s</span>` : 'hraje';
     return `<div class="player"><div><b>${i+1}. ${esc(p.name)}</b><div class="small">${note}</div></div><div class="score">${p.score||0}</div></div>`;
   }).join('');
-  if(room.status==='challengeResult' && hostControls) html+=`<button class="nextBtn" onclick="window.nextDobbleRound()">Ukončit a ukázat pořadí</button>`;
+  if(room.status==='challengeResult' && hostControls) html+=`<button class="nextBtn" onclick="window.nextNajdiToRound()">Ukončit a ukázat pořadí</button>`;
   $('scorePanel').innerHTML=html;
 }
 function ensureSoloSpeedGame(room,mode){
