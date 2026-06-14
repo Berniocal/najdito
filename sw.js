@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'nadjito-v27';
+const CACHE_VERSION = 'nadjito-v28';
 const APP_SHELL = [
   './',
   './index.html',
