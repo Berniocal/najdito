@@ -21,6 +21,7 @@
     label{font-size:13px;color:var(--muted);font-weight:700;display:block;margin:10px 0 6px}input,button,select{width:100%;border:1px solid var(--line);border-radius:16px;padding:14px 15px;font:inherit;color:var(--text);background:rgba(255,255,255,.08)}
     select option{background:#1f2a44;color:#f8fafc;}
     .hostEndBtn{width:auto!important;padding:10px 12px!important;border-radius:14px!important;white-space:nowrap;}
+    .gameExitBar{margin:12px auto 0;max-width:min(88vw,430px)}.gameExitBar button{width:100%;}
     input{text-align:center;font-size:22px;font-weight:850;letter-spacing:.08em}input.name{font-size:18px;letter-spacing:0;text-align:left}button{font-weight:850;cursor:pointer;background:linear-gradient(135deg,#16a34a,#22c55e);border:0;color:#052e16;box-shadow:0 10px 28px rgba(34,197,94,.2)}button.secondary{background:rgba(255,255,255,.09);color:var(--text);box-shadow:none;border:1px solid var(--line)}button.danger{background:linear-gradient(135deg,#dc2626,#fb7185);color:#fff}button:disabled{cursor:not-allowed}.small{font-size:13px;color:var(--muted)}
     .hostSettings{margin:12px 0;padding:12px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.045)}.hostSettings select,.hostSettings input[type="range"]{width:100%}.hostSettings .hint{margin-top:8px}.nextBtn{margin-top:12px}.timerBar{height:10px;border-radius:999px;background:rgba(255,255,255,.1);overflow:hidden;margin:8px 0}.timerBar>div{height:100%;background:linear-gradient(90deg,#22c55e,#facc15);width:100%;transition:width .2s linear}.frozen{opacity:.65;filter:grayscale(.25)}
     .topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.pill{padding:8px 12px;background:rgba(255,255,255,.08);border:1px solid var(--line);border-radius:999px;font-weight:800;color:var(--muted)}
@@ -28,17 +29,132 @@
     .onlineChoices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:10px 0 12px}.modeChoice{position:relative;text-align:left;border:1px solid var(--line);border-radius:22px;padding:12px;background:rgba(255,255,255,.075);color:var(--text);box-shadow:none;overflow:hidden}.modeChoice.selected{outline:3px solid rgba(34,197,94,.45);background:linear-gradient(180deg,rgba(34,197,94,.2),rgba(255,255,255,.07));color:var(--text)}.modeChoice h3{margin:8px 0 4px;font-size:18px}.modeChoice p{margin:0;color:var(--muted);font-size:13px;line-height:1.25}.modeIllustration{position:relative;height:210px;border-radius:18px;background:radial-gradient(circle at center,rgba(56,189,248,.18),rgba(255,255,255,.04));border:1px solid var(--line);overflow:hidden}.phone{position:absolute;width:40px;height:66px;border-radius:10px;background:linear-gradient(180deg,#334155,#0f172a);border:2px solid rgba(255,255,255,.48);box-shadow:0 10px 22px rgba(0,0,0,.28)}.phone.big{width:66px;height:106px;border-radius:16px}.phone::before{content:"";position:absolute;left:50%;top:5px;transform:translateX(-50%);width:18px;height:3px;border-radius:999px;background:rgba(255,255,255,.42)}.phone::after{content:"";position:absolute;left:50%;bottom:5px;transform:translateX(-50%);width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.26)}.dobbleMini{position:absolute;border-radius:50%;background:#f8fafc;box-shadow:inset 0 0 0 3px rgba(15,23,42,.12),0 5px 12px rgba(0,0,0,.28)}.dobbleMini.big{width:50px;height:50px}.dobbleMini.small{width:24px;height:24px}.dobbleMini::before,.dobbleMini::after{content:"";position:absolute;border-radius:50%;background:#22c55e}.dobbleMini::before{width:7px;height:7px;left:7px;top:8px}.dobbleMini::after{width:6px;height:6px;right:7px;bottom:8px;background:#38bdf8}.dobbleMini span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:11px}.centralPhone{left:50%;top:50%;transform:translate(-50%,-50%)}.centralPhone .dobbleMini{left:50%;top:50%;transform:translate(-50%,-50%)}.ringPhone{left:calc(50% + var(--x));top:calc(50% + var(--y));transform:translate(-50%,-50%) rotate(var(--rot,0deg))}.ringPhone .dobbleMini.one{left:50%;top:50%;transform:translate(-50%,-50%)}.ringPhone .dobbleMini.twoA{left:50%;top:33%;transform:translate(-50%,-50%)}.ringPhone .dobbleMini.twoB{left:50%;top:67%;transform:translate(-50%,-50%)}@media (max-width:680px){.onlineChoices{grid-template-columns:1fr}.modeIllustration{height:190px}}
     .centerMsg{position:fixed;inset:0;display:grid;place-items:center;background:rgba(2,6,23,.35);z-index:50;pointer-events:none}.centerMsg>div{background:rgba(15,23,42,.95);border:1px solid var(--line);padding:20px 28px;border-radius:24px;font-size:clamp(28px,8vw,54px);font-weight:950;text-align:center;box-shadow:var(--shadow)}
     .players{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-top:12px}.player{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.06)}.player b{font-size:18px}.actions{display:flex;gap:8px}.actions button{padding:9px 10px;border-radius:12px}.score{font-weight:950;color:var(--yellow)}.footer{position:fixed;left:0;right:0;bottom:0;padding:8px 12px calc(8px + env(safe-area-inset-bottom));background:rgba(15,23,42,.82);backdrop-filter:blur(10px);border-top:1px solid var(--line);z-index:20}.footer .inner{max-width:860px;margin:auto;display:flex;gap:10px;align-items:center;justify-content:space-between}.statusText{font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rank{font-size:22px;font-weight:950}.confetti{font-size:42px}.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:#111827;color:white;border:1px solid var(--line);border-radius:999px;padding:10px 16px;font-weight:850;z-index:100;box-shadow:var(--shadow);max-width:90vw;text-align:center}#keepAwakeVideo{position:fixed;left:-20px;top:-20px;width:1px;height:1px;opacity:0;pointer-events:none}.offlineMenu{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:12px 0}.offlineMenu .modeChoice{min-height:132px}.offlineSplit{display:grid;grid-template-rows:1fr 1fr;gap:10px;height:calc(100vh - 150px);min-height:560px}.duelSplit{display:grid;grid-template-rows:1fr auto 1fr;gap:8px;height:calc(100vh - 125px);min-height:560px}.duelTop{transform:rotate(180deg)}.duelMiddle{text-align:center;font-weight:950;color:var(--yellow);font-size:20px}.duelResult{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.onlineSplit{display:grid;grid-template-rows:auto 1fr auto 1fr;gap:8px;height:calc(100vh - 150px);min-height:560px}.onlineCard{width:min(78vw,360px);height:min(78vw,360px);margin:6px auto 2px}.offlineCard{width:min(78vw,360px);height:min(78vw,360px);margin:8px auto 4px}.offlineLabel{text-align:center;font-weight:850}@media (max-height:760px){.offlineSplit,.onlineSplit{height:auto;min-height:0}.offlineCard,.onlineCard{width:min(68vw,300px);height:min(68vw,300px)}}
+
+
+    /* === Kompaktní pastelový vzhled === */
+    :root{
+      --bg:#101827;
+      --panel:#162238;
+      --panel2:#1b2b45;
+      --text:#f8fbff;
+      --muted:#b9c6d8;
+      --line:rgba(255,255,255,.14);
+      --green:#86efac;
+      --red:#fda4af;
+      --yellow:#fde68a;
+      --blue:#93c5fd;
+      --shadow:0 14px 36px rgba(3,7,18,.30);
+      --r:22px;
+    }
+    html,body{
+      background:
+        radial-gradient(circle at 18% 8%,rgba(147,197,253,.26),transparent 30%),
+        radial-gradient(circle at 86% 10%,rgba(134,239,172,.18),transparent 28%),
+        linear-gradient(180deg,#101a2d 0%,#0b1220 100%);
+    }
+    body{padding:12px;padding-bottom:calc(14px + env(safe-area-inset-bottom));}
+    .app{max-width:760px;}
+    h1{
+      font-size:clamp(42px,11vw,70px);
+      line-height:1.14;
+      margin:10px 0 22px;
+      padding-bottom:4px;
+      text-align:center;
+      font-weight:950;
+      letter-spacing:-.055em;
+      color:#f8fbff;
+      text-shadow:0 4px 0 rgba(255,255,255,.04),0 12px 30px rgba(0,0,0,.40);
+    }
+    h2{margin:0 0 12px;font-size:clamp(22px,5vw,30px);letter-spacing:-.03em;}
+    h3{letter-spacing:-.02em;}
+    .card{
+      border-radius:26px;
+      padding:14px;
+      background:linear-gradient(180deg,rgba(255,255,255,.105),rgba(255,255,255,.055));
+      border:1px solid rgba(255,255,255,.16);
+      box-shadow:var(--shadow);
+    }
+    #modeScreen{margin-top:4px;}
+    #modeScreen .row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    @media(max-width:520px){#modeScreen .row{grid-template-columns:1fr;}}
+    button{
+      min-height:52px;
+      border-radius:18px;
+      font-size:17px;
+      color:#062315;
+      background:linear-gradient(135deg,#bbf7d0,#86efac);
+      box-shadow:0 10px 22px rgba(134,239,172,.18), inset 0 1px 0 rgba(255,255,255,.35);
+    }
+    button.secondary{
+      color:#10233f;
+      background:linear-gradient(135deg,#dbeafe,#93c5fd);
+      border:0;
+      box-shadow:0 10px 22px rgba(147,197,253,.16), inset 0 1px 0 rgba(255,255,255,.35);
+    }
+    button.danger,.gameExitBar button.danger{
+      color:#451018;
+      background:linear-gradient(135deg,#ffe4e6,#fda4af);
+      box-shadow:0 10px 22px rgba(253,164,175,.16), inset 0 1px 0 rgba(255,255,255,.35);
+    }
+    .btnIcon{display:inline-block;margin-right:.35em;filter:drop-shadow(0 2px 4px rgba(0,0,0,.2));}
+    .topbar{margin-bottom:10px;}
+    .pill{
+      padding:7px 10px;
+      font-size:13px;
+      color:#dce9ff;
+      background:rgba(255,255,255,.09);
+    }
+    label{margin:8px 0 5px;font-size:12px;}
+    input,select{border-radius:16px;padding:12px 13px;background:rgba(255,255,255,.09);}
+    input{font-size:20px;}
+    .offlineMenu,.onlineChoices{gap:10px;margin:8px 0 10px;}
+    .modeChoice{
+      border-radius:24px;
+      padding:12px;
+      min-height:unset!important;
+      background:linear-gradient(180deg,rgba(255,255,255,.11),rgba(255,255,255,.055));
+      border:1px solid rgba(255,255,255,.14);
+    }
+    .modeChoice.selected{
+      outline:3px solid rgba(134,239,172,.45);
+      background:linear-gradient(180deg,rgba(134,239,172,.18),rgba(255,255,255,.07));
+    }
+    .modeChoice h3{margin:6px 0 0;font-size:19px;}
+    .modeChoice p{display:none;}
+    .modeIllustration{height:155px;border-radius:20px;background:radial-gradient(circle at center,rgba(147,197,253,.22),rgba(255,255,255,.04));}
+    @media(max-width:680px){.modeIllustration{height:140px}.onlineChoices{grid-template-columns:1fr 1fr}.phone{transform:scale(.9)}}
+    @media(max-width:520px){.onlineChoices{grid-template-columns:1fr}.modeIllustration{height:150px}}
+    .hostSettings{padding:10px;margin:8px 0 12px;border-radius:20px;}
+    .hostSettings .hint{display:none;}
+    .players{gap:8px;margin-top:8px;}
+    .player{padding:10px;border-radius:16px;}
+    .dobble{margin:12px auto;width:min(84vw,390px);height:min(84vw,390px);box-shadow:inset 0 0 0 7px rgba(15,23,42,.08),0 14px 32px rgba(0,0,0,.30);}
+    .offlineCard,.onlineCard{width:min(72vw,330px);height:min(72vw,330px);}
+    .offlineSplit{gap:6px;height:calc(100vh - 132px);min-height:520px;}
+    .duelSplit{gap:6px;height:calc(100vh - 112px);min-height:520px;}
+    .duelMiddle{font-size:18px;}
+    .gameExitBar{margin:8px auto 0;max-width:min(84vw,390px);}
+    .gameExitBar button{min-height:46px;font-size:15px;border-radius:16px;}
+    #scorePanel{padding:12px;}
+    .small{font-size:12px;}
+    @media(max-height:760px){
+      h1{font-size:clamp(38px,9vw,58px);margin:6px 0 16px;}
+      body{padding:10px;}
+      .card{padding:12px;}
+      .offlineCard,.onlineCard{width:min(66vw,295px);height:min(66vw,295px);}
+      .offlineSplit,.duelSplit{height:auto;min-height:0;}
+    }
   </style>
 </head>
 <body>
 <div class="app">
   <h1>NajdiTo!</h1>
-   <section id="modeScreen" class="card">
-    <h2>Vyber režim hry</h2>
-    <p class="small">Online režim používá hlavní telefon a Firebase. Offline hra běží jen na jednom telefonu bez Firebase.</p>
+
+  <section id="modeScreen" class="card">
+    <h2>Vyber hru</h2>
     <div class="row" style="margin-top:14px">
-      <button id="onlineModeBtn">Online se spoluhráči</button>
-      <button id="offlineModeBtn" class="secondary">Offline hra</button>
+      <button id="onlineModeBtn"><span class="btnIcon">🌐</span> Online hra</button>
+      <button id="offlineModeBtn" class="secondary"><span class="btnIcon">📴</span> Offline hra</button>
     </div>
   </section>
 
@@ -55,8 +171,8 @@
           <div class="phone ringPhone" style="--x:-68px;--y:39px;--rot:20deg"><div class="dobbleMini small one"><span>🎲</span></div></div>
           <div class="phone ringPhone" style="--x:-68px;--y:-39px;--rot:-20deg"><div class="dobbleMini small one"><span>🔥</span></div></div>
         </div>
-        <h3>Hra s hlavním telefonem</h3>
-        <p>Uprostřed je hlavní telefon se společnou kartou. Okolo hráči hledají shodný symbol na své kartě.</p>
+        <h3>Jeden hlavní</h3>
+        <p>Hlavní karta + hráči.</p>
       </button>
       <button id="onlineSoloChallengeBtn" class="modeChoice" type="button">
         <div class="modeIllustration" aria-hidden="true">
@@ -68,38 +184,37 @@
           <div class="phone ringPhone" style="--x:-74px;--y:17px;--rot:-50deg"><div class="dobbleMini small twoA"><span>🎲</span></div><div class="dobbleMini small twoB"><span>👑</span></div></div>
           <div class="phone ringPhone" style="--x:-59px;--y:-47px;--rot:-16deg"><div class="dobbleMini small twoA"><span>🔥</span></div><div class="dobbleMini small twoB"><span>🦊</span></div></div>
         </div>
-        <h3>Hrají všichni</h3>
-        <p>Každý telefon má na obrazovce dvě menší NajdiTo! karty. Všichni hrají souběžně na body a čas.</p>
+        <h3>Každý za sebe</h3>
+        <p>Všichni hrají na svém telefonu.</p>
       </button>
     </div>
-    <p class="small" id="onlineVariantInfo">Hlavní telefon je jen centrální karta. Hráči mají svou kartu na svém telefonu.</p>
+    
     <label>Číslo místnosti</label>
     <input id="roomInput" inputmode="numeric" maxlength="5" placeholder="58321" />
     <label>Jméno hráče</label>
     <input id="nameInput" class="name" maxlength="18" placeholder="Např. Honza" />
     <div class="row" style="margin-top:14px">
-      <button id="enterBtn">Vstoupit do místnosti</button>
-      <button id="randomRoomBtn" class="secondary">Náhodné číslo</button>
+      <button id="enterBtn">Vstoupit</button>
+      <button id="randomRoomBtn" class="secondary">Náhodná</button>
     </div>
     <button id="onlineBackBtn" class="secondary" style="margin-top:10px">Zpět</button>
-    <p class="small">Když místnost ještě neexistuje, tento telefon se stane hlavním. Další telefony budou hráči a musí je schválit hlavní.</p>
   </section>
 
   <section id="offlineSetup" class="card hidden">
-    <div class="topbar"><span class="pill">Offline hra</span><span class="pill">Bez Firebase</span></div>
-    <h2>Vyber offline hru</h2>
+    <div class="topbar"><span class="pill">Offline hra</span></div>
+    <h2>Offline hry</h2>
     <div class="offlineMenu">
       <button id="offlineRoundsModeBtn" class="modeChoice" type="button">
         <h3>Offline výzva</h3>
-        <p>Hraješ na počet kol jako teď. Stejný seed dá stejnou sadu karet.</p>
+        <p>Počet kol.</p>
       </button>
       <button id="offlineTimeModeBtn" class="modeChoice" type="button">
         <h3>Časová výzva</h3>
-        <p>Nastavíš čas a hra ti postupně sází nové dvojice karet.</p>
+        <p>Na čas.</p>
       </button>
       <button id="offlineDuelModeBtn" class="modeChoice" type="button">
         <h3>Hra pro dva hráče</h3>
-        <p>Dva hráči proti sobě na jednom telefonu. Každý mačká svoje kolečko.</p>
+        <p>2 hráči.</p>
       </button>
     </div>
     <button id="offlineBackBtn" class="secondary" style="margin-top:10px">Zpět</button>
@@ -112,25 +227,24 @@
     <label>Počet kol: <span id="offlineRoundsValue">20</span></label>
     <input id="offlineRoundsInput" type="range" min="1" max="100" value="20" />
     <div class="row" style="margin-top:14px">
-      <button id="offlineStartBtn">Start offline výzvy</button>
-      <button id="offlineRandomSeedBtn" class="secondary">Náhodný seed</button>
+      <button id="offlineStartBtn">Start</button>
+      <button id="offlineRandomSeedBtn" class="secondary">Náhodný</button>
     </div>
-    <button id="offlineRoundsBackBtn" class="secondary" style="margin-top:10px">Zpět na offline hry</button>
-    <p class="small">Když kamarád zadá stejný seed a stejný počet kol, dostane stejnou hru. Vyhrává víc bodů, při rovnosti kratší čas.</p>
+    <button id="offlineRoundsBackBtn" class="secondary" style="margin-top:10px">Zpět</button>
+    
   </section>
 
   <section id="offlineTimeSetup" class="card hidden">
-    <div class="topbar"><span class="pill">Časová výzva</span><span class="pill">Bez Firebase</span></div>
+    <div class="topbar"><span class="pill">Časová výzva</span></div>
     <label>7místný seed</label>
     <input id="offlineTimeSeedInput" inputmode="numeric" maxlength="7" placeholder="1234567" />
     <label>Čas: <span id="offlineTimeValue">60</span> s</label>
     <input id="offlineTimeInput" type="range" min="10" max="300" value="60" step="5" />
     <div class="row" style="margin-top:14px">
-      <button id="offlineTimeStartBtn">Start časové výzvy</button>
-      <button id="offlineTimeRandomSeedBtn" class="secondary">Náhodný seed</button>
+      <button id="offlineTimeStartBtn">Start</button>
+      <button id="offlineTimeRandomSeedBtn" class="secondary">Náhodný</button>
     </div>
-    <button id="offlineTimeBackBtn" class="secondary" style="margin-top:10px">Zpět na offline hry</button>
-    <p class="small">Po správném kliknutí se hned objeví další dvojice karet. Cílem je nasbírat co nejvíc bodů v nastaveném čase.</p>
+    <button id="offlineTimeBackBtn" class="secondary" style="margin-top:10px">Zpět</button>
   </section>
 
   <section id="offlineDuelSetup" class="card hidden">
@@ -138,10 +252,10 @@
     <label>Počet kol: <span id="offlineDuelRoundsValue">20</span></label>
     <input id="offlineDuelRoundsInput" type="range" min="1" max="100" value="20" />
     <div class="row" style="margin-top:14px">
-      <button id="offlineDuelStartBtn">Start hry pro dva</button>
+      <button id="offlineDuelStartBtn">Start</button>
     </div>
-    <button id="offlineDuelBackBtn" class="secondary" style="margin-top:10px">Zpět na offline hry</button>
-    <p class="small">Hráč nahoře má otočené kolečko o 180°. Oba hledají stejný symbol mezi horní a spodní kartou.</p>
+    <button id="offlineDuelBackBtn" class="secondary" style="margin-top:10px">Zpět</button>
+    
   </section>
 
   <section id="hostLobby" class="card hidden">
@@ -163,7 +277,7 @@
   <section id="playerLobby" class="card hidden">
     <div class="topbar"><span class="pill">Hráč</span><span class="pill">Místnost <b id="playerRoomCode"></b></span></div>
     <h2 id="waitingTitle">Čekáš na schválení…</h2>
-    <p class="small">Během hry nech tuto stránku otevřenou. Na iPhonu se krátké přepnutí nebere jako okamžité odpojení.</p>
+    
   </section>
 
   <section id="gameScreen" class="hidden">
@@ -173,6 +287,7 @@
     <div id="onlinePlayerLabel" class="small offlineLabel hidden">Tvoje karta</div>
     <div id="playerCard" class="dobble hidden"></div>
     <div id="scorePanel" class="card"></div>
+    <div class="gameExitBar"><button id="onlineExitGameBtn" class="secondary" type="button">Opustit hru</button></div>
   </section>
 
   <section id="offlineGameScreen" class="hidden">
@@ -191,6 +306,7 @@
         <div id="offlinePlayerCard" class="dobble offlineCard"></div>
       </div>
     </div>
+    <div class="gameExitBar"><button id="offlineExitGameBtn" class="secondary" type="button">Opustit hru</button></div>
   </section>
 
 
@@ -206,6 +322,7 @@
         <div id="duelBottomCard" class="dobble offlineCard"></div>
       </div>
     </div>
+    <div class="gameExitBar"><button id="offlineDuelExitGameBtn" class="secondary" type="button">Opustit hru</button></div>
   </section>
 
   <section id="finishScreen" class="card hidden"></section>
@@ -253,6 +370,7 @@ sessionStorage.setItem('dobble_uid', uid);
 
 let role = null, roomCode = null, playerId = uid, unsubRoom = null, processedWinnerKey = '', localLockedRound = -1;
 let onlineVariant = 'classic';
+let onlineGameExited = false;
 let onlineSoloGame = null;
 let roomRef = null, playerRef = null, wakeLock = null, autoAdvancing = false;
 let offlineGame = null, offlineTimer = null, offlineDuelGame = null, kahootTimerKey = '', challengeTimerKey = '', liveUiTimer = null, latestRoom = null;
@@ -265,7 +383,7 @@ const GAME_TYPES = {
   classic: {label:'Klasika', hint:'Společná karta je uprostřed. Každý hráč hledá shodný symbol. Kdo se trefí první, dostane bod a jeho karta jde doprostřed. Špatný klik jen zamkne hráče do konce kola.'},
   kahoot: {label:'Kahoot', hint:'Každý hledá shodný symbol co nejrychleji. Rychlejší správné odpovědi mají víc bodů, špatná odpověď je za nulu. Po limitu nebo po odpovědi všech se ukáže pořadí.'},
   onecard: {label:'Jedna karta', hint:'Na hlavním telefonu je jedna společná karta. Hráči mají časový limit a snaží se naklikat co nejvíce správných shod. Špatný klik stopne hráče na 5 s.'},
-  timeattack: {label:'Časovka', hint:'Hrají všichni na svém telefonu. Po správném kliknutí se tvoje karta posune nahoru a dole dostaneš novou. Špatný klik nechá karty stát a dá stopku 5 s.'},
+  timeattack: {label:'Časovka', hint:'Hrají všichni na svém telefonu. Hra postupně přidává nové karty a počítá body v časovém limitu. Špatný klik nechá karty stát a dá stopku 5 s.'},
   deck: {label:'Balíček karet', hint:'Každý dostane nastavený počet karet a snaží se balíčkem co nejrychleji proklikat. Za správné série jsou bonusy, za chybu stopka 5 s.'}
 };
 
@@ -344,7 +462,7 @@ function showOfflineMenu(){
   clearInterval(offlineTimer);
   offlineGame = null;
   offlineDuelGame = null;
-  ['modeScreen','joinScreen','offlineRoundsSetup','offlineTimeSetup','offlineDuelSetup','offlineGameScreen','offlineDuelGameScreen','finishScreen'].forEach(hide);
+  ['modeScreen','joinScreen','offlineRoundsSetup','offlineTimeSetup','offlineDuelSetup','offlineGameScreen','offlineDuelGameScreen','hostLobby','playerLobby','gameScreen','finishScreen'].forEach(hide);
   show('offlineSetup');
   hide('centerMsg');
   status('Offline hra.');
@@ -358,6 +476,9 @@ $('enterBtn').onclick=enterRoom;
 $('startBtn').onclick=startGame;
 $('closeRoomBtn').onclick=()=> roomRef && remove(roomRef);
 $('forceFinishBtn').onclick=forceFinishGame;
+$('onlineExitGameBtn').onclick=exitOnlineGame;
+$('offlineExitGameBtn').onclick=exitOfflineGame;
+$('offlineDuelExitGameBtn').onclick=exitOfflineGame;
 if($('wakeBtn')) $('wakeBtn').onclick=enableWake;
 $('roomInput').addEventListener('input',e=>e.target.value=cleanRoom(e.target.value));
 
@@ -634,7 +755,8 @@ function finishOfflineDuelGame(){
 
 async function enterRoom(){
   await enableWake();
-  try{ await ensureFirebase(); }catch(e){ toast('Firebase se nepodařilo načíst. Zkus obnovit stránku.'); return; }
+  try{ await ensureFirebase(); }catch(e){ toast('Připojení se nepodařilo načíst. Zkus obnovit stránku.'); return; }
+  onlineGameExited = false;
   roomCode=cleanRoom($('roomInput').value);
   if(roomCode.length!==5) return toast('Zadej 5 číslic místnosti.');
   roomRef=ref(db, `rooms/${roomCode}`);
@@ -860,14 +982,16 @@ function renderPlayer(room){
   const me=room.players?.[playerId];
   if(!me){ resetUI('Byl jsi odpojen z místnosti.'); return; }
   if(room.status==='lobby'){
+    onlineGameExited = false;
     hide('gameScreen'); hide('finishScreen'); updateHostEndButton(null); show('playerLobby');
     $('waitingTitle').textContent=me.approved?'Jsi schválen. Čekej na start hry.':'Čekáš na schválení…';
     status(me.approved?'Schváleno, čekáš na start.':'Čekáš na schválení.');
-  }else if(room.status==='running' || room.status==='roundResult') showGamePlayer(room,me);
+  }else if(onlineGameExited && isActiveOnlineStatus(room.status)) showOnlineRoomWaiting(room, 'Jsi v herní místnosti. Hra stále běží.');
+  else if(room.status==='running' || room.status==='roundResult') showGamePlayer(room,me);
   else if(room.status==='kahootRunning' || room.status==='kahootResult') showKahootPlayer(room,me);
   else if(room.status==='challengeRunning' || room.status==='challengeResult') showChallengePlayer(room,me);
   else if(room.status==='soloRunning' || room.status==='soloFinished') showSoloChallenge(room,me);
-  else if(room.status==='finished') renderFinish(room,me);
+  else if(room.status==='finished'){ onlineGameExited = false; renderFinish(room,me); }
 }
 
 function updateHostEndButton(room){
@@ -877,9 +1001,45 @@ function updateHostEndButton(room){
   btn.classList.toggle('hidden', !active);
 }
 
+
+function isActiveOnlineStatus(status){
+  return ['running','roundResult','kahootRunning','kahootResult','challengeRunning','challengeResult','soloRunning','soloFinished'].includes(status);
+}
+function showOnlineRoomWaiting(room, title='Jsi v herní místnosti.'){
+  hideFreezeOverlay();
+  hide('gameScreen'); hide('finishScreen'); hide('centerMsg'); show('playerLobby');
+  $('waitingTitle').textContent = title;
+  status('Jsi v herní místnosti.');
+}
+async function exitOnlineGame(){
+  if(role === 'host'){
+    await forceFinishGame();
+    return;
+  }
+  onlineGameExited = true;
+  showOnlineRoomWaiting(latestRoom, 'Jsi v herní místnosti. Hra stále běží.');
+}
+function exitOfflineGame(){
+  clearInterval(offlineTimer);
+  offlineGame = null;
+  offlineDuelGame = null;
+  showOfflineMenu();
+}
+function updateOnlineExitButton(room){
+  const btn = $('onlineExitGameBtn');
+  if(!btn) return;
+  if(role === 'host'){
+    btn.textContent = 'Ukončit hru a zpět do herní místnosti';
+    btn.className = 'danger';
+  }else{
+    btn.textContent = 'Zpět do herní místnosti';
+    btn.className = 'secondary';
+  }
+}
+
 async function forceFinishGame(){
   if(role !== 'host' || !roomRef) return;
-  await update(roomRef,{status:'finished',currentRound:null});
+  await update(roomRef,{status:'lobby',currentRound:null,game:null});
 }
 
 async function startGame(){
@@ -904,6 +1064,7 @@ async function startGame(){
     resets[`players/${id}/frozenUntil`]=null;
   });
   const settings={rounds,timeLimit,hostPlays,soloChallenge:hostPlays,onlineVariant:hostPlays?'soloChallenge':'classic',family,gameType};
+  onlineGameExited = false;
   onlineSoloGame = null;
   processedWinnerKey=''; autoAdvancing=false; localLockedRound=-1;
   if(gameType==='classic'){
@@ -1037,7 +1198,7 @@ function handleHostWinner(room){
 }
 function showGameHost(room){
   hideFreezeOverlay();
-  hide('hostLobby'); hide('playerLobby'); hide('finishScreen'); show('gameScreen');
+  hide('hostLobby'); hide('playerLobby'); hide('finishScreen'); show('gameScreen'); updateOnlineExitButton(room);
   const hostPlays = !!room.settings?.hostPlays;
   const r = room.currentRound;
   $('rolePill').textContent = hostPlays ? (room.players?.[playerId]?.name || 'Hlavní') : 'Hlavní karta';
@@ -1066,7 +1227,7 @@ function showGameHost(room){
 }
 function showGamePlayer(room,me){
   hideFreezeOverlay();
-  hide('hostLobby'); hide('playerLobby'); hide('finishScreen'); show('gameScreen'); show('scorePanel');
+  hide('hostLobby'); hide('playerLobby'); hide('finishScreen'); show('gameScreen'); updateOnlineExitButton(room); show('scorePanel');
   const r=room.currentRound; const hostPlays = !!room.settings?.hostPlays;
   $('rolePill').textContent=me.name; $('roundPill').textContent=`Kolo ${r?.roundNumber||'?'} / ${r?.total||'?'}`;
   const myCard=r?.playerCards?.[playerId]; const locked=!!r?.locked?.[playerId] || room.status==='roundResult';
@@ -1104,7 +1265,7 @@ function ensureOnlineSoloGame(room){
   localLockedRound = -1;
 }
 function showSoloChallenge(room, me){
-  hide('hostLobby'); hide('playerLobby'); hide('finishScreen'); hide('centerMsg'); show('gameScreen'); show('scorePanel');
+  hide('hostLobby'); hide('playerLobby'); hide('finishScreen'); hide('centerMsg'); show('gameScreen'); updateOnlineExitButton(room); show('scorePanel');
   $('gameScreen').classList.add('onlineSplit');
   show('onlineMainLabel'); show('onlinePlayerLabel'); show('hostCard'); show('playerCard');
   $('hostCard').classList.add('onlineCard'); $('playerCard').classList.add('onlineCard');
@@ -1332,7 +1493,7 @@ async function finishKahootRound(room){
   await update(roomRef,updates);
 }
 function showKahootHost(room){
-  hide('hostLobby'); hide('playerLobby'); hide('finishScreen'); hide('centerMsg'); show('gameScreen'); show('hostCard'); show('scorePanel');
+  hide('hostLobby'); hide('playerLobby'); hide('finishScreen'); hide('centerMsg'); show('gameScreen'); updateOnlineExitButton(room); show('hostCard'); show('scorePanel');
   const r=room.currentRound; const hostPlays=!!room.settings?.hostPlays;
   $('rolePill').textContent='Kahoot'; $('roundPill').textContent=`Kolo ${r?.roundNumber||'?'} / ${r?.total||'?'}`;
   if(hostPlays){ showKahootPlayer(room, room.players?.[playerId]||{}); return; }
@@ -1342,7 +1503,7 @@ function showKahootHost(room){
 }
 function showKahootPlayer(room,me){
   hideFreezeOverlay();
-  hide('hostLobby'); hide('playerLobby'); hide('finishScreen'); hide('centerMsg'); show('gameScreen'); show('scorePanel');
+  hide('hostLobby'); hide('playerLobby'); hide('finishScreen'); hide('centerMsg'); show('gameScreen'); updateOnlineExitButton(room); show('scorePanel');
   const r=room.currentRound; const hostPlays=!!room.settings?.hostPlays;
   $('rolePill').textContent=me?.name || 'Hráč';
   $('roundPill').textContent=`Kolo ${r?.roundNumber||'?'} / ${r?.total||'?'}`;
@@ -1483,7 +1644,7 @@ async function initChallengeCards(mode){
   await update(roomRef,updates);
 }
 function showChallengeHost(room){
-  hide('hostLobby'); hide('playerLobby'); hide('finishScreen'); hide('centerMsg'); show('gameScreen'); show('hostCard'); show('scorePanel');
+  hide('hostLobby'); hide('playerLobby'); hide('finishScreen'); hide('centerMsg'); show('gameScreen'); updateOnlineExitButton(room); show('hostCard'); show('scorePanel');
   const mode=room.settings?.gameType;
   if(room.settings?.hostPlays){ showChallengePlayer(room, room.players?.[playerId]||{}); return; }
   $('gameScreen').classList.remove('onlineSplit'); hide('onlineMainLabel'); hide('onlinePlayerLabel'); hide('playerCard');
@@ -1524,7 +1685,7 @@ function showChallengePlayer(room,me){
     return;
   }
   if(mode==='timeattack' || mode==='deck') return showSoloSpeedMode(room,me,mode);
-  hide('hostLobby'); hide('playerLobby'); hide('finishScreen'); hide('centerMsg'); show('gameScreen'); show('scorePanel');
+  hide('hostLobby'); hide('playerLobby'); hide('finishScreen'); hide('centerMsg'); show('gameScreen'); updateOnlineExitButton(room); show('scorePanel');
   const hostPlays=!!room.settings?.hostPlays;
   $('rolePill').textContent=me?.name||'Hráč'; $('roundPill').textContent='Jedna karta';
   if(hostPlays){ $('gameScreen').classList.add('onlineSplit'); show('onlineMainLabel'); show('onlinePlayerLabel'); show('hostCard'); show('playerCard'); $('hostCard').classList.add('onlineCard'); $('playerCard').classList.add('onlineCard'); renderCard($('hostCard'), room.game?.mainCardId, false, {roundNumber:1}); }
@@ -1760,6 +1921,7 @@ function renderFinish(room,me=null){
   status('Hra skončila.');
 }
 window.backToLobby=async()=>{
+  onlineGameExited=false;
   if(!roomRef) return location.reload();
   onlineSoloGame=null; processedWinnerKey=''; autoAdvancing=false; localLockedRound=-1;
   await update(roomRef,{status:'lobby',currentRound:null,game:null});
@@ -1787,7 +1949,7 @@ async function enableWake(){
   }catch(e){}
 }
 
-async function leaveNow(){ /* iPhone/Safari: automatické mazání při pagehide je vypnuté, používá se Firebase onDisconnect. */ }
+async function leaveNow(){ /* iPhone/Safari: automatické mazání při pagehide je vypnuté. */ }
 document.addEventListener('visibilitychange',()=>{ if(!document.hidden && role) enableWake(); });
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js').catch(()=>{}); }
 </script>
