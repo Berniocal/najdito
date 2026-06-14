@@ -581,6 +581,9 @@ function renderOfflineDuelCard(el, cardId, round, side){
     img.src=SYMBOL_FILES[sym];
     img.alt=EMOJIS[sym];
     img.draggable=false;
+    const rotRng = mulberry32(hashSeed(`duel-rotate-${offlineDuelGame.seed}-${round.roundNumber}-${side}-${cardId}-${sym}-${i}`));
+    img.style.transform = `rotate(${Math.floor(rotRng()*360)}deg)`;
+    img.style.transformOrigin = 'center center';
     b.appendChild(img);
     b.onclick=()=>offlineDuelClick(side, sym, b);
     el.appendChild(b);
