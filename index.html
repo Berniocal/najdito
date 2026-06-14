@@ -306,6 +306,11 @@ function stableShuffle(a, seedText){
   }
   return a;
 }
+function applySymbolRotation(img, seedText){
+  const rng = mulberry32(hashSeed(seedText));
+  img.style.transform = `rotate(${Math.floor(rng()*360)}deg)`;
+  img.style.transformOrigin = 'center center';
+}
 
 $('onlineModeBtn').onclick=()=>{ hide('modeScreen'); show('joinScreen'); status('Online režim.'); };
 $('onlineClassicBtn').onclick=()=>setOnlineVariant('classic');
@@ -445,6 +450,7 @@ function renderOfflineMainCard(el, cardId){
     img.src=SYMBOL_FILES[sym];
     img.alt=EMOJIS[sym];
     img.draggable=false;
+    applySymbolRotation(img, `offline-main-${offlineGame?.seed || 'seed'}-${offlineGame?.current || 0}-${cardId}-${sym}-${i}`);
     b.appendChild(img);
     el.appendChild(b);
   });
@@ -465,6 +471,7 @@ function renderOfflinePlayerCard(el, round){
     img.src=SYMBOL_FILES[sym];
     img.alt=EMOJIS[sym];
     img.draggable=false;
+    applySymbolRotation(img, `offline-player-${offlineGame?.seed || 'seed'}-${round.roundNumber}-${cardId}-${sym}-${i}`);
     b.appendChild(img);
     b.onclick=()=>offlineClick(sym, b);
     el.appendChild(b);
@@ -581,9 +588,7 @@ function renderOfflineDuelCard(el, cardId, round, side){
     img.src=SYMBOL_FILES[sym];
     img.alt=EMOJIS[sym];
     img.draggable=false;
-    const rotRng = mulberry32(hashSeed(`duel-rotate-${offlineDuelGame.seed}-${round.roundNumber}-${side}-${cardId}-${sym}-${i}`));
-    img.style.transform = `rotate(${Math.floor(rotRng()*360)}deg)`;
-    img.style.transformOrigin = 'center center';
+    applySymbolRotation(img, `duel-rotate-${offlineDuelGame.seed}-${round.roundNumber}-${side}-${cardId}-${sym}-${i}`);
     b.appendChild(img);
     b.onclick=()=>offlineDuelClick(side, sym, b);
     el.appendChild(b);
@@ -1138,6 +1143,7 @@ function renderOnlineSoloPlayerCard(el, round){
     img.src=SYMBOL_FILES[sym];
     img.alt=EMOJIS[sym];
     img.draggable=false;
+    applySymbolRotation(img, `online-solo-${onlineSoloGame?.seed || 'seed'}-${round.roundNumber}-${cardId}-${sym}-${i}`);
     b.appendChild(img);
     b.onclick=()=>onlineSoloClick(sym, b);
     el.appendChild(b);
@@ -1382,7 +1388,7 @@ function renderKahootPlayerCard(el, round, clickable){
   const pos=getPositions(CARDS[cardId].length);
   stableShuffle([...CARDS[cardId]], `kahoot-${round.roundNumber}-${cardId}`).forEach((sym,i)=>{
     const b=document.createElement('button'); b.className='symbol'; b.style.left=pos[i][0]+'%'; b.style.top=pos[i][1]+'%'; b.style.fontSize=pos[i][2]+'px'; b.disabled=!clickable;
-    const img=document.createElement('img'); img.src=SYMBOL_FILES[sym]; img.alt=EMOJIS[sym]; img.draggable=false; b.appendChild(img);
+    const img=document.createElement('img'); img.src=SYMBOL_FILES[sym]; img.alt=EMOJIS[sym]; img.draggable=false; applySymbolRotation(img, `kahoot-${round.roundNumber}-${cardId}-${sym}-${i}`); b.appendChild(img);
     if(clickable) b.onclick=()=>kahootClick(sym,b,round);
     el.appendChild(b);
   });
@@ -1537,7 +1543,7 @@ function renderChallengeClickCard(el, room, clickable){
   const pos=getPositions(CARDS[cardId].length);
   stableShuffle([...CARDS[cardId]], `onecard-${cardId}-${room.game?.clicks?.[playerId]||0}`).forEach((sym,i)=>{
     const b=document.createElement('button'); b.className='symbol'; b.style.left=pos[i][0]+'%'; b.style.top=pos[i][1]+'%'; b.style.fontSize=pos[i][2]+'px'; b.disabled=!clickable;
-    const img=document.createElement('img'); img.src=SYMBOL_FILES[sym]; img.alt=EMOJIS[sym]; img.draggable=false; b.appendChild(img);
+    const img=document.createElement('img'); img.src=SYMBOL_FILES[sym]; img.alt=EMOJIS[sym]; img.draggable=false; applySymbolRotation(img, `onecard-${room.game?.mainCardId}-${cardId}-${room.game?.clicks?.[playerId]||0}-${sym}-${i}`); b.appendChild(img);
     if(clickable) b.onclick=()=>challengeOneCardClick(sym,b,room);
     el.appendChild(b);
   });
@@ -1620,7 +1626,7 @@ function renderSoloSpeedPlayerCard(el, round, clickable){
   const pos=getPositions(CARDS[round.playerCardId].length);
   stableShuffle([...CARDS[round.playerCardId]], `speed-${onlineSoloGame.seed}-${round.roundNumber}-${onlineSoloGame.current}`).forEach((sym,i)=>{
     const b=document.createElement('button'); b.className='symbol'; b.style.left=pos[i][0]+'%'; b.style.top=pos[i][1]+'%'; b.style.fontSize=pos[i][2]+'px'; b.disabled=!clickable;
-    const img=document.createElement('img'); img.src=SYMBOL_FILES[sym]; img.alt=EMOJIS[sym]; img.draggable=false; b.appendChild(img);
+    const img=document.createElement('img'); img.src=SYMBOL_FILES[sym]; img.alt=EMOJIS[sym]; img.draggable=false; applySymbolRotation(img, `speed-${onlineSoloGame?.seed || 'seed'}-${round.roundNumber}-${round.playerCardId}-${sym}-${i}`); b.appendChild(img);
     if(clickable) b.onclick=()=>soloSpeedClick(sym,b,round);
     el.appendChild(b);
   });
@@ -1712,6 +1718,7 @@ function renderCard(el, cardId, clickable, round){
     img.src=SYMBOL_FILES[sym];
     img.alt=EMOJIS[sym];
     img.draggable=false;
+    applySymbolRotation(img, `card-${round?.roundNumber || 0}-${cardId}-${sym}-${i}`);
     b.appendChild(img);
 
     if(clickable) b.onclick=()=>playerClick(sym, b, round);
