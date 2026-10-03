@@ -1,5 +1,5 @@
 const CACHE_PREFIX = 'nadjito-';
-const CACHE_VERSION = 'nadjito-v29';
+const CACHE_VERSION = 'nadjito-v30';
 const APP_SHELL = [
   './',
   './index.html',
@@ -67,6 +67,7 @@ const APP_SHELL = [
   './symbols/e55.png',
   './symbols/e56.png',
 ];
+
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_VERSION)
@@ -74,6 +75,7 @@ self.addEventListener('install', event => {
       .then(() => self.skipWaiting())
   );
 });
+
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys()
@@ -85,14 +87,48 @@ self.addEventListener('activate', event => {
       .then(() => self.clients.claim())
   );
 });
+
+async function applyGameTouchFix(response){
+  if(!response) return response;
+  const type = response.headers.get('content-type') || '';
+  if(!type.includes('text/html')) return response;
+
+  const html = await response.clone().text();
+  if(!html.includes('touch-action:manipulation')) return response;
+
+  const headers = new Headers(response.headers);
+  headers.delete('content-length');
+  headers.delete('content-encoding');
+
+  return new Response(
+    html.replace('touch-action:manipulation', 'touch-action:none'),
+    {
+      status: response.status,
+      statusText: response.statusText,
+      headers
+    }
+  );
+}
+
 self.addEventListener('fetch', event => {
   const req = event.request;
   if (req.method !== 'GET') return;
-  event.respondWith(
-    caches.match(req).then(cached => cached || fetch(req).then(res => {
-      const copy = res.clone();
-      caches.open(CACHE_VERSION).then(cache => cache.put(req, copy)).catch(()=>{});
-      return res;
-    }).catch(() => cached))
-  );
+
+  event.respondWith((async () => {
+    const cached = await caches.match(req);
+    let response = cached;
+
+    if (!response) {
+      try {
+        response = await fetch(req);
+        const copy = response.clone();
+        caches.open(CACHE_VERSION).then(cache => cache.put(req, copy)).catch(()=>{});
+      } catch (e) {
+        response = cached;
+      }
+    }
+
+    if (!response) return Response.error();
+    return applyGameTouchFix(response);
+  })());
 });
