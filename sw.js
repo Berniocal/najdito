@@ -1,5 +1,5 @@
 const CACHE_PREFIX = 'nadjito-';
-const CACHE_VERSION = 'nadjito-v30';
+const CACHE_VERSION = 'nadjito-v31';
 const APP_SHELL = [
   './',
   './index.html',
